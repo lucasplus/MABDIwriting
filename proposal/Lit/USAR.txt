@@ -1,0 +1,30 @@
+
+Shared Understanding for Collaborative Control (Bruemmer et al. 2005) t - Cited 87 
+ Idaho National Laboratory - David Bruemmer, Douglas Few, Ronald Boring, Julie Marble, Miles Walton
+ Brigham Young University - Curtis Nielson
+- Good source to state they found better efficiency when using a representation they call a virtual 3D map
+- It "reduced operator workload and navigational error" 
+- Also lower bandwidth requirements. (assuming the map is being built onboard) 
+
+Effective user interface design for rescue robotics (Kadous et al. 2006) t - Cited 48
+ University of New South Wales - M. Waleed Kadous, Raymond Ka-Man Sheh, Claude Sammut 
+- Says the best user interface designs are modeled after first-person-shooters like Quake and Half-Life
+
+Awareness in human-robot interactions (Drury et al. 2003) t - Cited 161
+ MITRE Corporation - Jill Drury
+ National Institute of Standards and Technology - Jean Scholtz 
+ University of Massachusetts - Holly Yanco
+- Had 4 groups do an exploration task using 4 different UI for a robot. 
+- They found people had problems when they could not easily visualize the state of the robot in the environment 
+- Divided HRI into 5 components. We are interested in Human-robot HRI which they define as "the understanding that the humans have of the locations, identities, activities, status and surroundings of the robots. 
+
+Human-robot interactions during the robot-assisted urban search and rescue response at the World Trade Center (Jasper and Murphy 2003) t - Cited 444
+ University of South Florida - Jennifer Casper, Robin Roberson Murphy
+- Looked at the World Trade Center tragedy as a case study in HRI
+- Video and audio was the only info sent to operators and this was disorientating 
+- "Concentrate on researching how to extract and represent state of the robot and state of what has been seen to compliment existing work in state of the world."
+
+
+HRI - Human-robot interactions
+USAR - Urban Search and Rescue
+CSCW - Computer-Supported Cooperative Work - is computer-assisted coordinated activity carried out by groups of collaboration individuals 

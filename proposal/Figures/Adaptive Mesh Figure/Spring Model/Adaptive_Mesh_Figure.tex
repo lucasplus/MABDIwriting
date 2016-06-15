@@ -1,0 +1,45 @@
+\documentclass{article}
+
+% packages to use standard color names
+\usepackage{color}
+\usepackage[usenames,dvipsnames]{xcolor}
+
+% need tikz for figure
+\usepackage{tikz,pgfplots,tikz-3dplot}
+
+% needed this to show spring pattern
+\usetikzlibrary{calc,patterns,decorations.pathmorphing,decorations.markings,arrows}
+
+% Command to make horizontal divider 
+\newcommand{\sectionline}{
+  \nointerlineskip \vspace{\baselineskip}
+  \hspace{\fill}\rule{\linewidth}{.7pt}\hspace{\fill}
+  \par\nointerlineskip \vspace{\baselineskip}
+}
+
+\begin{document}
+
+\tdplotsetmaincoords{82}{105} % change camera view
+%\tdplotsetmaincoords{0}{0}
+
+\begin{figure}[h!]
+\centering
+\input{adaptive_mesh_1.tikz}
+\end{figure}
+
+\sectionline
+
+\begin{figure}[h!]
+\centering
+\input{adaptive_mesh_2.tikz}
+\end{figure}
+
+\sectionline
+
+\begin{figure}[h!]
+\centering
+\input{adaptive_mesh_3.tikz}
+\end{figure}
+
+\end{document}
+

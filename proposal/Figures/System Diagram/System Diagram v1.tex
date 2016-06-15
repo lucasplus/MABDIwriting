@@ -1,0 +1,45 @@
+\documentclass{article}
+
+\usepackage[usenames,dvipsnames]{color,xcolor}
+
+\usepackage{pgf,tikz,amsmath,graphicx}
+\usepackage[margin=1in]{geometry} 
+
+\usetikzlibrary{positioning,shapes,arrows,automata,backgrounds,fit}
+
+\begin{document}
+
+\tikzstyle{block} = [rectangle, draw, line width=.3mm, fill=white, draw=black, text width = .4\textwidth, text centered, rounded corners, minimum height=10mm]
+\tikzstyle{line} = [draw, line width=.3mm, color=black, -latex']
+\tikzstyle{background} = [rectangle,opacity = .65,fill=BurntOrange, inner sep=.1cm, rounded corners, minimum width=.45\linewidth, minimum height=51mm]
+
+\begin{figure}[h!]
+\centering
+\begin{tikzpicture}[scale=2, node distance = 7mm]
+
+\node (I) 		[block]				{Input\\\small{\emph{depth and image from RGB-D sensor}}};
+\node (M)   	[block,below=of I] 		{Measurement\\\small{\emph{surface vertices, normal map}}};
+\node (D1) 	[block,below=of M]		{Extract features from measurement\\\small{\emph{keypoints and BASE descriptors}}};
+\begin{scope} [node distance = 9mm]
+\node (PE) 	[block,below=of D1] 		{Pose Estimation\\\small{\emph{update sensor coordinate frame}}};
+\end{scope}
+\node (AM) 	[block, fill=red!20, below=of PE]	{Adapt Mesh\\\small{\emph{update global mesh structure}}};
+\node (D2) 	[block,below=of AM]				{Extract features from global mesh\\\small{\emph{keypoints and BASE descriptors}}};
+
+\path[line]  (I) edge	node[right] {\ $R_k$} (M);
+\path[line]  (M) edge node[right] {\ $V_k\ N_k$} (D1);
+\path[line]  (D1) edge node[right, pos=.35] {\ $K_k\ D_k$} (PE);
+\path[line]  (PE) edge node[right] {\ $T_{g,k}$} (AM);
+\path[line]  (AM) edge node[right] {\ $T_{g,k}\ M_k$} (D2);
+\path[line]  (D2.east) -- ++(right:3mm) |- (PE.east) node[right, near start, text width=1cm]{$\ T_{g,k-1}$\\\ \\$\ \hat{K}_k\ \hat{D}_k$};
+\path[line]  (I.west) -- ++(left:2mm) |- (D1.west) node[left,very near start]{$\ I_k\ $};
+\path[line]  (M.west) -- ++(left:4mm) |- (AM.west) node[left,near start]{$\ V_k\ $};
+
+\begin{pgfonlayer}{background}
+\node [background, fit=(PE) (D2)] {};
+\end{pgfonlayer}
+	
+\end{tikzpicture}
+\end{figure}
+
+\end{document}

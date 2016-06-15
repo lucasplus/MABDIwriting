@@ -1,0 +1,301 @@
+___________________________________________________________________________________ Titles
+
+** Mesh based environmental mapping using a RGBD sensor
+
+** Adaptive mesh based environmental mapping with a Kinect style sensor
+
+Adaptive mesh based surface reconstruction for noisy and incremental point cloud data sets 
+
+__________________________________________________________________________________ 1. Goal
+
+* One or two sentences that states what you intend to do. 
+* The goal and the title are the two very important parts of the proposal. 
+* They calibrate the reader in terms of what to expect next.
+
+This work seeks to develop a mesh based environmental modeling method which is designed for Kinect style sensors. The method will allow a mesh model to iteratively adapt to noisy information from the sensor. The method will also make use of the local information contained within the depth buffer in a novel way.  
+
+Important points
+- Iterative method for continuously adapting a global mesh with new measurements  
+- Novel way to classify the measurements contained within the depth buffer based on quick image processing calculations 
+- Natural way to include a sensor model for additional robustness 
+- Designed to be computationally inexpensive and parallelizable 
+
+The goal of this work is to design a method which can create a reliable representation of the environment from sequential registered noisy point cloud data sets. The method must be computationally feasible for online applications and have a low memory requirement. In addition, the method must adapt the representation to new measurements of revisited parts of the environment. 
+
+_______________________________________________________________________________ 2. Problem
+
+* Describe briefly the problem that is being solved. 
+* What is the hypothesis that you will test?
+* 1/2 page
+
+One of the largest current problems in the field of robotics is the question of how to make the most useful representation of an environment. 
+ Research on the problem for ~30 years
+ Solution to the problem changes as sensing technology continues to evolve 
+  Laser 
+  Camera
+  Sonar
+  ToF cameras 
+  RGBD sensors (Kinect style) - Computational challenge. Have to balance robustness with simplicity to create a usable system
+   Inexpensive
+   Large amounts of data at high rate
+   Noisy 
+   Limited range and field of view
+   Popular due to Microsoft and Kinect - Depth and color at 640x480 at 30Hz
+   
+ Representations 
+  Locations of landmarks
+  Occupancy grids
+  Point clouds 
+  Surfels
+   Not well suited for reasoning about the environment 
+  TSDF
+   Memory requirements. Requires a second step for rendering 
+  Mesh
+   
+Reasons to solve the problem
+Situational awareness is the main reason for a useful representation
+ In robotics - can allow an autonomous agent to better reason about actions and influence on environment
+  Example - obstacle avoidance
+ Urban Search and Rescue (USAR) - needs to represent the map and the state of the robot in the most intuitive manner
+  First-person-shooter games such as Half-Life have been shown to be the most effective UI 
+
+One of the main problems in robotics is SLAM. The robotics community has been working on SLAM solutions for roughly 30 years. The solutions are usually designed for a particular sensing technology. Recently, there has been a large interest in Kinect style sensors. These sensors are well suited for Dense SLAM but present several challenges. The rate of data received from Kinect style sensors is quite large and can quickly lead to large memory requirements if the representation tries to save all the data. Such as a colored point cloud. In order to avoid this the representation must be light weight but still able to capture high detail. A mesh representation has been the preferred data structure in computer graphics for exactly this reason. The representation must also be able to deal with extremely noisy data and should refine itself over time based on continued observation.
+
+Can we develop a methodology to iteratively refine a mesh representation of the world? 
+
+The ability to construct and maintain a useful representation of an environment is a clear need of any autonomous system. The question of how to create such a representation has been and continues to be the subject of much research. There are two main applications often cited in the literature: robotics and teleoperation. 
+
+______________________________________________________________________ 3. State of the Art
+* Describe what has been done (with references)
+* Your ideas do not belong here.
+* Be prepared to describe the work of the "leaders" in the field  
+* Describe what has not been done, obviously leading to your work. 
+* Consider several subsections, each based on a specific technology
+* It ’s OK to have a concluding subsection that identifies gaps in technology
+* 7 pages
+
+Start out describing the basic problem and motivation of the SLAM problem. 
+ - A truly autonomous system must have a means to develop an understanding of its environment.
+ - A rich representation of the world would be the first step towards a system which could intelligently reason about the environment. 
+ - SLAM also has many applications in telepresence and teleoperation. The ability to present the environment to the user in an intuitive way would dramatically increase the ability of the user to quickly and precisely perform tasks in an unknown environment
+
+SFM - Inferring the 3-D shape of a moving scene from its 2-D images
+
+Early SLAM or SFM started out as structure from motion and EKF based methods
+ - Estimating Uncertain Spatial Relationships in Robotics (1987)
+  - One of the first works to lay out the probabilistic framework which was used in many EKF methods after
+ - Continuous Localization Using Evidence Grids (1998)
+ - Mobile Robot Exploration and Map-Building with Continuous Localization (1998)
+  - One of the first implementations of a solution to the SLAM problem. The system simply tried to match the current sensor readings with the map by optimizing a match function.
+ - A probabilistic approach to concurrent mapping and localization for mobile robots (1998) Thrun
+  - One of the first probabilistic implementations to solve the SLAM problem. Used EM
+  - The algorithm was one of the first to be able to revise past estimates. However, it was an offline algorithm
+  - One of the first to implement a global optimization scheme. The operator had to mark landmarks and the global optimization was based off a topological map.
+ - 3-D Motion and Structure from 2-D Motion Causally Integrated over Time: Implementation (2000)
+  - One of the first to have a real-time implementation and be based on the EKF. 
+  - Easier approach than later EKF methods because the estimated state didn't contain all land marks. Only from the last frame
+  - Correspondences had to be known but they could deal with occlusions by explicitly changing the filter matrices. The first to be able to do this.
+  - Lacked a truly global representation
+ - Continue on with examples that continue the story of probabilistic SLAM
+  - Discuss loop closure and pose graph relaxation techniques which were developed for global optimization
+  - Work in large scale SLAM. 
+   - The implications of the sensors used on the algorithms. 
+   - Identify need for truly rich representations and explain that most methods in this "middle" time create a mesh offline
+	 
+RGB-D based SLAM methods
+ - Quickly sum up SLAM algorithms based on range data
+   - Why is producing maps with only range data advantageous?
+   - Explain the use of the ICP algorithm and its variants
+   - Explain why these methods are not suitable for Kinect style sensors
+ - Explain the pros and cons of working with Kinect style sensors
+   - Pros: cheap, fast, light (UAV), works well in indoor environments with low power consumption
+   - Cons: extremely noisy, works on limited range, can't deal with UV light saturation, small viewing angle
+ - KinectFusion and Dieter Fox work
+   - implication of using visual features for pose estimation. 
+   - cons of each works map representation type
+   - describe failure modes
+   - explain why the feedback structure of the KinectFusion work has significant advantages 
+ - Describe benifits of using planes based pose estimation
+   - Outline the work of Jacobs university
+   
+Describe the evolution of environmental representation 
+ - Started out as stochastic maps which weren't really maps at all
+ - Evidence Grids
+ - Point Clouds
+ - Mesh based SLAM (there are few and none are leading papers in the field)
+ - Describe need for mesh to adapt to new information in real-time order to be useful
+   - Mention recent paper from ICRA 2012
+   - Such an adaptive method would allow the realization of a KinectFusion algorithmic structure
+ - Describe works from the medical imaging community
+   - State that although these methods capture the idea of the needed meshing method, non are tailored for use in a real time system. Such a method would need to be quite simple and easily parallelizable (hint hint cough cough)
+   
+Pinpoint gap in technology
+ - Most all methods create a representation online. A mesh is then extracted for visualization purposes.
+ - It would be much simpler if instead the mesh was created online (need an angle here)
+ - Several smaller works set out to perform just this
+  - Probabilistic polygonal mesh for 3D SLAM (Kyoto University)
+   - Lacks experimental results and real-time evaluation. Mentions need for optimization
+  - Automatic Construction of Polygonal Maps From Point Cloud Data (Jacobs)
+   - Batch operation with computations of about ~6s.
+   - Applications similar to Thrun's initial work.
+	- Both lack simplistic and easily parallelizable calculation for mesh adaptation
+    - Neither makes use of the stability the comes from pose estimation using structural features in a frame to model calculation. Like the KinectFusion work.
+
+SIFT, SURF, spin-images, CSHOT - state-of-the-art for descriptors. 
+spin-images, CSHOT - state-of-the art in fusing both texture and shape information
+
+__________________________________________________________________________ 4. Contribution
+* How does your work expand the state of the art? You must be able to identify the delta from your work, and defend the fact that it is yours and not already published.
+* 1/3 page
+
+
+________________________________________________________________________________ 5. Impact
+* Assuming that you are successful, what is the impact of your work? What is your contribution? 	Who will care about it? Why?
+* 2/3 page
+
+______________________________________________________________________________ 6. Approach
+* How are you going to solve the problem?
+* Your ideas belong here. 
+* 4 pages
+
+- Initial generation
+ - Initial mesh doesn't need to be the best so not necessary to perform an expensive computation with marching cubes or something similar in R3 
+ - Create gradient image on depth map. 
+ - Sample depth image using gradient image to create a set of vertices.
+ - Determine connectivity in R2 and transform the vertices into R3. Connectivity will be preserved
+ - Threshold edge distances 
+ 
+- Adaptation of mesh to new data
+ - Project vertices to depth image plane
+ - For each vertice calculate a neighborhood in the depth plane
+ - Create a neighborhood image and perform blob analysis to determine Ds and Dn
+ - Create Ds-N image
+  - Perform blob analysis for negative values
+   - New object: Add vertices 
+    - Define connectivity on 2D blob
+    - Connect vertices to existing vertices if d < epsilon 
+  - Perform blob analysis for positive values
+   - Old object: Remove vertices 
+    - Delete vertices and faces
+  - Remaining area is the supporting measurements for the existing mesh
+   - Adapt mesh
+    - For all vertices in area
+	 - Find equation of the plane for point in neighborhood 
+	 - Create QEM using point plane and neighborhood edges
+	 - Adjust vertice with QEM
+ 
+ - Below is an attempt to track the vertices which are moving. I think in reality the best way will be to have a very quick way to remove and add mesh
+ - Adaptive keypoint selection
+  - Since the nodes of the mesh have already been projected onto the image plane and we have knowledge of the velocity of each node within the global frame. We can determine regions of the scene which contain movement.
+  - In a similar manner to the object detection scheme we will flag regions where we believe to see movement
+   - One difference. The neighborhood around the projected vertice will automatically get flagged.
+   - Once again blob analysis to determine regions
+
+____________________________________________________________________________ 7. Validation
+* How will you test your method?
+* 2 pages
+
+7.1 Simulation
+
+7.1.1 Static scene, static object, static sensor mesh validation
+- Simulate data take from known environment. 
+ - An object on a table
+ - Generate simulated sensor data from a known view in the environment
+- Apply adaptive mesh technique
+ - Create initial mesh from points that are close to each other with delaunay triangulation
+ - Simulate the aquisition of new data
+ - Determine the resultant forces on each node
+ - Evolve the mesh according to F=ma
+- Compare quality of mesh by evaluating error of mesh to known truth
+- Optimize adaptive mesh parameters
+
+7.1.2 Static scene, static object, dynamic sensor mesh validation
+- Simulate data taken from known environment such a cup on top of a table
+- Apply mesh technique
+- Continue for a believale trajectory
+- Test the ability for the mesh to generate new elements for novel views of the scene
+- The key aspect to test is the ability for the model to automatically create elements based on the forces in the spring
+- Compare quality of mesh by evaluating error of mesh to known truth
+- Optimize adaptive mesh parameters
+ 
+7.1.3 Dynamic scene, static object mesh validation
+- Simulate a second cup generated between successive frames
+- The mesh should adapt to the new object by 
+ - Automatically generating elements where the sensor data finds on object but no elements are near
+ - Mesh should be pulled into shape by points which are near the nodes
+- Simulate for both static and dynamic sensor movement
+ 
+7.1.4 Dynamic scene, dynamic object mesh validation
+- Simulate a second cup moving into the scene from outside the view of the sensor
+- The mesh should adapt and move with the new object by
+ - Generating elements like the last test
+ - Elements should be able to move with the object because we can describe velocity of nodes
+ - The mesh should stabilize when the cup comes to rest
+- Compare to ground truth
+ 
+7.1.5 Model and frame features correspondance validation
+- The simulation environment must now also contain visual information. Perhaps an online data set
+- A global mesh model should be built on a static environment 
+- Features extraction should be simulated on the current frame and the global model
+- These features should correspond well enough to make the pose calculation possible
+- The result from the experiment would be the number of correct correspondances 
+
+7.1.6 Pose calculation validation 
+- The full feed back structure of the system should now be possible
+- Use features obtained from the sensor and features obtained from the model to perform ICP on each iteration to calculate the trajectory of the sensor
+- Compare this to the known trajectory and determine error in estimation
+
+7.1.7 Adaptive keypoint selection validation 
+- Simulate the environmental mapping algorithm with an object moving in the foreground
+- Using the knowledge of the mesh elements representing the moving object. (by noticing their velocity with respect to the fixed frame) define an area of the current frame in which keypoints should be thrown away
+ - Test 1: Compare to not throwing away these keypoints
+ - Test 2: Increase the size of the object in the frame of the sensor until failure
+- Present Test 1 and Test 2 in a tabular format
+
+7.2 Real Data
+
+7.2.1 Static scene, static object, and static sensor validation on real data
+- Create a simple static scene and view with the sensor static
+- Apply meshing procedure with the knowledge that the pose of the sensor does not change
+- Looking for convergence of the mesh to the real environment i.e. the ability of the mesh to reduce noise
+- Compare converged mesh to single capture of the sensor. Not able to measure change so create a comparative figure
+
+7.2.2 Dynamic scene, static object, and static sensor on real data
+- Acquire data like last test. Place second object in the scene
+- Remove all frames in which the second object is moving
+- Apply meshing procedure
+- A qualitative test to test the methods generative procedure 
+
+7.2.2 Dynamic scene, dynamic object, and static sensor on real data
+- Can be the exact same data as last test but leave in the frames with the object moving
+- Test ability for mesh to generate new elements and move with a moving object
+- Show qualitative results
+
+7.2.3 Model and frame features correspondance validation on real data
+- On a static scene with a static sensor
+- Generate descriptors from the model and the current frame 
+- Measure the percent correct correspondance 
+
+7.2.4 Pose calculation validation on real data
+- The turntable test. Acquire data of a scene while rotating the sensor (or scene) one revolution
+- Wish evaluate the quality of the mesh generated and determine the distance from the initial position to final position (ideally zero)
+- Do for:
+ - Static scene, static object
+ - Static scene, dynamic object
+ - Dynamic scene, static object
+ - Dynamic scene, dynamic object
+ 
+7.2.5 Complete system testing
+- With all tests from above done the system should now be ready for its debut
+- Test qualitatively with freehand movement (probably can't be done because not pushing a real time implementation, however we want to make it clear that this method is tailored for real time)
+- Test quantitatively on available data sets
+
+________________________________________________________________________________  8. Tasks
+* 7 +/- 2 tasks that are necessary to complete the work, each of which can be broken into 7 +/- 2 subtasks.
+* 3 pages; bulleted list
+
+___________________________________________________________________________ 9. Gantt Chart
+* Show the tasks described above in terms of time.
+
+____________________________________________________________________________ 10. Committee
+* Indicate the Chair of the committee. Include telephone and email address for each person on the committee.

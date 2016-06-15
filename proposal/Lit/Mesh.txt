@@ -1,0 +1,898 @@
+
+______________________________________________ Mesh for Mapping and Surface Reconstruction
+
+Incremental Probabilistic Geometry Estimation for Robot Scene Understanding (Cashier et al. 2012) t SLAM.txt
+
+Live dense reconstruction with a single moving camera (2010) t SLAM.txt
+ - Very good surface reconstruction method from Newcombe with applications to 3D Mapping
+
+A system for reconstruction from point clouds in 3D: Simplification and mesh representation (Alboul and Chilveros 2010) t
+ Centre for Automation and Robotics Research, MERI Sheffield Hallam University - Lyuba Alboul and Georgios Chliveros
+- Sensors: CCD webcam and Laser 
+- Data is fused into an RGBD format. Just like the kinect
+- The data is then used to create a mesh by simply connecting the neighbors since the input is a structured data set.
+- The mesh is then simplified by removing vertices with the lowest cost. 
+- They have no methodology to adapt the mesh to new information
+
+Automatic construction of polygonal maps from point cloud data (Wiemann et al. 2010) t
+ University of Osnabruck, Germany - Thomas Wiemann, Andres Nuchter, Kai Lingemann, Stefan Stiene, Joaachim Hertzberg
+- Their method constructs a polygonal mesh as a post processing step. 
+- First all points clouds are registered with ICP and loop closing techniques 
+- Then a mesh is created via marching cubes
+- Finally, the mesh is optimized by merging planar surfaces
+- Primary application is for building a map for a robot to localize in
+
+ProFORMA: Probabilistic Feature-based On-line Rapid Model Acquisition (Pan et al. 2009) t
+ Cambridge University - Qi Pan, Gerhard Reitmayr, Tom Drummond
+- A real-time mesh based surface reconstruction using sparse visual features. This paper has a very impressive youtube video and is referenced by Newcombe
+- Made for single object surface reconstruction. Relies on Delaunay triangulation and so can't be used for 3D Mapping
+- "A point cloud in itself is not a good enough representation of an object, so processing is required to retrieve the model surface. There are many methods of achieving this, of which two effective ones are volumetric graph cuts [14] and space carving [16]."
+- [14] - Multi-camera scene reconstruction via graph cuts (2002)
+- [16] - A theory of shape by space carving (2000)
+- So it sounds like carving might be related to visibility 
+
+On fast surface reconstruction methods for large and noisy datasets (Marton et al. 2009) t
+ Technische Universitat Munchen - Zoltan Marton, Radu Rusu, Michael Beetz
+- They use a 2D laser on a robotic arm to acquire data.
+- They claim many features of their method which are very similar to my goals. Namely: adaptability to variable densities, near realtime performance, noise robustness, memory efficiency, fast updates for incremental scans, and supporting point labels. 
+- The problem: incorporating new points where there is already an existing mesh. "To solve this problem, our method triangulates only the new vertices which influence a change into the existing mesh." They never explain how they determine this influence  
+- They use resampling of the underlying surface to reproduce uniform sampling where needed and control the vertex density of the mesh. By doing this, they can have dense vertices in regions of high curvature. 
+- They heavily reference:
+- Interpolation and approximation of surfaces from three-dimensional scattered data points (Mencl and Müller 1997) t
+- A Fast and Efficient Projection-Based Approach for Surface Reconstruction (Gopi and Krishnan 2002) t
+- Triangulating point set surfaces with bounded error (Scheidegger et al. 2005) t
+
+Non-rigid registration of 3D surfaces by deformable 2D triangular meshes (Savran and Sankur 2008) t
+ Bogazici University - Istanbul, Turkey - Arman Savran, Bulent Sankur
+- Main motivation is the dynamic tracking and registering of meshes for human faces
+- "We present a new automatic surface registration method which utilizes both attraction forces originating from geometrical and textural similarities, and stresses due to non-linear elasticity of the surfaces. Reference and target surfaces are first mapped onto their feature image planes, then these images are registered by subjecting them to local deformations, and finally 3D correspondences are established. Surfaces are assumed to be elastic sheets and are represented by triangular meshes. The internal elastic forces act as a regularizer in this ill-posed problem."
+- Requires solving an energy minimization problem based on matching discrepancy in the photos
+- Initialization is done with Delaunay triangulation via CGAL
+- Registration starts from the coarsest level, and estimated deformations are subsequently transferred to a finer level. The deformation transfer from one mesh to another is realized by barycentric mapping. For each node of a finer level, its barycentric coordinates at the coarser mesh are calculated, and thus mapping of that node is obtained by a weighted sum of the previous mesh node values. 
+- Runtime about ~7 seconds. Can't deal with changes in topology such as an open mouth
+
+Temporal Surface Tracking using Mesh Evolution (Varanasi et al. 2008) t
+ INRIA - Kiran Varanasi, Andrei Zaharescu, Edmond Boyer, Radu Horaud
+- "In this paper, we address the problem of surface tracking in multiple camera environments and over time sequences. In order to fully track a surface undergoing significant deformations, we cast the problem as a mesh evolution over time. Such an evolution is driven by 3D displacement fields estimated between meshes recovered independently at different time frames."
+- Sensor: Multiple camera environment 
+- Motivation: Tracking human bodies in video sequences 
+- Requires determining dense points with visual features and finding the correspondence. Something I don't want to rely on in my framework 
+- Sparse matches are found with visual features
+- The matches define a sparse displacement field which is propagated over all vertices by Laplacian diffusion 
+- They have a data set where people are dancing. Would be a very challenging validation of my method
+- They use visual hull reconstruction with 8 cameras to initialize the mesh
+- Non real-time. Performed a validation with a simulated environment of 16 cameras 
+
+Accurate multi-view reconstruction using robust binocular stereo and surface meshing (Bradley et al. 2008) t
+ University of British Columbia - Derek Bradley, Wolfgang Heidrich
+ TU Berlin - Tamy Boubekeur
+- "In this paper, we have introduced a novel multiview stereo algorithm based on merging binocular depth maps with a state-of-the-art meshing algorithm. By employing an efficient, yet high-quality point-based processing pipeline, we are able to effectively remove outliers and suppress high-frequency noise."
+- Point clouds are merged first and then meshed. Also, they require object segmentation as a pre-processing step
+- After the point cloud is constructed the downsample and clean before meshing
+- The split their point cloud into clusters using a density driven octree. In each cluster a Delaunay triangulation is performed on the points. The mesh patches are then merged into one mesh
+- Method is not real-time, doesn't provide a way to adapt a mesh 
+
+Transformesh: a topology-adaptive mesh-based approach to surface evolution (Zaharescu et al. 2007) t
+ INRIA - Andrei Zaharescu, Edmond Boyer, Radu Horaud
+-  "Most of the algorithms dealing with image based 3D reconstruction involve the evolution of a surface based on a minimization criterion. The mesh parametrization, while allowing for an accurate surface representation, suffers from the inherent problems of not being able to reliably deal with self intersections and topology changes.As a consequence, an important number of methods choose implicit representations of surfaces, e.g. level set methods, that naturally handle topology changes and intersections. Nevertheless, these methods rely on space discretizations, which introduce an unwanted precision-complexity trade-off. In this paper we explore a new mesh-based solution that robustly han- dles topology changes and removes self intersections, therefore overcoming the traditional limitations of this type of approaches"
+- "Our contribution with respect to these methods is to provide a purely mesh based solution that does not constrain meshes and allows faces of all sizes as well as topology changes, with the goal of increasing precision without sacrificing complexity when dealing with surface evolution problems."
+- "In essence, the approach preserves the mesh consistency by detecting self-intersections and considering the subset of the original mesh surface that is outside with respect to the mesh orientation."
+- "We have presented a fully geometric efficient Lagrangian solution for triangular mesh evolutions able to handle topology changes gracefully. We have tested our method in the context of multi-view stereo 3-D reconstruction and we have obtained top ranking results, comparable with state-of-the-art methods in the literature. Our contribution with respect to the existing methods is to provide a purely geometric mesh-based solution that does not constrain meshes and that allows for facets of all sizes as well as for topology changes."
+- Very beautiful work. They have to do an intersection check on their whole mesh though. They use bounding boxes to speed the process up
+- They use region growing to decide which triangles need to be removed 
+- They evolve their mesh using an energy equation based on image gradients 
+- The check for self intersection on a mesh with 50,000 facets takes ~1 second
+
+Real-Time Visibility-Based Fusion of Depth Maps (Merrell et al. 2007) t 
+ University of North Carolina and University of Kentucky - 8 authors - Merrell et al.
+- Well known and cited by Newcombe 2010 as a method to fuse several noisy depth maps into a mesh in real-time
+- Has many of the same authors and university as "Detailed real-time urban 3D reconstruction from video (Pollefeys et al. 2007) t" which was also referenced by Newcombe
+- "We advocate a two-stage process in which the first stage generates potentially noisy, overlapping depth maps from a set of calibrated images and the second stage fuses these depth maps to obtain an integrated surface with higher accuracy, suppressed noise, and reduced redundancy."
+- Same figures and methodology as their prior work
+
+A Globally Optimal Algorithm for Robust TV-L1 Range Image Integration (Zach et al. 2007) t
+ VRVis Research Center and Institute for Computer Graphics and Vision - Christopher Zach, Thomas Pock, Horst Bischof
+- An implicit surface reconstruction approach referenced by Newcombe et. al (2010) 
+- Requires spatial subdivision. They acknowledge this as a limitation in their conclusion
+- A well mathematically founded method for creating an implicit surface on large data sets 
+
+On stochastic methods for surface reconstruction (Saleem et al. 2007) t
+ Max-Planck-Institut Informatik - Waqar Saleem, Oliver Schall, Giuseppe Patané, Alexander Belyaev, Hans-Peter Seidel
+- They present an implicit technique and a neural network based one
+- Same figures from Saleem's thesis 
+- Not real time because it is a learning based method 
+
+A comparison and evaluation of multi-view stereo reconstruction algorithms (Seitz et al. 2006) t
+ University of Washington - Steven Seitz, Brain Curless
+ Stanford University - James Diebel
+ Middlebury College - Daniel Scharstein
+ Microsoft Research - Richard Szeliski
+- Highly cited survey paper
+- "This paper presents a quantitative comparison of several multi-view stereo reconstruction algorithms."
+- The provide an open source dataset to evaluate new stereo reconstruction algorithms and also show the comparison of existing methods.
+- The evaluate the state of the art methods and briefly describe each method. Some of the methods are very related to my goals
+- Best times were around ~31 minutes
+
+Incremental Mesh-based Integration of Registered Range Images: Robust to Registration Error and Scanning Noise (Zhou et al. 2006) t
+ University of Wales - Hong Zhou, Yonghuai Liu, 
+ Texas A and M University - Longzhuang Li
+- They adapt a mesh based on new observations
+- Experiments are only with 2 frame data sets and they don't seem to be aiming at 3D Mapping 
+- Requires correspondences 
+
+Incremental point-based integration of registered multiple range images (Zhou and Liu 2005) t
+- See newer work "Incremental Mesh-based Integration of Registered Range Images: Robust to Registration Error and Scanning Noise (Zhou et al. 2006) t"
+
+Triangulating point set surfaces with bounded error (Scheidegger et al. 2005) t
+ University of Utah - Carlos Sceidegger, Shachar Fleishman, Claudio Silvia
+- "We introduce an algorithm for constructing a high-quality triangulation directly from Point Set Surfaces."
+- Says that techniques up until now need expensive pre and post processing steps
+- "The algorithm couples the machinery of MLS with the idea of advancing fronts."
+- Very good related works section
+- "Our algorithm takes as input a set of points P without normals and produces a high quality triangle mesh."
+- It starts with a seed triangle whose edges define a "front" that is incrementally extended by two types of local operations. A triangle growing operation which adds a face which shares a common edge with the front and a ear-cut operation which adds two faces when there is three adjacent triangles on the front.
+- "We use the moving least-squares (MLS) technique for specifying the underlying surface, and triangulate it to within a user-defined resolution."
+- New vertices are added in 2 steps. A vertex position is first estimated using a vertex prediction operator. The vertex is then project onto the MLS surface. The vertex prediction considers the current edge length and the maximum curvature in the triangle neighborhood.
+- They use a guidance field L() to drive their adaptive topology. The guidance field is the curvature of the MLS surface at that point. 
+- They sample L() with a certain search distance.
+- Still far from real-time, can't handle sharp corners because they can't be represented with MLS surfaces
+
+Neural network approach for parallel construction of adaptive meshes (2005)
+- can't get the .pdf
+
+Bayesian 3D Modeling from Images Using Multiple Depth Maps (Gargallo and Strum 2005) t
+ INRIA - Montbonnot, France - Pau Gargallo, Peter Strum
+- They have a different goal then I want. 
+- Given a set of images and full information on intrinsic and extrinsic parameters, they want to infer the depth and color of the 3D point that the pixel is seeing.
+- "The model we use to represent the scene consists of a set of colored depth maps."
+- Extremely probabilistic method which requires lots of priors and an optimization scheme
+- Needs a good initialization 
+
+Delaunay Triangulation based Surface Reconstruction: Ideas and Algorithms (Cazals and Giesen 2004) t
+ INRIA - Frederic Cazals, Joachim Giesen
+- "In this survey, we focus on the recent developments of Delaunay based surface reconstruction methods"
+- Gives a classification of Delaunay methods: Tangent plane methods, Restricted Delaunay based methods, Inside/outside labeling, Empty balls method
+- Great summation of Delaunay methods complete with complexity, bottom-line, and other important characteristics 
+- Has a great reference to online data bases for data sets intended for surface reconstruction. They are on your bookmarks 
+
+Unconstrained 3D-Mesh Generation Applied to Map Building (Viejo and Cazorla 2004) t SLAM.txt
+
+Point set surfaces (Alexa et al. 2004) t
+ TU Darmstadt - Marc Alexa
+ ZGVDV Darmstadt - Johannes Behr
+ Tel Aviv University - Daniel Cohen-Or, Shachar Fleishman, David Levin
+ AT&T Labs - Claudio Silva
+- Highly cited for surface reconstruction using MLS methods 
+- "We advocate the use of point sets to represent shapes." the call it point sample rendering 
+- Used MLS to define a surface in a point cloud
+- Then could sample this surface at any resolution wanted for display and such
+
+A flexible framework for learning-based Surface Reconstruction (Saleem 2004) t
+ Max-Planck-Institut fur Informatik - Waqar Saleem
+- Saleem's thesis. His method uses Neural Networks to make a mesh-based surface reconstruction 
+- Gives a good review of physics-based and deformable-model techniques 
+- "Each vertex in M has an associated real function called a signal counter which is initialized with zero. For each sample, the closest vertex in M is found. This vertex is called the winner. It is moved some distance toward the sample, its 1-ring neighbourhood is smoothed and its signal counter is incremented. A vertex’s signal counter is thus a measure of its activity."
+- Results work well for single object reconstruction
+
+Level Set Methods and Dynamic Implicit Surfaces (Osher and Fedkiw 2003) t
+- Extremely cited book on level set methods for surface reconstruction 
+- This implies spatial subdivision 
+
+A multi-scale approach to 3D scattered data interpolation with compactly supported basis functions (2003) t 
+ Max-Planck-Institut fur Informatik - Yutaka Ohtake, Alexander Belyaev, Hans-Peter Seidel
+- Referenced by "Live dense reconstruction with a single moving camera (Newcombe et al. 2010) SLAM.txt" as the method used for creating an implicit function from their input sparse point cloud
+- Seems to be the state-of-the-art in quickly determining the implicit function of a noisy point cloud 
+- Of course, requires spatial subdivision and so shouldn't be appropriate for large scale 3D Mapping 
+
+Bayesian stochastic mesh optimisation for 3D reconstruction (Ohtake et al. 2003) t
+ University of Cambridge - George Vogiatzis, Roberto Cipolla
+ Microsoft Research - Philip Torr
+- "The input to the algorithm is a small set of images, sparse noisy feature correspondences (such as those provided by a Harris corner detector and cross correlation) and the camera geometry plus calibration. The output is a 3D mesh, that when projected onto each view, is visually consistent with the images."
+- Optimization with simulated annealing. They tailor their proposal distribution for structure from motion
+- The proposal distribution allow such things as vertex splitting and edge collapsing 
+- Still takes ~10 min to process data and also requires an initial guess
+
+Using growing cell structures for surface reconstruction (Ivrissimtzis et al. 2003) t
+ Max-Plank-Institut fur Informatik - Saarbrucken, Germany - I.P. Ivrissimtzis, W.K. Jeong, H.P. Seidel
+- first to introduce Neural Meshes  
+- A mesh is adapted to a point sampling from a point cloud. The closest vertex is moved by a linear combination of the sample and it. 
+- The vertices around the moved vertice is smoothed by calculating the Laplacian. This type of smoothing maybe important to me later. It is described well in this paper
+- They use vertex split and edge collapse 
+- Speed is a problem, however this has many common ideas with what I was thinking 
+
+A geometric-based convection approach of 3D reconstruction (Chaine 2003) t
+ Inventeurs du monde numérique (INRIA) - Raphaelle Chaine
+- Their summation of related literature on "the reconstruction problem" would be a good framework 
+- Work isn't extremely related to what I want and is more of a mesh clean up type procedure
+
+Mesh-independent surface interpolation (Levin 2003) t
+ Tel Aviv University, Israel - David Levin
+- Good reference for Moving Least-Squares (MLS) applied to surface reconstruction
+- Quite crazy but this paper referenced the bible as the first reference for MLS
+- Basically shows how MLS can be used to fit a surface to a set of points
+
+Surface reconstruction by wrapping finite point sets in space (Edelsbrunner 2003) t
+ University of Illinois - Herbert Edelsbrunner - also did Three-Dimensional Alpha Shapes (1994) t
+- The mathematics on this paper is complex
+- "In particular, we construct subcomplexes of the Delaunay complex of a finite point set by collapsing and occasionally deleting simplices. Continuous mathematics enters in the form of Morse functions and their gradient fields, which constitute the rationale for the rules that decide when to collapse and when not."
+
+Fast Depth-Image Meshing and Warping (Pajarola et al. 2002) t
+ University of California - Renato Pajarola, Yu Meng, Miguel Sainz
+- Referenced by "Detailed Real-Time Urban 3D Reconstruction from Video (Pollefeys et al. 2007)" as the method for mesh generation from fused depth images
+- We presented an efficient depth-image meshing and segmentation method as well as a novel real-time depth-image blending algorithm that exploits hardware accelerated graphics cards."
+- Mesh doesn't seem to be a global representation. Seems to create a 2.5d mesh from novel views 
+- "The main limitations of the presented method are the limited ability to cover exposure artifacts in comparison to layered approaches [SGHS98, DSSD99], and the exponential increase in rendering cost with respect to the number of blended reference views."
+
+Stochastic Mesh-Based Multiview Reconstruction (Isidoro and Sclaroff 2002) t
+ Boston University - John Isidoro, Stan Sclaroff
+- Use a probabilistic method to find a surface that is photometrically consistent to set of images
+- "Given a set of views and segmentation of the object in each view, constructive solid geometry is used to build a visual hull from silhouette prisms. The resulting polygonal mesh is simplified and subdivided to produce a semi-regular mesh. Regions of model fit inaccuracy are found by projecting the reference images onto the mesh from different views. The resulting error images for each view are used to compute a probability density function, and several points are sampled from it."
+
+3D reconstruction of indoor and outdoor scenes using a mobile range scanner (Sun et al. 2002) t
+ University of Tennessee - Y. Sun, J. K. Paik, A. Koschan, M. A. Abidi
+- "In the raw range data preprocessing stage, we propose to use are decreasing flow for surface mesh smoothing instead of the mean curvature flow."
+- "The are decreasing flow is proposed for surface mesh smoothing." Meaning they use a calculation based on the normal to adjust the vertice locations. 
+- Was not real-time and did not give a way to modify the already created mesh
+- Sensor: laser scanner
+
+Surface reconstruction based on a dynamical system (Giesen and John 2002) t
+ Institut fur Theoretische Informatik - Zurich, Switzerland - Joachim Giesen, Matthias John
+- An interesting work. Very good quality. The reconstructions are good but are definitely not real time.
+- Uses the Delaunay algorithm. Then defines a dynamical system based on some sort of flow functional on the surface. This functional is related to the distance function between the points.
+- I believe then that some of the vertices are moved based on this flow functional. 
+- States that surface reconstruction can be described in two categories. Implicit, which usually contains a signed distance function and an extracted surface which is then triangulated. Explicit, where a triangular mesh is computed directly. 
+
+A fast and efficient projection-based approach for surface reconstruction (Gopi and Krishnan 2002) t
+ University of California, Irvine - M. Gopi
+ AT&T Labs - Shankar Krishnan
+- highly cited by those related to Kintinuous 
+- "We present a fast and memory efficient algorithm that generates a manifold triangular mesh S without boundary passing through a set of unorganized points P sampled from S with with no other additional information. Nothing is assumed about the geometry or topology of the sampled manifold model, except for its reasonable smoothness."
+- "Surface reconstruction is a well studied problem in computer graphics and computational geometry community and has wide ranging applications."
+- The state the "implicit function theorem of smooth surfaces" basically saying that the points in the neighborhood of a point can be projected onto the tangent plane of that point and be represented by a height function
+- Their contributions are asymptotic performance, speed, and memory efficiency 
+- Previous work in the reconstruction algorithms field. They categorize as surface-based schemes and volume-based schemes 
+- Surface-based schemes - "proceeds by decomposing the space into cells, finding the cells that are traversed by the surface and finding the surface from the selected cells. The difference in their methods lie in the cell selection strategy [1,2,3]"
+- [1] Surface reconstruction from unorganized point clouds (1992) t
+- [2] Three dimensional alpha shapes (1994) t
+- [3] Reconstructing surfaces and functions on surfaces from unorganized three-dimensional data (1997)
+- Volume-based schemes - "decomposes the space into cells, removes those cells that are not in the volume bounded by the sampled surface and creates the surface from the selected cells. Most algorithms in this category are based on Delaunay triangulation of the input points [4,5,6]"
+- [4] Geometric structures for three-dimensional shape representation (1984) t
+- [5] Boundaries through scattered points of unknown density (1995) t 
+- [6] A new Voronoi-based surface reconstruction algorithm (1998) t
+- Also references methods based on the signed distance function [1,2]
+- [1] A volumetric method for building complex models from range images (1996) t
+- [2] Surface reconstruction from unorganized point clouds (1992) t
+- Also have references for incremental surface growing [1-5]
+- [1] Interpolation and approximation of surfaces from three-dimensional scattered data points (1997) t
+- [2] Geometric structures for three-dimensional shape representation (1984) t
+- [3] Isosurface extraction using particle systems (1997) t
+- [4] The ball-pivoting algorithm for surface reconstruction (1999) t
+- [5] Surface Reconstruction using Lower Dimensional Localized Delaunay Triangulation (2000) t
+- "Our algorithmcan be broadly divided into three stages: bucketing, point pruning, and finally the triangulation step"
+
+Triangle mesh-based surface modeling using adaptive smoothing and implicit surface texture integration (Sun et al. 2002) t
+ University of Tennessee - Y. Sun, L. Page, J. K. Paik, A. Koschan, M. A. Abidi
+- "Surface modeling from multi-view triangle meshes are presented. Each triangle mesh obtained from the raw range data is processed by area decreasing flow"
+- Requires spatial subdivision and isn't an iterative method. Representation: mesh
+
+Triangle mesh-based edge detection and its application to surface segmentation and adaptive surface smoothing (Sun et al. 2002) t
+ University of Tennessee - Y. Sun, L. Page, J. K. Paik, A. Koschan, M. A. Abidi
+- New contribution is an edge detection which works on meshes
+- See "Triangle mesh-based surface modeling using adaptive smoothing and implicit surface texture integration (Sun et al. 2002) t"
+
+The power crust (Amenta et al. 2001) t
+ University of Texas at Austin - Nina Amenta, Sunghee Choi, Ravi Krishna Kolluri 
+ prior work by Amenta: A New Voronoi-Based Surface Reconstruction Algorithm (1998) t
+- Highly cited work
+- Requires the calculation of the 3d Delaunay triangulation. They show this calculation is extremely computationally expensive
+- Very good results although not real-time
+- 1. Compute the Voronoi diagram of the sample points S. 
+- 2. For each sample point, compute its poles. 
+- 3. Compute the power diagram of the poles. 
+- 4. Label each pole either inside or outside. 
+- 5. Output the power diagram faces separating the cells of inside and outside poles as the power crust.
+- 6. Output the regular triangulation faces connecting inside poles as the power shape.
+
+Reconstruction and Representation of 3D Objects with Radial Basis Functions (Carr et al. 2001) t
+ Applied Research Associates NZ Ltd - J.C. Carr, J.B. Cherrie, T.J. Mitchell, W.R. Fright, B.C. McCallum, T.R. Evans
+ University of Canterbury - R.K. Beatson
+- Highly referenced work for Surface Reconstruction using radial basis functions
+- "We use polyharmonic Radial Basis Functions (RBFs) to reconstruct smooth, manifold surfaces from point-cloud data and to repair incomplete meshes. An object’s surface is defined implicitly as the zero set of an RBF fitted to the given surface data."
+- "The functional representation is in effect a solid model, which means that gradients and surface normals can be determined analytically." - uniform meshes are then generated from this 
+- Their methods consists of three steps
+- 1 Constructing a signed-distance function
+- 2 Fitting an RBF to the resulting distance function
+- 3 Iso-surfacing the fitted RBF
+- Main argument is the the space has to be discretized which is bad for environmental mapping applications. Beautiful work though, very good results, not real-time at all
+
+Fast surface reconstruction using the level set method (Zhao et al. 2001) t
+ University of California - Hong-Kai Zhao, Stanley Osher 
+ Stanford - Ronald Fedkiw
+- Highly cited work
+- Prior work: Implicit nonparametric shape reconstruction from unorganized points using a variational level set method (2000)
+- Basically just a speeding up of their prior work. Still not real-time
+- "We present a variational and PDE based formulation for surface reconstruction from unorganized data. Our formulation only depends on the (unsigned) distance function to the data and the final reconstruction is smoother than piecewise linear."
+
+Surface Reconstruction based on Lower Dimensional Localized Delaunay Triangulation (Gopi et al. 2001) t
+ AT&T Labs - M. Gopi, S. Krishnan, C.T. Silva
+- Speed is a large concern. "We present a fast memory efficient algorithm that generates a manifold triangular mesh S passing through a set of unorganized points." 
+- "The speed of our algorithm is derived from a projection-based approach we use to determine the incident faces on a point."
+- They provide a "new" sampling criteria based on directional curvatures on the surface that is sampled 
+- In related works also categorize based on surface and volume-based methods. VERY good reference 
+- "Our surface reconstruction algorithm goes through four major steps: normal computation, candidate point selection, Delaunay neighbor computation, and finally the triangulation step"
+- "Gopi et. al use localized Delaunay triangulation to compute the final neighborhood in the triangulation." - A fast and efficient projection-based approach for surface reconstruction (2002)
+
+Triangulations in CGAL (Boissonnat et al. 2000) t
+ Jean-Daniel Boissonnat, Oliver Devillers, Sylvain Pion, Monique Teilaud
+ INRIA - Mariette Yvinec
+- "This paper presents the main algorithmic and design choices that have
+been made to implement triangulations in the computational geometry algorithms library Cgal."
+- A good reference for Delaunay triangulation
+
+Image-based multiresolution shape recovery by surface deformation (Zhang and Seitz 2000) t
+ University of Washington - Li Zhang; Steven Seitz
+- "The mesh is obtained by deforming a generic initial mesh such as a sphere or cube according to image and geometry-based forces."
+- Input is a set of images 
+- They project the mesh back onto the image and define an error metric which describes the error
+- For a very small synthetic cube it took ~5 min
+- Very good example of how the idea of deforming a mesh to the data has been studied for a long time
+
+Mesh-based integration of range and color images (Sun et al. 2000) t
+ University of Tennessee, Knoxville - Yiyong Sun, Christophe Dumont, Mongi Abidi
+- Here range data is iteratively added to a global mesh model. 
+- When an overlap is detected the most reliable triangles are kept. Reliability is determined by the senor pose from which the triangles were measured from. Only the most confidently acquired measurements are kept
+- Detection of overlapping regions is done by projecting the mesh back onto the image plane
+- They link gaps between mesh patches to "zipper" together mesh patches
+
+Implicit nonparametric shape reconstruction from unorganized points using a variational level set method (Zhao et al. 2000) t
+ University of California - Hong-Kai Zhao, Stanely Osher, Barry Merriman, Myungjoo Kang
+- Each reconstruction is very good however it takes 15 minutes each
+- "The energy functional in our model involves a weighted surface area; i.e., it consists of a balance of elastic energy (surface area) and potential energy (distance to the data set)"
+- They solve their energy function using a PDE grid. Basically a mesh. 
+
+Representation, shape, topology and evolution of deformable surfaces. Application to 3D medical image segmentation (Montagnat et al. 2000) t
+ INRIA - Johan Montagnat, Herve Delingette, Nicolas Scapel, Nicholas Ayache
+- A very large survey on deformable models. Complete with a taxonomy of available methods. With a concentration on simplex meshes
+- "Deformable models were introduced by Kass et al in 2D as explicit deformable contours [60] and generalized to the 3D case by Terzopoulos et al [120]."
+- [60] - Active contour models (1988)
+- [120] - Constraints on Deformable Models: Recovering 3D Shape and Nonrigid Motion (1988)
+- Does a good job of simply describing the various representations available 
+- Describe the generic construction of the energy equation found in methods which find the minimum of an energy equation
+- The energy of a deformable model is composed of several terms including at least an intrinsic regularizing term E_reg and a data term E_ext
+- The energy functional is built such that its global minimum coincide with the expected solution S_o.
+- The energy function needs to be discretized and an iterative optimization scheme applied to it 
+- "The most common method is to rewrite this equation as a stationary equation corresponding to a force equilibrium. The equilibrium equation is then discretized using finite differences. Other resolution methods exist such as dynamic programming [3], greedy [128] algorithms or simulated annealing [94,107]."
+- "Ad-hoc internal forces f_int that enforce some regularizing constraints and external forces f_ext that steer the surface deformations towards the data might be computed without considering any energy terms [43]."
+- "A gradient descent or one of its derived algorithms [95,72] allow the minimization of a function as a model energy."
+- Newton and Levenberg-Marquardt have been used as gradient descent procedures 
+- "The evolutive approach consider the deformable model as a dynamic object evolving according to a parameter t [116]." - what I'm interested in. It can either evolve by Lagrangian equations of motion of Newtonian
+- "A discrete model geometry is defined only at its vertices. Model deformations are not governed by a partial differential equation but by the model vertex displacements compared to its neighbors." - now this is exactly what I first envisioned 
+- "To automatically determine topology changes in a noisy image without prior shape information may be unstable."
+- Not only a survey. They present novel work which uses simplexes. 
+- The difference between simplexes and triangulation is that the number of connection at each vertex is fixed for simplexes. I'm not sure what advantages this offers. What I do know is that simplexes seemed to be more popular in the beginning and now everyone uses triangulation
+- Their method is complete with adaptive topology and topology changes
+- Forces based on image gradients because the motivation was medical imaging 
+
+General Object Reconstruction Based on Simplex Meshes (Delingette 1999) t
+ INRIA - Hervé Delingette
+- One of the same authors and the same group as "Representation, shape, topology and evolution of deformable surfaces. Application to 3D medical image segmentation (2000) t"
+- A 64 page well written article on deformable models and different methodologies, of the same quality I've come to expect from INRIA
+- He describes a mesh adaption scheme based on distance to data
+
+The ball-pivoting algorithm for surface reconstruction (Bernardini et al. 1999) t
+ IBM Watson Research Center and AT&T Labs - Fausto Bernardini, Joshua Mittleman, Holly Rushmeier, Claudio Silva, Gabriel Taubin
+- The concept is pretty simple "Three points form a triangle if a ball of a user-specified radius touches them without containing any other point. Starting with a seed triangle, the ball pivots around an edge until it touches another point, forming another triangle."
+- It never throws away a point so not what I'm imagining 
+- "Bernardini et al. describe a ball-pivoting algorithm to grow the surface locally." - A fast and efficient projection-based approach for surface reconstruction (2002)
+- Related works gives a good overview of stitching methods [1,2]
+- [1] A General Surface Approach to the Integration of a Set of Range Views (Soucy and Laurendeau 1995) t
+- [2] Zippered Polygonal Meshes from Range Images (Greg and Levoy 1994) t
+
+A shrink wrapping approach to remeshing polygonal surfaces (Kobbelt et al. 1999) t
+ Max-Planck-Institut, Germany - Leif Kobbelt, Jens Vorsatz, Ulf Labsik, Hans-Peter Seidel
+- They want to create a series of meshes with subdivision connectivity from a given unstructered triangle mesh
+- The idea behind this is that the base mesh is very coarse but captures the rough shape of the object. Each iteration gives a mesh that has more detail and has the same connectivity for corresponding nodes. 
+- Every iteration consists of an adaption and relaxiation step. The don't talk much about the adaptation step, but a virtual force is created with a vector from the current mesh to the intersection with the data. They claim to use ray-tracing to perform this
+- Results look very good. Definitely not real time. I think it would also only work for objects
+
+A New Voronoi-Based Surface Reconstruction Algorithm (Amenta et al. 1998) t
+ UT Austin - Nina Amenta - important person, made the power crust idea
+ Xerox - Marshall Bern
+ MIT - Manolis Kamvysselis
+- They create a sampling criterion based on the distance from the medial axis 
+- They call their method the "crust algorithm" each run takes ~10 min
+- Basically a mesh clean up algorithm. They do a 3d Delaunay triangulation on the input and remove vertices by a sampling criterion 
+
+Graph-based surface reconstruction using structures in scattered point sets (Mencl and Müller 1998) t
+ University of Dortmund, Germany - Robert Mencl, Heinrich Muller
+- They categorize their own method as incremental surface-oriented construction in Mencl and Muller 1997
+- See Mencl and Muller 1997 for a simple explanation 
+
+Robust meshes from multiple range maps (Pulli et al. 1997) t 
+ University of Washington - Kari Pulli, Tom Duchamp, John McDonald, Linda Shapiro, Werner Stuetzle
+ Microsoft Research - Hugues Hoppe
+- Referenced by "An autonomous mobile robot with a 3d laser range finder for 3d exploration and digitalization of indoor environments (Surmann et al. 2003) t" as their method for post processing for a mesh
+- "Surface reconstruction from range data involves 4 major steps. Step 1: Data Acquisition. Step 2: Registration, Step 3: Integration. Step 4: Optimization" - they are concerned about Step 3
+- "Our method proceeds in two steps: it first hierarchically builds a volumetric representation of an object, and then extracts a triangle mesh from the volumetric representation."
+
+r-Regular Shape Reconstruction from Unorganized Points (Attali 1997) t
+ Swiss Federal Institute of Technology ETH, Zurich, Switzerland - Dominique Attali
+- Categorized as spatial-subdivision , surface-oriented cell selection in Mencl and Muller (1997) 
+- See Mencl and Muller for a simplified explanation 
+
+Isosurface extraction using particle systems (Crossno and Angel 1997) t
+ University of New Mexico! - Patricia Crossno, Edward Angel
+- "We present a new approach to isosurface extraction from volume data using particle systems."
+- "For isosurface extraction, we program particles to be attracted towards a specific surface value while simultaneously repelling adjacent particles." so the particles are the vertices 
+- "The Spiraling-Edge triangulation technique proposed by Crossno and Angel is similar to our algorithm. Difference include the fact that they make several limiting assumptions about the data, including normal and neighborhood information for each point." - A fast and efficient projection-based approach for surface reconstruction (2002)
+
+Sampling and reconstructing manifolds using alpha-shapes (Bernardini and Bajaj 1997) t 
+Automatic reconstruction of 3d cad models from digital scans (Bernardini et al. 1997) t
+ Purdue University - C.L. Bajaj, F. Bernardini, G. Xu
+- Extremely related to their own "Automatic reconstruction of surfaces and scalar fields from 3D scans (Bajaj et al. 1995) t" and "Reconstructing surfaces and functions on surfaces from unorganized three-dimensional data (Bajaj et al. 1997) t"
+- Only a few modifications 
+
+Approximating 3d objects from measured points (Schreiber and Brunnett 1997)
+ Schreiber and Brunnett
+- can't find .pdf
+
+Approximation of 3d objects (Schreiber and Brunnett 1997)
+ Schreiber and Brunnett
+- can't find .pdf
+
+An efficient volumetric method for building closed triangular meshes from 3d images (Roth et al. 1997)
+ Roth and Wibowoo et al. 
+- couldn't get reference (metadata)
+- referenced by Mencl and Muller (1997) as a way to compute the SDF but not highly referenced 
+
+Polyhedral reconstruction of 3d objects by tetrahedra removal (1997) 
+- can't get .pdf and not really cited but mentioned in Mencl and Muller (1997)
+
+Reconstructing surfaces and functions on surfaces from unorganized three-dimensional data (Bajaj et al. 1997) t
+ Purdue University - C.L. Bajaj, F. Bernardini, G. Xu
+- Prior work is "Automatic reconstruction of surfaces and scalar fields from 3D scans (Bajaj et al. 1995) t"
+- A pretty complex method made for single object reconstruction applications 
+- Uses Delaunay triangulations, Voronoi diagrams, and alpha-shapes for "efficiency of computation and theoretical soundness."
+- It generates a representation using Bernstein-Bézier polynomial implicit patches 
+- In the end has several volumetric calculations which aren't good for mapping purposes 
+
+Interpolation and approximation of surfaces from three-dimensional scattered data points (Mencl and Müller 1997) t
+ University of Dortmund, Germany - Robert Mencl, Heinrich Muller
+- An extremely highly cited survey paper on point set reconstruction techniques 
+- Spatial Subdivision - "The goal of construction algorithms based on spatial subdivision is to find cells related to the shape described by P. The selection of the cells can be done in roughly two ways: surface-oriented and volume-oriented.
+ - Surface-Oriented Cell Selection - "Surface-oriented approach consists of the following basic steps: 1. Decompose the space into cells. 2. Find those cells that are traversed by the surface 3. Calculate a surface from the selected cells"
+  - Algorri and Schmitt - "Surface reconstruction from unstructured 3D data (1996) t"
+  - Hoppe et al. - "Surface Reconstruction for Unorganized Points (1992) t", "Mesh Optimization (1993) t"
+   - Hoppe's methods only return a voxelized volume. Marching Cubes is used to extract the actual mesh
+  - Bejaj, Bernardini et al. "Automatic reconstruction of surfaces and scalar fields from 3D scans (1995) t" and "Reconstructing surfaces and functions on surfaces from unorganized three-dimensional data (1997) t"
+   - "differs from previous ones in that spatial decomposition is now irregular and adaptive"
+  - Edelsbrunner and Mücke's Alpha-shapes - "Three-dimensional alpha shapes (1994) t"
+  - Attali's Normalized Meshes - "r-Regular Shape Reconstruction from Unorganized Points (1997) t"
+ - Volume-Oriented Cell Selection - "Volume-oriented cell selection also consists of three steps which at first glance are quite similar to those of surface-oriented selection: 1. Decompose the space into cells 2. Remove those cells that do not belong to the volume bounded by the sampled surface 3. Calculate a surface from the selected cells. The difference is that a volume representation, in contrast to a surface representation, is obtained." 
+  - Boissonnat's Volume-Oriented Approach - "Geometric structures for three-dimensional shape representation (1984) t"
+  - The Approach of Isselhard, Brunnett, and Schreiber - "Polyhedral reconstruction of 3d objects by tetrahedra removal (1997) can't get .pdf"
+  - The approach of Veltkamp - "Boundaries through scattered points of unknown density (1995) t"
+  - The approach of Schreiber and Brunnett "Approximating 3d objects from measured points (1997)" and "Approximation of 3d objects (1997)" - can't find both .pdfs
+- Surface Construction with Distance Functions 
+ - Calculation of the Distance Functions
+  - Hoppe et al. - "Surface Reconstruction for Unorganized Points (1992) t", "Mesh Optimization (1993) t"
+   - Propose a method for which every point p a tangent plane is computed. All the normals are then aligned with a Riemannian graph
+   - "Using the tangent plane description of the surface and their correct orientations, the signed distance is computed by first determining the tangent plane center nearest to the query point. The distance is defined as the euclidean distance between the query point and its projection on the nearest tangent plane. The sign is obtained from the orientation of the tangent plane."
+  - Roth and Wibowoo et al. "An efficient volumetric method for building closed triangular meshes from 3d images (1997)" - couldn't get .pdf
+  - Bittar's et al. Surface Reconstruction by Medial Axes - "Automatic Reconstruction of Unstructured 3D Data: Combining a Medial Axis and Implicit Surfaces (1995) t"
+- Surface Construction by Warping - "Warping-based surface construction means to deform an initial surface so that it gives a good approximation of the given point set P." - basically what I'm thinking. In general the vertices of a mesh are moved until they best approximate a surface
+  - Muraki "Volumetric shape description of range data using “Blobby Model” (1991)" - non-mesh 
+  - Terzopoulos, Witkin, and Kass "Constraints on deformable models: Recovering 3d shape and nonrigid motion (1988)" and "Dynamic 3d models with local and global deformations: Deformable superquadrics (1991) t"
+  - Miller et al. "Geometrically deformed models: a method for extracting closed geometric models form volume data (1991) t"
+  - Szeliski and Tonnesen - "Surface Modeling with Oriented Particle Systems (1992) t"
+ - Spatial Free Form Warping - "The idea of spatial free-form warping is to deform the whole space in which an object to be warped is embedded in, with the effect that the object is warped at the same time."
+ - The approach of Algorri and Schmitt - "Surface reconstruction from unstructured 3D data (1996) t"
+  - Uses a mass spring model like I was envisioning but I'm not able to find the entire .pdf
+ - Kohenen Feature Map Approach of Baader and Hirzinger - "Three–dimensional surface reconstruction based on a self–organizing feature map (1993)" and "A self–organizing algorithm for multisensory surface reconstruction (1994) t" 
+- Incremental Surface Oriented Construction - basic idea is to start with a seed triangulation and expand it
+ - Boissonnat's Volume-Oriented Approach - "Geometric structures for three-dimensional shape representation (1984) t"
+ - Mencl and Muller - "A graph–based approach to surface reconstruction (1995)" and "Graph-based surface reconstruction using structures in scattered point sets (1998) t"
+- "The approach of Mencl and Muller use graph-based techniques to complete the surface." - A fast and efficient projection-based approach for surface reconstruction (2002)
+
+Surface reconstruction from unstructured 3D data (Algorri and Schmitt 1996) t
+ École Nationale Supérieure de Télékommunications, Paris, France - Maria-Elena Algorri, Fancis Schmitt
+- Categorized as spatial-subdivision , surface-oriented cell selection in Mencl and Muller (1997)
+- "For the first step, the rectangular bounding box of the given data set is subdivided by a regular voxel grid. In the second step, the algorithm extracts those voxels which are occupied by at least one point of the sampling set P. In the third step, the outer quadrilaterals of the selected voxels are taken as a first approximation of the surface." - Mencl and Muller (1997)
+- See Mencl and Muller for simplified explanation 
+- Can't find entire .pdf
+
+Automatic Reconstruction of CAD Models and Properties from Digital Scans. PhD thesis (1996)
+- see "Sampling and reconstructing manifolds using alpha-shapes (1997)"
+
+Level Set Methods (Sethian 1996) t
+ - Highly cited work as the start of level set methods for surface reconstruction 
+ - This implies implicit and spatial subdivision 
+
+Deformable models in medical image analysis (McInerney and Terzopoulos 1996) t
+ University of Toronto - Tim McInerney, Demetri Terzopoulos
+- "This article surveys deformable models, a promising and vigorously researched computer-assisted medical image analysis technique. Among model-based techniques, deformable models offer a unique and powerful approach to image analysis that combines geometry, physics, and approximation theory."
+- Motivation is heavily on the medical imaging application
+- Gives all the keywords for the mini fields and applications in a concise list (the section titles) 
+
+A volumetric method for building complex models from range images (Curless and Levoy 1996) t
+ Stanford University - Brian Curless, Marc Levoy
+- Highly cited work seems to just create a signed distance function in a volume. A surface can then me extracted from this
+- Very similar to the methodology of KinectFusion
+- "The algorithm of Curless and Levoy is tuned for laser range data, from which they derive error and tangent plane information. They combine the samples into a continuous volumetric function, computed and stored on a voxel grid. A subsequent hole-filling step also uses problem-specific information. Their implementation is especially fast and robust, capable of handling very large data sets." - A New Voronoi-Based Surface Reconstruction Algorithm
+- "In these methods, individual aligned meshes are used to compute a signed-distance function on a volume grid encompassing the object. Estimated surface points are computed as the points on the grid where thc distance function is zero. The structure of the volume then facilitates the construction of a mesh using the marching cubes algorithm [7]." - The ball-pivoting algorithm for surface reconstruction (1999)
+- [7] Marching Cubes: A High Resolution 3D Surface Construction Algorithm (1987)
+
+Automatic reconstruction of surfaces and scalar fields from 3D scans (Bajaj et al. 1995) t 
+ Purdue University - C.L. Bajaj, F. Bernardini, G. Xu
+- Newer work is "Reconstructing surfaces and functions on surfaces from unorganized three-dimensional data (1997) t"
+- Seems extremely similar 
+
+Automatic Reconstruction of Unstructured 3D Data: Combining a Medial Axis and Implicit Surfaces (1995) t 
+ INRIA - Eric Bittar, Nicolas Tsingos, Marie-Paule Gascuel 
+- Categorized as surface construction with distance functions in Mencl and Muller (1997) 
+
+A general surface approach to the integration of a set of range views (Soucy and Laurendeau 1995) t
+ Laval University, Quebec, Canada - Marc Soucy, Denis Laurendeau
+- Referenced as a stitching method in The ball-pivoting algorithm for surface reconstruction (1999)
+- The second class of methods are mesh stitching methods, such as the technique of Soucy and Laurendeau. Disjoint height-field meshes are stitched into a single surface. Disjoint regions are defined by finding areas of overlap of different subsets of the set of scans. Estimated surface points for each region are computed as weighted averages of points from the overlapping scans. Estimated points in each region are then re-triangulated, and the resulting meshes are stitched into a single mesh." - The ball-pivoting algorithm for surface reconstruction (1999)
+
+Boundaries through scattered points of unknown density (Veltkamp 1995) t 
+ Eindhoven University of Technology, The Netherlands - Remco Veltkamp 
+ - Classified as spatial subdivision / volume-oriented cell selection in Mencl and Muller (1997)
+ - A volume-based surface reconstruction method.
+ - Can only handle closed boundary object without holes
+
+Description of complex objects from multiple range images using an inflating balloon model (Chen and Medioni 1995) t
+ USC - Yang Chen, Gérard Medioni
+- Very related to my work
+- The ballon is simulated by applying an inflation force to a mesh sphere. 
+- The mesh vertices have virtual springs to control the inflation
+- Mesh stops expanding when it hits a surface boundary which is found with an expensive search
+- When a surface is hit the vertice is locked to that position. Because of this holes can be dealt with easily
+- Doesn't mention computation times. Clearly not meant to be a real time algorithm 
+
+A dynamic finite element surface model for segmentation and tracking in multidimensional medical images with application to cardiac 4D image analysis (McInerney and Terzopoulos 1995) t
+ University of Toronto - Tim McInerney, Demetri Terzopoulos
+- Highly referenced work aimed primarily at medical imaging applications
+- Another example of a physics based deformable mesh model. They describe it as a dynamic ballon model which deforms elastically to fit the image data. 
+- 15 pg long paper. They do a good job of laying out their method and show simple examples 
+- Their approach is dynamic and can deal with 4d data. Specifically to capture the movement of arteries and such
+- Uses an inflation force, meaning the it can only deal with closed models and is best suited for single object reconstruction
+- They update the position of the nodes exactly how I intended to
+- Works with image slices and the external forces are created with edge detectors 
+- Their experiments show a data set being reconstructed and interacted with in real-time
+
+A signal processing approach to fair surface design (Taubin 1995) t
+ IBM Watson Research Center - Gabriel Taubin
+- Extremely cited work
+- First try at applying signal processing techniques to mesh surface reconstruction.
+- All results are from simulation and not sure what kind of input data they need
+- They claim to have large computational savings over other algorithms and also require less space
+
+A graph–based approach to surface reconstruction (Mencl 1995) t
+ University of Dortmund, Germany - Robert Mencl
+- Newer work "Graph-based surface reconstruction using structures in scattered point sets (Mencl and Müller 1998) t"
+- See also their huge survey paper (Mencl and Muller 1997). Can't find .pdf
+
+An Implicit Surface Polygonizer (Bloomenthal 1994) t 
+ The University of Calgary - Jules Bloomenthal
+- Referenced by "Live dense reconstruction with a single moving camera (Newcombe et al. 2010) t Mesh.txt" as the method used for triangulating their implicit surface 
+- Meant for single object modeling applications 
+
+A self–organizing algorithm for multisensory surface reconstruction (Baader and Hirzinger 1994) t
+ German Aerospace Research Establishment - A. Baader, G. Hirzinger
+- A very interesting idea which uses a topology preserving neural network mapping to define the mesh of the surface
+- See Muncl and Muller (1997) for a simple explanation  
+
+Closed object boundaries from scattered points (1994)
+ Eindhoven University of Technology, The Netherlands - Remco Veltkamp 
+- see "Boundaries through scattered points of unknown density (Veltkamp 1995) t"
+
+Three-Dimensional Alpha Shapes (Edelsbrunner and Mücke 1994) t
+ University of Illinois - Herbert Edelsbrunner, Ernst Mucke
+- Categorized as spatial-subdivision , surface-oriented cell selection in Mencl and Muller (1997)
+- Highly cited work
+- A simple methodology which does a 3D Delaunay triangulation of the input data and removes vertices based on a radius around points. 
+- Implicit method towards surface reconstruction not real-time
+
+Simplex meshes: a general representation for 3D shape reconstruction (Delingette 1994) t
+ Inventeurs du monde numérique (INRA) - H. Delingette
+- Another good example of a surface reconstruction method which uses a physical based model to move nodes
+- Their method requires and initialization of primitives which are close to the goal
+- They have good results and the paper is highly cited
+- They mention controlling the search by projecting the data back onto an image plane 
+
+Zippered polygon meshes from range images (Greg and Levoy 1994) t
+ Stanford University - Greg Turk, Marc Levoy
+- Highly cited work
+- Sensor they use is structured projected light 
+- "In summary, we use zippering of triangle meshes followed by refinement of surface geometry to build detailed models from range scans"
+- They create a mesh from every range image. They "zip" together borders of the meshes and then refine the resulting mesh by averaging the prior observations.  
+- "Turk and Levoy developed a similar method (to A General Surface Approach to the Integration of a Set of Range Views) , which first stitches (or zippers) the disjoint meshes and then computes estimated surface points." - The ball-pivoting algorithm for surface reconstruction (1999)
+
+Merging range images of arbitrarily shaped objects (Rutishauser et al. 1994) t
+ Swiss Federal Institute of Technology ETH, Zurich, Switzerland - Martin Rutishauser, Markus Stricker and Marjan Trobina
+- One of the first works to incorporate data from different viewpoints (iterative). Explicit function representations can not deal with this.
+- "The surface-descriptions of several different sensors may overlap. In these regions an algorithm should produce a consistent representation of the surface. The accuracy of the different sensors should be taken into account for this task." 
+- It seems they create a probability for each measurement using a sensor model which uses the normal of the surface. 
+- The vertice is placed by finding the expected value
+- Have a heuristic way to combine several surfaces
+- No claims at real-time  
+
+Three–dimensional surface reconstruction based on a self–organizing feature map (Baader and Hirzinger 1993)
+ German Aerospace Research Establishment - A. Baader, G. Hirzinger
+- newer work "A self–organizing algorithm for multisensory surface reconstruction (Baader and Hirzinger 1994) t"
+- Categorized by Muncl and Muller (1997) surface construction by warping
+
+A Finite Element Model for 3D Shape Reconstruction and Nonrigid Motion Tracking (McInerney and Terzopoulos 1993) t
+ University of Toronto - Tim McInerney, Demetri Terzopoulos 
+- Highly related
+- Continuation of prior work. In this work they seem to just be changing from a finite-difference to FEM approach
+- Their model (and others like it) is: "The balloon model is based on a thin-plate under tension spline which deforms to fit [data]."
+- When analyzing by FEM methods it essentially becomes a mesh. 
+- This paper gives a really good overview of the mathematics I had in mind. 
+- Have processing times of around 1 minute. Not meant for real-time 
+
+Finite-element Methods for Active Contour Models and balloons for 2-D and 3-D Images (Cohen and Cohen 1993) t
+ Université Paris - Laurent Cohen, Issac Cohen
+- A major issue with past works is that they require to know the edges of the objects they are reconstructing. For example the ballon model has to know the edges because it must know where to stop the inflation process. 
+- Prior works minimized an energy function in order to fit a surface to the data. Those works used a finite-difference method. Here the system is solved by the FEM method. 
+- Their method was tested on several MR data sets
+- Not real-time
+
+Large Deformable Splines, Crest Lines and Matchings (Gueziec and Ayache 1993) t
+ New York University - Andre Gueziec, Nicholas Ayache 
+- Present a method to "pilot" spline surfaces towards contours in a 3-D image.
+- They apply their method to MRI images and get very good results
+- Computational time is around a minute
+- Involves minimizing an energy function
+
+Adaptive-Size Meshes for Rigid and Nonrigid Shape Analysis and Synthesis (Huang and Goldof 1993) t
+ University of South Florida - Wen-Chen Huang, Dmitry B. Goldgof
+- Gives a good overview of physically based modeling in the intro
+- They claim to be the first to make mesh size itself data dependent 
+- One of the first to claim to be able to model time varying data 
+- No claims to real time. 
+- Equations are pretty much exactly what I had in mind. They had good experiments to show how they can model time varying data
+- "The mesh size increases or decreases dynamically during surface reconstruction to locate nodes near surface areas of interest (like high curvature points) and to optimize the fitting error." 
+
+Mesh optimization (Hoppe et al. 1993) t
+ University of Washington - Hugues Hoppe, Tony DeRose, Tom Duchamp, John McDonald, Werner Stuetzle 
+- Categorized as spatial-subdivision , surface-oriented cell selection in Mencl and Muller (1997) also they said it is based on SDF
+- Highly referenced work. Intended for mesh simplification and surface reconstruction 
+- They minimize an energy function which balances conciseness of representation and fidelity to the data 
+- Requires and initial mesh
+- They obtain very good results. Method has a large computational cost
+- The claim all methods before did not allow the number of vertices and their connectivity to vary
+
+Surface Modeling with Oriented Particle Systems (Szeliski and Tonnesen 1992) t
+ Cambridge Research Lab - Richard Szeliski
+ University of Toronto - David Tonnesen
+- Categorized as surface construction by warping in Muncl and Muller (1997)
+- A particle based system in which the vertices are the particles and repulsion forces are calculated based on the data and neighboring particles
+- Uses a surfel representation 
+
+Multi-resolution surface modeling from multiple range views (Soucy and Laurendeau 1992)
+ Laval University, Quebec, Canada - Marc Soucy, Denis Laurendeau
+- This is prior work. Their newer work is "A general surface approach to the integration of a set of range views (Soucy and Laurendeau 1995) t"
+
+Adaptive Meshes and Shells: Irregular Triangulation, Discontinuities, and Hierachical Subdivision (Vasilescu and Terzopoulos 1992) t
+ MIT, University of Toronto - Manuela Vasilescu, Demetri Terzopoulos 
+- "Adaptive meshes are dynamic networks of nodal masses interconnected by adjustable springs" - first sentence 
+- "This paper extends the adaptive mesh model in the following ways: it (i) develops open adaptive meshes and closed adaptive shells based on triangular and rectangular elements, (ii) proposes a discontinuity detection and preservation algorithm suitable for the model, and (iii) develops techniques for adaptive hierarchical subdivision of adaptive meshes and shells. The extended model is applied to image and 3D surface data."
+- Gives a very good overview of the mathematics I had in mind
+- Still solves this math with a differential equation solver
+- Doesn't seem to be able to handle complex scenes  
+
+Surface reconstruction from unorganized points (Hoppe et al. 1992) t
+ University of Washington - Hugues Hoppe, Tony DeRose, Tom Duchamp, John McDonald, Werner Stuetzle 
+- Categorized as spatial-subdivision , surface-oriented cell selection in Mencl and Muller (1997) also they said it is based on SDF
+- Highly referenced work. Probably due to it's simplicity. Implicit method 
+- It does not appear to be real time
+- It is better than previous implicit methods because it deals with boundaries in a natural way
+- It is better than parametric methods because it can reconstruct surfaces of arbitrary topology
+- Basically estimates the zero set of an estimated signed distance function
+- "A fundamentally different approach to reconstruction is to use the input points to define a signed distance function on R3, and then polygonalize its zero-set to create the output mesh. Such zero set algorithms produce approximating, rather than interpolating, meshes." - A New Voronoi-Based Surface Reconstruction Algorithm
+- "Hoppe et al. determine an approximate tangent plane at each sample point using least squares on k nearest neighbors, and then take the signed distance to the nearest point’s tangent plane as the distance function on R3 . The distance function is then interpolated and polygonalized by the marching cubes algorithm." - A New Voronoi-Based Surface Reconstruction Algorithm
+
+Volumetric shape description of range data using “Blobby Model” (Muraki 1991) t
+ Electrotechnical Laboratory, Japan - Shgeru Muraki
+- Categorized in Mencl and Muller (1997) as surface construction by warping and is highly cited
+- Not very related to my end idea but it does warp a representation (implicit) to the data by virtual forces
+
+Geometrically deformed models: a method for extracting closed geometric models form volume data (Miller et al. 1991) t
+ Rensselaer Polytechnic Institute and General Electric Company - James Miller, David Breen, William Lorensen, Robert O'Bara, Michael Wozny
+- Categorized in Mencl and Muller (1997) as surface construction by warping 
+- "Miller et al. extract a topologically closed geometric model from a volume data set. The algorithm starts with a simple model that is already topologically closed and deforms the model on a set of constraints, so that the model grows or shrinks to fit the object." - Mencl and Muller (1997)
+
+On Three-Dimensional Surface Reconstruction Methods (Bolle and Vemuri 1991) t
+ IBM and University of Florida - Ruud Bolle, Baba Vemuri
+- A survey on implicit and explicit surface reconstruction techniques. Give a good overview of the terminology used in each field
+- "In implicit methods, relevant issues for study include robustness of the methods and the effects of occlusion on the estimates of the parameters of the implicit surfaces." 
+- "Most techniques under explicit methods, as well as the parametric method discussed in this paper, share a common theme in that they can be characterized as optimal approximation problems involving a class of generalized multidimensional spline functions."
+- Conclusion has a great summary of the cons of these types of techniques. Explains difference between implicit, explicit, and parametric 
+
+Dynamic 3D Models with Local and Global Deformations: Deformable Superquadrics (Terzopoulos and Metaxas 1991) t
+ University of Toronto, Schlumberger Laboratory for Computer Science, Austin TX - Demetri Terzopoulos, Dimitri Metaxas
+- Extremely related work. Movement of nodes with equations of motion which I had in mind. 
+- Categorized in Mencl and Muller (1997) as surface construction by warping 
+- "made use of deformable superquadrics which have to fit the input points" - Mencl and Muller (1997)
+- Require initialization of a rough segmentation of parts
+- Seems as though it requires a closed mesh surface 
+- Involves a numerical simulation of a set of differential equations 
+- They give a thorough description of the mathematics 
+
+Sampling and Reconstruction with Adaptive Meshes (Terzopoulos and Vasilescu 1991) t
+ MIT, University of Toronto, Schlumberger Laboratory for Computer Science, Austin TX - Demetri Terzopoulos, Manuela Vasilescu
+- Very similar. I would say the equations of motion for each node are exactly what I had in mind.
+- Is real-time with meshes ~4,000 nodes. 
+- Not for mapping applications. 
+- Creates an initial mesh sheet and the x,y coordinates of the nodes on the edge are locked. 
+
+Shape Representation and Image Segmentation Using Deformable Surfaces (Delingette et al. 1991) t
+ Carnegie Mellon - H. Delingette, M. Hebert, K. Ikeuchi
+ - Intended for a variety of sensors 
+ - Very good reference. Physically based method. 
+ - "Given an observed scene, a surface is initialized in the vicinity of detected features. The surface is then deformed subject to forces generated by features and data points."
+ - Uses features and range data. Features can be anything such as reflective measurements. Not sure how that part works
+ - It smoothes corners. not good
+
+Closed-form solutions for physically based shape modeling and recognition (Pentland and Sclaroff 1991) t
+ MIT - Alex Pentland, Stan Sclaroff
+- Very related work. Still not real-time
+- They described a closed-form solution for recovering a physically based 3-D solid model from the 3-D sensor measurements 
+- Can not deal with complex scenes 
+
+Constraints on deformable models: Recovering 3d shape and nonrigid motion (Terzopoulos and Metaxas 1988)
+ University of Toronto, Schlumberger Laboratory for Computer Science, Austin TX - Demetri Terzopoulos, Dimitri Metaxas
+- newer work "Dynamic 3D models with local and global deformations: Deformable superquadrics (Terzopoulos and Metaxas 1991) t" 
+- Categorized in Mencl and Muller (1997) as surface construction by warping 
+
+Automatic creation of object hierarchies for ray tracing (1987)
+
+Symmetry-seeking models for 3-D object reconstruction (Terzopoulos et al. 1987) t
+ Palo Alto Research - Demetri Terzopoulos, Andrew Witkin, Michael Kass
+- "In this paper we propose shape models that may be viewed as deformable bodies composed of simulated elastic material." 
+- User must initialize a spline along the axis of the object.
+- A mesh tube then expands or contracts around this spline to fit the object
+- The movement of the mesh is governed by simulating an elastic material. 
+- They application is reconstructing objects from a singular monocular image
+- Their force is created by computing the image-intensity gradient
+
+Elastically deformable models (Terzopoulos et al. 1987) t
+ Palo Alto Research and California Institute of Technology - Demetri Terzopoulos, John Platt, Alan Barr, Kurt Fleischer
+- Very well known work, highly referenced. 
+- Not really about an adaptive mesh, but one of the first works to use a physics based discretization for simulation
+- Intended for CGI applications
+
+Marching cubes: A high resolution 3D surface construction algorithm (Loresen and Cline 1987) t
+ General Electric Company - William Loresen, Harvey Cline
+ - Known to be a slow but very reliable algorithm
+ - Essentially places a cube at each point in the data and uses the gradient of the data to determine if vertices should be placed. If they are placed they are placed along the edges or at the corners of the cube. 
+ - "The algorithm uses a case table of edge intersections to describe how a surface cuts through each cube in a 3D data set."
+ - This work was developed for medical imaging 
+ - Not sure how it works with point cloud data but it is cited quite often
+
+Regularization of inverse visual problems involving discontinuities (Terzopoulos 1986) t
+ Schlumberger Palo Alto Research; CA - Demetri Terzopoulos 
+- Figured out how to deal with discontinuities when dealing with splines
+- Not sure the data type
+- "A broad range of visual reconstruction problems may be unified mathematically as well-posed variational principles which characterize optimal approximation problems involving a class of generalized multidimensional spline functionals."
+- Extremely mathematically intense paper
+- Approach is inappropriate for real-time applications
+
+Geometric structures for three-dimensional shape representation (Boissonnat 1984) t
+ INRIA - Jean-Daniel Boissonnat
+- Categorized as spatial subdivision / volume-oriented cell selection in Mencl and Muller (1997) also as incremental surface
+- They present a surface and volume based method 
+- The surface based approach project the neighborhood around a point onto a tangent plane then triangulation is done by Delaunay
+- The volume based approach seems to just be the 3d Delaunay triangulation 
+- Like all early papers, this gives a simple explanation of some of the basic concepts in reconstruction. Here Delaunay triangulation
+- "Boissonnat's surface contouring algorithm starts with an edge and iteratively attaches further triangles at boundary edges of the emerging surface using a projection-based approach to generate manifolds without boundaries." - A fast and efficient projection-based approach for surface reconstruction (2002)
+
+_______________________________________ Mesh adaptation using mostly quadric error metrics 
+
+Mesh Denoising Using Quadric Error Metric (2010)
+ Universidade de Ciencias Exatas - Montes Claros, Brazil - Antonio Vieira
+ UFMG - Belo Horizonte, Brazil - Armando Neto, Douglas Macharet, Mario Campos
+- Method for mesh denoising with an operator based on the Quadric Error Metric
+- Prior denoising methods remove high frequency noise at the cost of removing sharp features
+- "A known property of the QEM is that, given a pont whose neighborhood is defined by a set of two or more planes, it is able to adjust this point so it best fits to all planes."
+- Because the vertex is moved to a point which minimizes the distance to a set of planes high frequency information can be preserved
+
+Laplacian mesh optimization (2006)
+ TU Berlin - Andrew Nealen, Olga Sorkine, Marc Alexa
+ University of Tokyo - Takeo Igarashi
+- "We introduce a framework for triangle shape optimization and feature preserving smoothing of triangular meshes that is guided by the vertex Laplacians, specifically, the uniformly weighted Laplacian and the discrete mean curvature normal."
+- A methodology to move the surface vertices in order to smooth the mesh
+- Shows the results using constant weights, linear weights, and cdf weights
+
+Stellar mesh simplification using probabilistic optimization (2004)
+ Department of Mathematics - Pontificia Universidade Catolica - Rio de Janeiro - Antonio Vieira; Thomas Lewiner; Helio Lopes; Geovan Tavares 
+ Centro de Ciencias Exatas e Tecnologicas - Montes Claros, Brazil - Antonio Vieira
+ Inventeurs du Monde Numérique - Sophia Antipolis, France - Thomas Lewiner
+ Instituto Nacional de Matemática Pura e Aplicada - Rio de Janeiro - Luiz Velho
+- provides a probabilistic optimization of the four-face cluster algorithm
+- gives an overview on surface topology theory and stellar theory 
+
+3D Compression Made Simple : Edgebreaker on a Corner-Table Notation and Corner-Table (2001)
+ Georgia Institute of Technology - Jarek Rossignac, Alla Safonova, Andrzej Szymczak 
+- Referenced as the beginning of the Corner-Table method
+- The claim is that the Corner-Table is a simple technique for compressing 3D triangular meshes
+- It is supposed to be a much less complex way to represent the connectivity compared to prior methods 
+
+Surface simplification using quadric error metrics (1997) t
+ Carnegie Mellon - Michael Garland, Paul Heckbert
+- surface simplification done by contractions of vertex pairs
+- maintains surface error approximations using quadric matrices
+- vertex contraction consists of combining 2 or more vertices into a single vertex
+- quadric is used to measure the distance of a point to a set of planes
+- the metric is designed so that the simplification doesn't drive the new model too far from the original in a geometric sense
+
+_______________________________________________________________ Mesh reconstruction papers 
+A topological framework for advancing front triangulations (2003)
+Interactive topology-aware surface reconstruction (2007)
+Consolidation of unorganized point clouds for surface reconstruction (2009)
+
+_________________________________________________ QEM based mesh simplification algorithms 
+Surface simplification using quadric error metrics (1997) - start of QEM
+Mesh simplification using four-face clusters (2000)
+QEM-based mesh simplification with global geometry features preserved (2004)
+Stellar mesh simplification using probabilistic optimization (2004) -  Antonio
+
+______________________ Mesh reconstruction algorithms which don't work well on noisy RGB-D 
+A fast and efficient projection-based approach for surface reconstruction (2002)
+Triangulating point set surfaces with bounded error (2005)
+The power crust (2001)
+Tight cocone: a water-tight surface reconstructor (2003)
+
+___________________________________________________________________________________ Quotes 
+
+"A tetrahedrization is a Delaunay tetrahedrization if none of its vertices lies inside the circumscribed sphere of any of its tetrahedra [34]" - Interpolation and approximation of surfaces from three-dimensional scattered data points (1997)
+34 - Book - Computational Geometry: An Introduction (1985)
+
+"There are also approaches toward the surface reconstruction problem that are not based on the Delaunay triangulation, e.g., level set methods [1], radial basis function based methods [2] and moving least squares methods [3].
+1 Fast surface reconstruction using the level set method. (2001) t
+2 Reconstruction and representation of 3D objects with radial basis functions (2001) t
+3 Point set surfaces (2004) t
+
+"Following the taxonomy of Seitz et al. [33], MVS algorithms can be categorized into four classes: 3D volumetric approaches [21, 39, 40, 35, 34, 23], surface evolution techniques [9, 30, 14, 45], algorithms that compute and merge depth maps [37, 16, 36, 44, 25], and techniques that grow regions or surfaces starting from a set of extracted feature or seed points [17, 24, 12, 19]."
+33 - A comparison and evaluation of multi-view stereo reconstruction algorithms. (2006)
+21 - Hierarchical volumetric multi-view stereo reconstruction of manifold surfaces based on dual graph embedding. (2006)
+39 - 3d surface reconstruction using graph cuts with surface constraints (2006)
+40 - Multi-view stereo via volumetric graph-cuts and occlusion robust photo-consistency (2007)
+35 - Watertight multi-view reconstruction based on volumetric graph-cuts (2007)
+34 - Multi-view stereo via graph cuts on the dual of an adaptive tetrahedral mesh (2007)
+23 - Propagated photoconsistency and convexity in variational multiview 3d reconstruction (2007)
+9 - Silhouette and stereo fusion for 3d object modeling (2004)
+30 - Modeling dynamic scenes by registering multi-viewimage sequences (2005)
+14 - Minimizing the reprojection error in surface reconstruction from images (2007)
+45 - Transformesh: A topology-adaptive mesh-based approach to surface evolution (2007)
+37 - A multi-view approach to motion and stereo (1999)
+16 - Multi-view stereo revisited (2006)
+36 - Combined depth and outlier estimation in multi-view stereo (2006)
+44 - A globally optimal al- gorithm for robust tv-l1 range image integration (2007)
+25 - Real-time visibility-based fusion of depth maps (2007)
+17 - Multi-view stereo for community photo collections (2007)
+24 - Efficient multi-view reconstruction of large-scale scenes using interest points, delaunay triangulation and graph cuts (2007)
+12 - Accurate, dense, and robust multiview stereopsis (2007)
+19 - A surface-growing approach to multi-view stereo reconstruction (2007) 
+
+"In recent years the use of implicit surfaces and volumetric methods has attracted much attention [5, 8, 15, 18, 19]. In these approaches a scalar field function is constructed on a fixed grid and the final shape is a particular level set of the field function. Usually the scalar function is the signed distance to the final shape. Implicit representations usually have topological flexibility, a simple data structure, and depth/volumetric information"
+- Implicit and Nonparametric Shape Reconstruction from Unorganized Data Using a Variational Level Set Method (2000)
+5 - Automatic reconstruction of surfaces and scalar fields from 3D scans (1995)
+8 - Smooth shape reconstruction via natural neighbor interpolation of distance functions (2000)
+15 - A volumetric method for building complex models from range images (1996)
+18 - Implicit surface-based geometric fusion (1998)
+19 - Surface reconstruction from unorganized points (1992)
+
+“Similarly, Delaunay triangulation [1 2] is widely used for serial slice reconstruction, or reconstruction from unorganized points but it cannot extrapolate missing data points”
+- General Object Reconstruction Based on Simplex Meshes (1999)
+1 A new voronoi-based surface reconstruction algorithm (1998)
+2 Three dimensional reconstruction of complex shapes based on the delaunay triangulation (1993)
+
+“Many researchers have proposed reconstruction systems based on deformable models. … However, few systems address the problem of general surface reconstruction...”
+- General Object Reconstruction Based on Simplex Meshes (1999)
+
+“As a conclusion, building parametric deformable models of arbitrary topology is a difficult task … It is not well suited for the task of general surface reconstruction due to the computational expense of performing topological changes such as creating holes or local refinement” 
+- General Object Reconstruction Based on Simplex Meshes (1999)

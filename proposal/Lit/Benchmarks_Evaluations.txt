@@ -1,0 +1,22 @@
+Towards a benchmark for RGB-D SLAM evaluation (2012) t
+ Technical University of Munich Germany - Computer Vision and Pattern Recognition Group - Dr. Jürgen Sturm; Dr. Daniel Cremers
+ ETH Zurich, Switzerland - S. Magnenat; F. Pomerleau; F. Colas; R. Seigwart
+ University of Freiburg, Germany - Autonomous Intelligent Systems Lab - Nikolas Engelhard; Wolfram Burgard 
+- Provide a large dataset containing RGB-D image sequences (from a Kinect), the ground-truth camera trajectories, and the accelerometer data from the Kinect. The data was taken at 30Hz and a resolution of 640x480 (like it should be)
+- Give references to SLAM history in robotics and computer-vision. Should be worth going through them. 
+- Mention only 2 works in the area I’m interested in but they are expecting a boom. Yikes.
+- They moved in a typical office environment. Not many large blank and textureless surfaces are seen (in my opinion from a picture in the paper)
+- Data was recorded as a ROS bag file. ROS is catching on. 
+- They acquired 50Gb of data. Wow
+- The also propose a metric to grade future algorithms. Basically the difference of the calculated and observed position for all frames.
+
+Towards a benchmark for RGB-D SLAM evaluation (2012) t
+ Technical University of Munich Germany - Computer Vision and Pattern Recognition Group - Dr. Jürgen Sturm; Dr. Daniel Cremers
+ ETH Zurich, Switzerland - Nikolas Engelhard, Wolfram Burgard, Felix Endres
+- Basically saying that they added to their prior data set with more trajectories 
+- Give a few more metrics for evaluation 
+
+
+
+
+Sancta simplicitas-on the efficiency and achievable results of SLAM using ICP-based incremental registration (2010)

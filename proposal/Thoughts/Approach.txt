@@ -1,0 +1,59 @@
+6. Approach
+
+- Algorithmic structure of the system
+
+ - We are leveraging the robustness of the feedback structure
+ - We intend to utilize a descriptor which is robust to noise and light changes
+ - This descriptor must behave the same way with the raw data as with the mesh
+   model
+
+The overall structure of the proposed system will leverage the inherent
+robustness of the feedback system. The increased stability of such a structure
+has been extensively shown by the KinectFusion work.  
+
+- Adaptive Mesh
+
+ - Initial generation
+  - Initial mesh doesn't need to be the best so not necessary to perform an
+    expensive computation with marching cubes or something similar in R3 
+  - Determine connectivity in R2 and transform the vertices into R3.
+    Connectivity will be preserved
+  - Threshold edge distances 
+ 
+ - Adaptation of mesh to new data
+  - Movement method
+   - Project element nodes to image plane
+   - For each node calculate a region in the depth plane
+   - Use points from these regions to perform movement calc 
+    - Use adaptive mesh figure here 
+  - Generative element method
+   - Based on spring force
+    - For each spring element determine the virtual compression or tensile
+      force
+    - If these forces are above a certain threshold either add or remove
+      elements
+     - Requires knowledge of corner-table operations
+   - Based on model/data discrepancy 
+    - Flag used point cloud points
+    - Use to generate binary image
+    - Use connected components to identify data that wasn't used
+ 
+ - Adaptive keypoint selection
+  - Since the nodes of the mesh have already been projected onto the image
+    plane and we have knowledge of the velocity of each node within the global
+frame. We can determine regions of the scene which contain movement.
+  - In a similar manner to the object detection scheme we will flag regions
+    where we believe to see movement
+   - One difference. The neighborhood around the projected vertice will
+     automatically get flagged.
+   - Once again blob analysis to determine regions
+
+One of the primary advantages of the proposed global mesh representation over
+the voxelized grid model is that object motion can be explicitly represented by
+the model. In other words, the voxelized grid has no mechanism to describe the
+movement of a surface in a global coordinate system. For this reason methods
+based of this representation will always have difficulties with dynamic scenes.
+Furthermore, there is no hope to generate semantic knowledge of the movement of
+the object with this framework. Only by explicitly representing movement in the
+environmental model can we start to identify the meaning of the dynamic scene
+and make decisions based of the that. 

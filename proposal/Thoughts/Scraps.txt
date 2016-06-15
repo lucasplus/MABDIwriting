@@ -1,0 +1,62 @@
+
+____________________________________________________________________________ QEM arguments 
+
+All methods which use an inflatable ballon or virtual spring over smoothes the data. A QEM based method should help this
+
+If the mesh is adapted based on the Quadratic Error Matrix (QEM) then it can be claimed that resulting mesh is piecewise smooth and also preserves sharp details.
+
+"A known property of the QEM is that, given a pont whose neighborhood is defined by a set of two or more planes, it is able to adjust this point so it best fits to all planes." - Antonio
+
+_____________________________________________________________________________________ SLAM
+
+Many early methods favored a camera sensor because they were orders of magnitude faster than scanning lasers and also much cheaper. This is no longer the case. Kinect like sensors can generate depth data at an impressive 30Hz and quite affordable.
+
+Probabilistic approaches try to determine the expected pose and map given the data and controls. Researchers approached this problem with Kalman filters and EM. 
+
+First implementations of methods to solve the SLAM problem relied on landmarks mainly because it is computationally more feasible to deal with maps in which a manageable amount of locations need to be tracked. 
+
+The main difficulty of the SLAM problem is that the algorithm must be able to localize the sensor in the environment while at the same time constructing the map. These two distinct estimation problems are heavily dependant on each other and so any algorithm which is designed to solve SLAM must be able to deal with two equally difficult and dependant estimation problems. 
+
+Early approaches to the SLAM problem utilized cameras as the primary sensor. Also, many of these early methods output sparse point maps as the environmental representation. This type of representation isn’t rich enough for many applications.
+
+SLAM info:
+- The information matrix is the inverse of the Kalman filter's covariance matrix
+- SLAM problem can be represented as a graph in which nodes are features and/or robot poses and edges are rigid-body constraints between nodes 
+- The information matrix is the adjacency matrix of the graph which represents the SLAM problem
+- Joint compatibility - "The idea is that the whole set of matchings accepted in one image must be jointly consistent"
+
+____________________________________________________________________________________ Tools
+
+Openmesh.org - OpenMesh is a generic and efficient data structure for representing and manipulating polygonal meshes. OpenMesh is developed at the Computer Graphics Group, RWTH Aachen . It is funded by the German Ministry for Research and Education ( BMBF).
+
+__________________________________________________ Notes on Surface Reconstruction Methods
+
+Attempting to perform the full tracking of an unknown mesh undergoing deformations with possible topological changes
+
+In general, the parametric form lacks depth information and requires a global parametrization which makes shape deformations and topological changes difficult to handle. 
+
+Hence the task in the surface reconstruction problem is to transform a finite sample into a surface model. 
+
+_____________________________________________________________________ Part of Old Proposal 
+
+Impact
+
+Robot perception and planning will benefit greatly from this work. The methods developed in this work would allow the robot to map environments such as textureless hallways. This is currently not possible with current methods. In addition, because the output is a mesh, the robotic agent will be able to simulate events such as opening a door to see if there are any collisions occur before attempting it. Also, because the method presented in this work uses an adaptive global mesh model temporal changes in the environment can be tracked and interpreted. For example, if a cup leaves a scene the it could be noticed by the large discrepancy of the current information with the past observations. The mesh of the cup can then be segmented from the model which than can be used by other processes. These improvements would continue the progress of robotic awareness.  
+
+Human situational awareness will be improved with this work. Currently, most teleoperation work consists of monitoring several cameras on the robotic agent. While this has worked well, it can be very disorientating to view the environments from only a select few perspectives. A much more intuitive method would be to display the environment in a similar way as current video games. The operator would then be able to view the environment from whatever the most advantageous perspective would be. Also,  a model of the robot can be added to the display in order for the operator to understand where the robot is in the environment. 
+
+The ability to have a mesh model will be essential in further work in the field of environmental mapping. We can create models that adapt to changing information however the much more tricky and useful solution will be to recognize that a door is a door and understand that it can move and have a preconception of how it will move. A mesh model is the best data structure for representing this. One only has to observe the recent work in video gaming to see how we are representing complex environments with several moving parts. I believe that the next natural step in mapping will be to incorporate this type of technology into our representations. The trick for roboticists is how to implement what is so easy for humans. Namely, an intuition of what is moveable and what is not.
+
+Approach
+
+In many applications the global map would be an end product which could then be sent to a master node or to a command center for viewing and additional processing. 
+
+Global Mesh Model
+
+The global model will be adaptive to new point cloud data. Due to the fact that the depth data error can be modeled as Gaussian noise, the model will stabilize to the true solution with continued observation. In this way the robustness of the system is vastly increased due to the fact we are essentially averaging out the noise. 
+
+In order to create such a model we must have a mechanism to determine the effect the new information will have on the current mesh. One way to accomplish this is to attribute a certain pulling force to each point in the current point cloud. Each node of the mesh will then compute the net effect of the cumalitve force being applied by the points in its immediate neighborhood. In addition to the force from the surrounding points, there will be a force applied by the edges which connect the nodes. In this way we can ensure the convex polygon constraint imposed by the surface mesh is upheld. The will allow the mesh to contract or stretch to changes in information. 
+
+In addition to determining the overall movement of the mesh we must also consider instances when new elements need to be dynamically added or subtracted from the model. Due to the calculations done to determine the node movements, we will also have the compression and tensile forces that are contained within the edges. If an edge has too much compression force acting upon it, elements will be removed in the neighborhood of the edge. If the edge has too much tensile force, elements will be added to the model. In this way we can control the overall density of the mesh for the entire model. Also, such a mechanism would provide a fluid and natural way to deal with situations such as observing a telescoping arm. 
+
+Our proposed adaptive mesh model will also lend itself well to using GPU computing. The force on each node and element can be computed with only using information in their immediate neighborhoods. Thus there will be a thread for each node or element that will be computed with others in parallel. If an edge has force acting on it above some threshold, elements will either be added or subtracted at the location of the edge. This will continue until no other elements are added to subtracted from the model. Once the final net forces have been calculated, the changes will be applied to the model.

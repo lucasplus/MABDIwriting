@@ -1,0 +1,94 @@
+7.1 Simulation
+
+7.1.1 Static scene, static object, static sensor mesh validation
+- Simulate data take from known environment. 
+ - An object on a table
+ - Generate simulated sensor data from a known view in the environment
+- Apply adaptive mesh technique
+ - Create initial mesh from points that are close to each other with delaunay triangulation
+ - Simulate the aquisition of new data
+ - Determine the resultant forces on each node
+ - Evolve the mesh according to F=ma
+- Compare quality of mesh by evaluating error of mesh to known truth
+- Optimize adaptive mesh parameters
+
+7.1.2 Static scene, static object, dynamic sensor mesh validation
+- Simulate data taken from known environment such a cup on top of a table
+- Apply mesh technique
+- Continue for a believale trajectory
+- Test the ability for the mesh to generate new elements for novel views of the scene
+- The key aspect to test is the ability for the model to automatically create elements based on the forces in the spring
+- Compare quality of mesh by evaluating error of mesh to known truth
+- Optimize adaptive mesh parameters
+ 
+7.1.3 Dynamic scene, static object mesh validation
+- Simulate a second cup generated between successive frames
+- The mesh should adapt to the new object by 
+ - Automatically generating elements where the sensor data finds on object but no elements are near
+ - Mesh should be pulled into shape by points which are near the nodes
+- Simulate for both static and dynamic sensor movement
+ 
+7.1.4 Dynamic scene, dynamic object mesh validation
+- Simulate a second cup moving into the scene from outside the view of the sensor
+- The mesh should adapt and move with the new object by
+ - Generating elements like the last test
+ - Elements should be able to move with the object because we can describe velocity of nodes
+ - The mesh should stabilize when the cup comes to rest
+- Compare to ground truth
+ 
+7.1.5 Model and frame features correspondance validation
+- The simulation environment must now also contain visual information. Perhaps an online data set
+- A global mesh model should be built on a static environment 
+- Features extraction should be simulated on the current frame and the global model
+- These features should correspond well enough to make the pose calculation possible
+- The result from the experiment would be the number of correct correspondances 
+
+7.1.6 Pose calculation validation 
+- The full feed back structure of the system should now be possible
+- Use features obtained from the sensor and features obtained from the model to perform ICP on each iteration to calculate the trajectory of the sensor
+- Compare this to the known trajectory and determine error in estimation
+
+7.1.7 Adaptive keypoint selection validation 
+- Simulate the environmental mapping algorithm with an object moving in the foreground
+- Using the knowledge of the mesh elements representing the moving object. (by noticing their velocity with respect to the fixed frame) define an area of the current frame in which keypoints should be thrown away
+ - Test 1: Compare to not throwing away these keypoints
+ - Test 2: Increase the size of the object in the frame of the sensor until failure
+- Present Test 1 and Test 2 in a tabular format
+
+7.2 Real Data
+
+7.2.1 Static scene, static object, and static sensor validation on real data
+- Create a simple static scene and view with the sensor static
+- Apply meshing procedure with the knowledge that the pose of the sensor does not change
+- Looking for convergence of the mesh to the real environment i.e. the ability of the mesh to reduce noise
+- Compare converged mesh to single capture of the sensor. Not able to measure change so create a comparative figure
+
+7.2.2 Dynamic scene, static object, and static sensor on real data
+- Acquire data like last test. Place second object in the scene
+- Remove all frames in which the second object is moving
+- Apply meshing procedure
+- A qualitative test to test the methods generative procedure 
+
+7.2.2 Dynamic scene, dynamic object, and static sensor on real data
+- Can be the exact same data as last test but leave in the frames with the object moving
+- Test ability for mesh to generate new elements and move with a moving object
+- Show qualitative results
+
+7.2.3 Model and frame features correspondance validation on real data
+- On a static scene with a static sensor
+- Generate descriptors from the model and the current frame 
+- Measure the percent correct correspondance 
+
+7.2.4 Pose calculation validation on real data
+- The turntable test. Acquire data of a scene while rotating the sensor (or scene) one revolution
+- Wish evaluate the quality of the mesh generated and determine the distance from the initial position to final position (ideally zero)
+- Do for:
+ - Static scene, static object
+ - Static scene, dynamic object
+ - Dynamic scene, static object
+ - Dynamic scene, dynamic object
+ 
+7.2.5 Complete system testing
+- With all tests from above done the system should now be ready for its debut
+- Test qualitatively with freehand movement (probably can't be done because not pushing a real time implementation, however we want to make it clear that this method is tailored for real time)
+- Test quantitatively on available data sets

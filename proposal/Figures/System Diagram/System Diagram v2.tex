@@ -1,0 +1,149 @@
+\documentclass{article}
+
+\usepackage[usenames,dvipsnames]{color,xcolor}
+
+\usepackage{pgf,tikz,amsmath,graphicx}
+\usepackage[margin=1in]{geometry} 
+
+\usetikzlibrary{positioning,shapes,arrows,automata,backgrounds,fit,calc,patterns,decorations.pathmorphing,decorations.markings}
+
+\begin{document}
+
+\tikzstyle{block} = [rectangle, draw, line width=.3mm, fill=white, draw=black, text width = .35\textwidth, text centered, rounded corners, minimum height=10mm]
+\tikzstyle{line} = [draw, line width=.3mm, color=black, -latex']
+\tikzstyle{jline} = [draw, line width=.3mm, color=black]
+\tikzstyle{background} = [rectangle,opacity = .65,fill=BurntOrange, inner sep=.1cm, rounded corners, minimum width=.45\linewidth, minimum height=51mm]
+\tikzstyle{point} = [circle,inner sep=0pt,minimum size=2pt,fill=red]
+\tikzstyle{mydash}=[draw=gray, thick, dashed, opacity=.8] 
+
+\begin{figure}[h!]
+\centering
+%\begin{tikzpicture}[scale=2, node distance = 7mm]
+
+\begin{tikzpicture}[scale=2, node distance = 7mm]
+
+%\begin{tikzpicture}[
+%block/.style = {rectangle, draw, line width=.3mm, fill=white, draw=black, text centered, rounded corners, minimum height=20mm},
+%point/.style = {circle,fill=red},
+%line/.style = {draw, line width=.3mm, color=black, -latex'},
+%background/.style = {rectangle,opacity = .65,fill=BurntOrange, inner sep=.1cm, rounded corners, minimum width=45mm, minimum height=51mm} ]
+
+\node (I) 		[block]				{Input\\\small{\emph{depth and image from RGB-D sensor}}};
+\node (M)   	[block,below=of I] 		{Measurement\\\small{\emph{surface vertices, normal map}}};
+\node (D1) 	[block,below=of M]		{Extract features from measurement\\\small{\emph{keypoints and BASE descriptors}}};
+\begin{scope} [node distance = 10mm]
+\node (PE) 	[block,below=of D1] 		{Pose Estimation\\\small{\emph{update sensor coordinate frame}}};
+\end{scope}
+\node (AM) 	[block, fill=red!20, below=of PE]	{Adapt Mesh\\\small{\emph{update global mesh structure}}};
+\node (D2) 	[block,below=of AM]				{Extract features from global mesh\\\small{\emph{keypoints and BASE descriptors}}};
+
+	
+%	& \node (M) [myblock] {Measurement\\\small{\emph{surface vertices, normal map}}}; & \\
+%	
+%\matrix[row sep = 8mm, column sep = 8mm]{
+%	% third row
+%	& \node (D1) [block] {Extract features from measurement\\\small{\emph{keypoints and BASE descriptors}}}; & \\
+%	
+%	% fourth row
+%	& \node (PE) [block]  {Pose Estimation\\\small{\emph{update sensor coordinate frame}}}; & \\
+%	
+%	% fifth row	
+%	& \node (AM) [block, fill=red!20] {Adapt Mesh\\\small{\emph{update global mesh structure}}}; & \\
+%	
+%	% sixth row
+%	& \node (D2) [block] {Extract features from global mesh\\\small{\emph{keypoints and BASE descriptors}}}; & \\
+%	};
+
+%\path[line]  ($ (I.south)+(-12mm,0) $) -- node[right] {\ $R_k$} ($ (M.north)+(-12mm,0) $);
+%\path[line]  ($ (M.south)+(-12mm,0) $) -- node[right] {\ $V_k\ N_k$} ($ (D1.north)+(-12mm,0) $);
+%\path[line]  ($ (D1.south)+(-12mm,0) $) -- node[right, pos=.35] {\ $K_k\ D_k$} ($ (PE.north)+(-12mm,0) $);
+%\path[line]  ($ (PE.south)+(-12mm,0) $) -- node[right] {\ $T_{g,k}$} ($ (AM.north)+(-12mm,0) $);
+%\path[line]  ($ (AM.south)+(-12mm,0) $) -- node[right] {\ $T_{g,k}\ M_k$} ($ (D2.north)+(-12mm,0) $);
+
+\path[line]  ($ (I.south)+(4mm,0) $) -- node[right] {\ $R_k$} ($ (M.north)+(4mm,0) $);
+\path[line]  ($ (M.south)+(4mm,0) $) -- node[right] {\ $V_k\ N_k$} ($ (D1.north)+(4mm,0) $);
+\path[line]  ($ (D1.south)+(4mm,0) $) -- node[right, pos=.65] {\ $K_k\ D_k$} ($ (PE.north)+(4mm,0) $);
+\path[line]  ($ (PE.south)+(4mm,0) $) -- node[right] {\ $T_{g,k}$} ($ (AM.north)+(4mm,0) $);
+\path[line]  ($ (AM.south)+(4mm,0) $) -- node[right] {\ $M_k$} ($ (D2.north)+(4mm,0) $);
+
+\path[jline] ($ (I.south)+(-4mm,0mm) $) -- ($ (M.north)+(-4mm,1.5mm) $);
+\path[mydash] ($ (M.north)+(-4mm,1.5mm) $) -- ($ (M.south)+(-4mm,-1.5mm) $);
+\path[line] ($ (M.south)+(-4mm,-1.5mm) $) -- ($ (D1.north)+(-4mm,0mm) $);
+\path[dashed] ($ (M.south)+(-4mm,0mm) $) -- node[right] {$\ I_k\ $} ($ (D1.north)+(-4mm,0mm) $);
+
+%\path[jline] ($ (M.south)+(15mm,0mm) $) -- ($ (D1.north)+(15mm,0mm) $);
+%\path[mydash] ($ (D1.north)+(15mm,0mm) $) -- ($ (PE.south)+(15mm,0mm) $);
+%\path[line] ($ (PE.south)+(15mm,0mm) $) -- ($ (AM.north)+(15mm,0mm) $);
+%\path[dashed] ($ (PE.south)+(15mm,0mm) $) -- node[right] {$\ V_k\ $} ($ (AM.north)+(15mm,0mm) $);
+
+\path[jline] (M) -- ($ (D1.north)+(0mm,1.5mm) $);
+\path[mydash] ($ (D1.north)+(0mm,1.5mm) $) -- ($ (PE.south)+(0mm,-1.5mm) $);
+\path[line] ($ (PE.south)+(0mm,-1.5mm) $) -- (AM);
+\path[dashed] (PE) -- node[right] {$V_k\ $} (AM);
+
+\path[jline] ($ (PE.south)+(-4mm,0mm) $) -- ($ (AM.north)+(-4mm,1.5mm) $);
+\path[mydash] ($ (AM.north)+(-4mm,1.5mm) $) -- ($ (AM.south)+(-4mm,-1.5mm) $);
+\path[line] ($ (AM.south)+(-4mm,-1.5mm) $) -- ($ (D2.north)+(-4mm,0mm) $);
+\path[dashed] ($ (AM.south)+(-4mm,0mm) $) -- node[right] {$\ T_{g,k}\ $} ($ (D2.north)+(-4mm,0mm) $);
+
+\begin{scope}[draw=gray!60!black, line width = .4mm, dash pattern=on 2pt off 4pt on 8pt off 4pt]
+\draw ($ (PE.north)+(20mm,3.8mm) $) -- ($ (PE.north)+(-20mm,3.8mm) $);
+\end{scope}
+
+%\path[line]  (M) edge node[right] {\ $V_k\ N_k$} (D1);
+%\path[line]  (D1) edge node[right, pos=.35] {\ $K_k\ D_k$} (PE);
+%\path[line]  (PE) edge node[right] {\ $T_{g,k}$} (AM);
+%\path[line]  (AM) edge node[right] {\ $T_{g,k}\ M_k$} (D2);
+\path[line]  (D2.east) -- ++(right:3mm) |- (PE.east) node[right, near start, text width=1cm]{$\ T_{g,k-1}$\\\ \\$\ \hat{K}_k\ \hat{D}_k$};
+
+%\begin{pgfonlayer}{background}
+%\node [background, fit=(PE) (D2)] {};
+%\end{pgfonlayer}
+	
+\end{tikzpicture}
+\end{figure}
+
+\end{document}
+
+
+
+%	\matrix[row sep = 8mm, column sep = 0mm]{
+%	\node (I) [block] {Input\\\small{\emph{depth and image from RGB-D sensor}}}; \\
+%	\node (M)   [block] {Measurement\\\small{\emph{surface vertices, normal map}}}; \\ 
+%	\node (D1) [block] {Extract features from measurement\\\small{\emph{keypoints and BASE descriptors}}}; \\
+%	\node (PE) [block]  {Pose Estimation\\\small{\emph{update sensor coordinate frame}}}; \\
+%	\node (AM) [block, fill=red!20] {Adapt Mesh\\\small{\emph{update global mesh structure}}}; \\
+%	\node (D2) [block] {Extract features from global mesh\\\small{\emph{keypoints and BASE descriptors}}}; \\
+%	};
+%
+%	\matrix[row sep = 3.91mm, column sep = 20mm]{
+%	
+%	\node (p11) [point] {};   & \node (p13) [point] {};   & \node (p13) [point] {}; \\
+%	\node (p21) [point] {};   & \node (p22) [point] {};   & \node (p23) [point] {}; \\
+%	\node (p31) [point] {};   & \node (p32) [point] {};   & \node (p33) [point] {}; \\
+%	\node (p41) [point] {};   & \node (p42) [point] {};   & \node (p43) [point] {}; \\
+%	\node (p51) [point] {};   & \node (p52) [point] {};   & \node (p53) [point] {}; \\
+%	
+%	\node (p61) [point] {};   & \node (p63) [point] {};   & \node (p63) [point] {}; \\
+%	\node (p71) [point] {};   & \node (p72) [point] {};   & \node (p73) [point] {}; \\
+%	\node (p81) [point] {};   & \node (p82) [point] {};   & \node (p83) [point] {}; \\
+%	\node (p91) [point] {};   & \node (p92) [point] {};   & \node (p93) [point] {}; \\
+%	\node (p101) [point] {}; & \node (p102) [point] {}; & \node (p103) [point] {}; \\
+%	
+%	\node (p111) [point] {}; & \node (p113) [point] {}; & \node (p113) [point] {}; \\
+%	\node (p121) [point] {}; & \node (p122) [point] {}; & \node (p123) [point] {}; \\
+%	\node (p131) [point] {}; & \node (p132) [point] {}; & \node (p133) [point] {}; \\
+%	\node (p141) [point] {}; & \node (p142) [point] {}; & \node (p143) [point] {}; \\
+%	\node (p151) [point] {}; & \node (p152) [point] {}; & \node (p153) [point] {}; \\
+%	
+%	\node (p161) [point] {}; & \node (p163) [point] {}; & \node (p1613) [point] {}; \\
+%	\node (p171) [point] {}; & \node (p172) [point] {}; & \node (p173) [point] {}; \\
+%	\node (p181) [point] {}; & \node (p182) [point] {}; & \node (p183) [point] {}; \\
+%	\node (p191) [point] {}; & \node (p192) [point] {}; & \node (p193) [point] {}; \\
+%	\node (p201) [point] {}; & \node (p202) [point] {}; & \node (p203) [point] {}; \\
+%	
+%	\node (p211) [point] {}; & \node (p213) [point] {}; & \node (p213) [point] {}; \\
+%	\node (p221) [point] {}; & \node (p222) [point] {}; & \node (p223) [point] {}; \\
+%	\node (p231) [point] {}; & \node (p232) [point] {}; & \node (p233) [point] {}; \\
+%	};
+%	

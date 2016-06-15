@@ -1,0 +1,13 @@
+First experiment
+
+7.1.1 Static scene, static object, static sensor mesh validation
+- Simulate data take from known environment. 
+ - An object on a table
+ - Generate simulated sensor data from a known view in the environment
+- Apply adaptive mesh technique
+ - Create initial mesh from points that are close to each other with delaunay triangulation
+ - Simulate the acquisition of new data
+ - Determine the resultant forces on each node
+ - Evolve the mesh according to F=ma
+- Compare quality of mesh by evaluating error of mesh to known truth
+- Optimize adaptive mesh parameters
