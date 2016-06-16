@@ -1,0 +1,408 @@
+$$$ theapa.sty $$$  --- Version 2.5 .1(May 1992)
+   by Young U. Ryu (young@emx.utexas.edu)
+
+Based on the {\it Publication Manual of the American Psychology Association},
+Third Edition, Fifth Printing, February 1988.
+
+copyright (C) 1991, 1992.
+   Young U. Ryu
+newapa.sty 2.0 - 1991.
+   Young U. Ryu
+newapa.sty - copyright (C) 1989, 1990.
+   Stephen N. Spencer
+apalike.sty - copyright (C) 1986, 1988.
+   Susan King and Oren Patashnik
+ulem.sty - copyright (C) 1989.
+   Donald Arseneau
+
+
+List of User Commands
+
+ Citation (Auto Switch: Full -> Short)
+   - \cite, \citeA, \citeauthor, \citeyear
+ Enforce Full Citation
+   - \fullcite, \fullciteA, \fullciteauthor
+ Enforce Short Citation
+   - \shortcite, \shortciteA, \shortciteauthor
+ Change Citation Functuations
+        including Quotation Marks around Article Titles
+   - \citepunct
+ Change Citation Labels
+   - \citelabels
+ Underline instead of Italic
+   - \UnderlinedBemOnly, \UnderlinedEm
+ Reference and Bibliography Names
+   - \refname, \bibname
+ Do not Place Comma before \& in Ref. Sec. When no. of Authors = 2
+   - \NoCommaBetweenTwoAuthors
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+SEE THE FOLLOWING TUTORIAL NOTES.
+  1 - theapa.bst and \bibitem entry
+  2 - citation formats
+  3 - changing citation functions (if you want)
+  4 - changing citation labels (if you want)
+  5 - enforcing APA style section heading (if you want)
+  6 - APA style seriations
+  7 - notes (including things not implemented and to be implemented)
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+[0] Three Parts
+
+This file consists of three parts:
+  Part I   - APA Style Citation
+  Part II  - Optional APA Style Section Heading and Seriation
+  Part III - Underline Stuff
+
+  - Part I and Part II are completely independent.
+  - If one does not declare \UnderlinedBemOnly or \UnderlinedEm,
+    Part I and Part III are independent.
+  - If one replaces \ULine in Part II with \underbar (or \underline)
+    Part II and Part III are independent.
+
+  - You may remove independent parts without affecting others.
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+[1] theapa.bst and \bibitem entry
+
+The ``theapa.bst'' BibTeX bibliography style creates references with labels:
+      \protect\BCAY{full author list}{abbrev. author list}{year}
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+[2] Citation Formats
+
+The citations are enclosed within parentheses ``( ... )''
+    as default. But one may change them using \citepunct.
+Short author lists use the ``et al.'' construct.
+These labels are processed by the following LaTeX commands:
+
+=============
+\cite<optional prefix note>[optional notes]{Key(s)}
+    -> (prefix note Authors, Year, optional notes)
+    For example: \cite<e.g.\ see>[p.~32]{Apt88}
+                      => (e.g. see Apt, 1988, p. 32)
+    -> automatically switches from \fullcite to \shortcite
+\citeA[optional notes]{keys}
+    -> automatically switches from \fullciteA to \shortciteA
+\citeB[optional notes>{keys}
+    = \citeA
+\citeauthor{key}
+    -> automatically switches from \fullciteauthor to \shortciteauthor
+\citeC{keys}
+    = \citeauthor{keys}
+\citeyear[optional notes]{key(s)} -> (Year1, Year2, ...)
+
+=============
+\nocite{aaa,bbb} makes following \cite{aaa}, \cite{bbb}, etc.
+    short citations.
+\nocite{*} does not make following \cite{...}, etc. short citations.
+                ^^^
+=============
+\fullcite<optional prefix note>[optional notes]{Key(s)}
+    -> (prefix note Authors1, Year1; Authors2, Year2; ..., optional notes)
+\fullciteA[optional notes]{keys}
+    -> Authors1 (Year1), ..., AuthorsN (YearN, optional notes)
+\fullciteB[optional notes]{keys}
+    = \fullciteA[optional notes]{keys}
+\fullciteauthor{keys}
+    -> Authors1, Authors2, ...
+\fullciteC{keys}
+    = \fullciteauthor
+
+=============
+The difference between `\shortciteXXX' and `\fullciteXXX':
+is that `\shortciteXXX' gives `First author et al.'
+if no. authors >= 3.
+   
+\shortcite<optional prefix note>[optional notes]{Key(s)}
+    -> (prefix note Short Authors1, Year1; ..., optional notes)
+\shortciteA[optional notes]{keys}
+    -> Short Authors1 (Year1), ..., Short AuthorsN (YearN, optional notes)
+\shortciteB[optional notes]{keys}
+    = \shortciteA[optional notes]{keys}
+\shortciteauthor{keys}
+    -> Short Authors1, Short Authors2, ...
+\shortciteC{keys}
+    = \shortciteauthor
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+[3] Changing Citation Punctuations
+
+\citepunct{open paren}%
+          {between authors in parenthesis and ref. sec}%
+          {between authors in text}%
+          {between author(s) and year}%
+          {between citations}%
+          {before notes}%
+          {closing paren}%
+          {open quote for article titles}%
+          {closing quote for article titles}
+
+For example,
+  \citepunct{[}{and}{\&}{ }{, }{: }{]}{``}{,''}
+       - use square brackets
+         `and' between authors in parenthesis and ref. sec.
+         '&' between authors in text
+         space between author and year
+         comma between citations
+         comma before notes
+    e.g. [Apt and van Emden 1986, Lloyd 1985: Notes]
+    e.g. Apt & van Emden [1986]
+       - ``article title,''  (in double quote marks and comma in them)
+
+The default is:
+  \citepunct{(}{\&}{and}{, }{; }{, }{)}{}{.}
+
+Notice spaces around punctuations in \citepunct!!!
+
+In Ref. Sec, a comma is placed before \&, even if no. of authors = 2.
+\NoCommaBetweenTwoAuthors
+     removes such commas in Ref. Sec.
+     But, a comma will be still placed before \& if no. of authors >= 3.
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+[4] Changing Citation Labels
+
+\citelabels{editor label}%
+           {editors label}%
+           {volume label}%
+           {number label}%
+           {edition label}%
+           {page label}%
+           {pages label}%
+           {chapter label}%
+           {tech. rep. label}
+
+For example,
+  \citelabels{, editor}{, editors}{Volume}{Number}{edition}%
+             {page}{pages}{chapter}{Technical report}
+
+The default is:
+  \citelabels{ (Ed.)}{ (Eds.)}{Vol.}{No.}{edition}%
+             {p.}{pp.}{chap.}{Tech.\ rep.}
+
+Notice spaces around lables in \citelabels!!!
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+[5] Enforcing APA Style Section Heading 
+
+ A. Place one of the following between \documentstyle[...]{...}
+    and \begin{document}:
+
+       \OneLevelHeading    \TwoLevelHeading   \TwoLevelHeadingA
+       \ThreeLevelHeading  \FourLevelHeading  \FiveLevelHeading
+
+    to enforce APA style section heading.
+
+    Read the following notes to understand what they do.
+
+ B. The follow 5 levels of APA section headings are defined
+      \levelone{...}
+            ^^^   Normalsize, Centered, Uppercase, Boldface
+      \leveltwo{...}
+            ^^^   Normalsize, Centered, Boldfaced
+      \levelthree{...}
+            ^^^^^ Normalsize, Centered, Underlined
+      \levelfour{...}
+            ^^^^  Normalsize, Flushleft, Unindented, Underlined
+      \levelfive{...}
+            ^^^^  Normalsize, Flushleft, Indented, Underlined
+                  followed by texts in the same line
+
+    However, you will *not* use \levelone{...}, \leveltwo{...}, etc.
+    in your document. Instead, you will use \section*[...]{...},
+     \subsection*[...]{...}, etc. Read the following notes.
+
+    Note: According to the APA manual (p. 66), Level One & Two
+          Headings are NOT boldfaced. To strictly enforce
+          APA requirements, remove \bf in \levelone and \leveltwo
+          macros.
+
+ C. If you don't like spaces before and after section headings,
+    modify \b@level@one@skip, \e@level@one@skip,
+    \b@level@two@skip, \e@level@two@skip, etc.
+    See comments around their definitions.
+
+ D. Level 3, 4, and 5 underlines are placed by \ULine{...}
+    of ulem.sty ((C) Donald Arseneau) that is attached in the
+    end of this file. This is because \ULine allows line
+    breaks, while \underbar{...} and \underline{...} do not,
+    when the heading is longer than the \textwidth (minus 8em).
+    If you don't like the way \ULine places underlines,
+    (1) replace \ULine in \levelthree, \levelfour, and \levelfive macros
+    with \underbar or \underline. In that case, however, if the heading
+    is long, LaTeX will complain about overfull \hbox; alternatively
+    (2) modify and improve `ulem.sty' and send me a copy (thanks).
+
+ E. The APA manual suggests 6 ways of using heading levels:
+    \OneLevelHeading:   \section       = \leveltwo (toc)
+    \TwoLevelHeading:   \section       = \leveltwo (toc)
+                        \subsection    = \levelfour (toc)
+    \TwoLevelHeadingA:  \section       = \leveltwo (toc)
+                        \subsection    = \levelfive
+    \ThreeLevelHeading: \section       = \leveltwo (toc)
+                        \subsection    = \levelfour (toc)
+                        \subsubsection = \levelfive
+    \FourLevelHeading:  \section       = \leveltwo (toc)
+                        \subsection    = \levelthree (toc)
+                        \subsubsection = \levelfour (toc)
+                        \paragraph     = \levelfive
+    \FiveLevelHeading:  \section       = \levelone (toc)
+                        \subsection    = \leveltwo (toc)
+                        \subsubsection = \levelthree (toc)
+                        \paragraph     = \levelfour
+                        \subparagraph  = \levelfive
+
+ F. \section{AAA}: AAA = heading, page head, table of contents
+    \section*{AAA}: AAA = heading
+    \section[BBB]{AAA}: AAA = heading; BBB = page head, table of contents
+
+    \subsection{AAA}: AAA = heading, table of contents
+    \subsection*{AAA}: AAA = heading
+    \subsection[BBB]{AAA}: AAA = heading; BBB = table of contents
+
+    (Exception: When \TwoLevelHeadingA is used -
+     \subsection{AAA}: AAA = heading
+     \subsection*{AAA} - not allowed
+     \subsection[BBB]{AAA} - not allowed)
+    
+    \subsubsection{AAA}: AAA = heading, table of contents
+    \subsubsection*{AAA}: AAA = heading
+    \subsubsection[BBB]{AAA}: AAA = heading; BBB = table of contents
+
+    (Exception: When \ThreeLevelHeading is used -
+     \subsubsection{AAA}: AAA = heading
+     \subsubsection*{AAA} - not allowed
+     \subsubsection[BBB]{AAA} - not allowed)
+
+    \paragraph{AAA}: AAA = heading
+
+    \subparagraph{AAA}: AAA = heading
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+[6] APA Seriations
+
+ A. seriate environment:
+    For example, the following:
+
+       Blah blah blah
+       \begin{seriate}
+       \item first item,
+       \item second item.
+       \end{seriate}
+       Blah blah blah
+
+     results in:
+
+       Blah blah blah (a) first item, (b) second item.  Blah blah blah
+
+ B. APAenumerate environment
+    For example, the following:
+
+       Blah blah blah
+       \begin{APAenumerate}
+       \item first item ... ... ... continue continue
+       \item second item ... ... ... continue continue
+       \end{APAenumerate}
+       Blah blah blah
+
+     results in:
+
+       Blah blah blah
+           1. first item ... ... ...
+       continue continue
+           2. second item ... ... ...
+       continue continue
+       Blah blah blah
+
+ C. APAitemize environment
+    For example, the following:
+
+       Blah blah blah
+       \begin{APAitemize}
+       \item first item ... ... ... continue continue
+       \item second item ... ... ... continue continue
+       \end{APAitemize}
+       Blah blah blah
+
+     results in:
+
+       Blah blah blah
+           o  first item ... ... ...
+       continue continue
+           o  second item ... ... ...
+       continue continue
+       Blah blah blah
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+[7] Others
+
+ A. If you use a language other than English,
+    You probably want to change reference and bibliography names.
+    Defaults are English names:
+
+    e.g. \def\refname{Reference}
+    e.g. \def\bibname{Bibliography}
+
+    Place those definitions on the top of your document or
+    before \bibliography or \begin{thebibliography}.
+
+ B. As default, BibTeX changes cases of article titles.
+
+    e.g. Your Entry in xxx.bib: Formal Representation of ZZZ
+         Your will get:         Formal representation of zzz
+    e.g. Your Entry in xxx.bib: Formal Representation of {ZZZ}
+         Your will get:         Formal representation of ZZZ
+
+    If you don't want to change cases of article title, see
+    Version 2.5 Update Notes in `theapa.bst'.
+
+ C. `mastersreport', `dbathesis', `eddthesis' added in theapa.bst.
+     Why? - Some schools also allow master's report as well as
+             master's thesis.
+          - DBA (Doctor of Business Administration) and
+            Ed.D. (Doctor of Education) are also popluar
+            doctoral degrees.
+
+ D. Underlined (not italic) book titles, etc.
+    - A few journal publication editors and schools,
+      who do not appreciate new electronic typesetting and
+      desktop publishing technologies, require underlined
+      book titles, etc.
+    - To do this, I included `ulem.sty' (C) 1989 by Donald Arseneau.
+    - `\UnderlinedBemOnly' underlines book titles, etc. in Reference.
+      `\UnderlinedEm' replaces emphasized texts by underlined texts
+                      both in the body and references of your document.
+
+ E. Not implemented yet (!): to be implemented soon
+    - None
+
+ F. Not implemented: I don't know if I can do in the near future !!! ;-)
+    - Same last name but different people
+
+         (C. Lewis, 1958; D. Lewis, 1973)
+          ^               ^
+ G. NO GUARANTEE, absolutely (You know what I mean.)
+
+ H. Bug and/or suggestion reports
+    - Your bug and/or suggestion report(s) is (are) welcome(d).
+    - E-mail me:
+
+            young@emx.utexas.edu (Internet)
+            ^^^^^
+            youngr@utxvm (Bitnet)
+                 ^
+
+
+
+
+

@@ -1,0 +1,14 @@
+This directory contains the documentation for the support programs and LaTeX2e
+packages, as  described in  the manual  "textips," which  can be  found in the
+user_manuals parent directory.
+
+In addition:
+-----------
+all_tip_docs.tar:  contains all the files  found within this directory, neatly 
+tarred into a single archive (for convenient downloading).
+
+--
+These  files are maintained  by Neall Doren  (nedoren@sandia.gov).  Email with 
+corrections or questions.
+
+Last updated: 02/17/2000

@@ -1,0 +1,73 @@
+
+	  MERGE -- A Form Letter Option to the LaTeX Letter Style
+
+				by
+
+			Graeme McKinstry
+			Computing Services Centre
+			University of Otago
+			P O Box 56
+			Dunedin, New Zealand
+
+		graeme%otago.ac.nz@relay.cs.net
+
+A version of these macros appeared in TUGboat 8 #1, April 1987.
+
+Merge is a substyle [option] under the Latex style 'Letter' which
+merges a standard letter with a separate file containing addresses
+and opening lines.  Merge will read {address}{opening} pairs from a
+specified file and merge them with a form letter by producing a separate
+letter environment (containing unique "\begin{letter}{address}" and
+"\opening{opening}" commands) for each pair.  
+
+
+The basic algorithm is:
+     1. Open the address file.
+     2. Read the addresses file getting the address and opening line.
+     3. Process the contents of the MERGE environment and store it
+        in a box (\@store). This is the standard part of the letter.
+     4. Produce the start of the letter (your address (including date),
+        their address, and the opening line).
+     5. Make a copy of the standard letter (\@store) and unbox this copy.
+     6. Repeat steps 2, 4, and 5 (not 3) until there are no more addresses.
+
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+A letter, say LETTER.TEX, would be set up as follows:
+
+\documentstyle[merge]{letter}
+
+\address{...}		% your address
+\signature{...}		% your signature
+
+\begin{document}
+\begin{merge}{myaddresses}	% MYADDRESSES.TEX contains addresses+openings
+
+With regard to ....		% letter starts
+
+\closing{...}		% closing
+\ps{...}			% \ps, \encl, \cc, etc.
+
+\end{merge}
+\end{document}
+
+The address file, MYADDRESSES.TEX, would contain:
+
+{Computing Services Centre, \\	% first address
+ University of Otago, \\
+ Dunedin, \\
+ New Zealand}
+{Dear Graeme,}		% \opening for first address
+{Charles S. Roberson\\	% next address
+ Dept. of Computer Science\\
+ College of William and Mary\\
+ Williamsburg, VA  23185}
+{Dear Chip,}			% next \opening
+....				% etc.
+
+NOTES:
+  Braces are matched, except that if the input is only one line then it
+    is not necessary to contain it within braces.
+  It is important to leave NO BLANK LINES at the end of the address file.
+  Be sure to supply the "\\" for breaking the addresses. -csr
+

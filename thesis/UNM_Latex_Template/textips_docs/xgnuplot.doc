@@ -1,0 +1,115 @@
+Introduction
+------------
+
+Xgnuplot is an X-windows interface to the popular gnuplot porgram built
+using Tcl and Tk.  The Xgnuplot application provides a convenient means
+to set gnuplot options using a point and click approach.  Since the
+application is written entirely in the scripting language Tcl using the
+Tk toolkit, it is extensible and users can easily add additional functionality.
+
+The application works by communicating with gnuplot via a pipe and therefore
+it is not necessary to recompile gnuplot or modify it in any way.  This is
+the first release of Xgnuplot and although I believe it is already a useful
+program the intention is to develop it further adding support for other
+tools. Tcl provides an excellent "glue" to build powerful applications
+from smaller tools using a range of inter-process communication methods.
+Xgnuplot therefore makes it easy to integrate many applications using
+gnuplot for the visualization.
+
+This first release of Xgnuplot is not being advertised on to the Tcl
+community as current the documentation is poor, however it should be 
+possible for anyone with a passing knowledge of gnuplot to use the 
+application.  Specifically, there is no documentation on how to use 
+Xgnuplot as "glue" however experienced Tcl/Tk programmers who are also 
+familiar with gnuplot, should find it quite straight forward.
+
+
+Plotting a Function or a data file
+----------------------------------
+
+To plot a function, for example sin(x), enter the function to plot in the
+entry field to the right of the "Line x" "Function" and "File" buttons for
+one of the lines.  For the line to be plotted the "Line x" check button
+must be "on".  You must also select the type to be "Function" by clicking
+on the radio button "Function".  When both are set, click on "Plot" in the 
+main command bar; the function will then be displayed in a gnuplot X11 window.
+By default the key will be set to the text representing the plotted function, 
+you can overide this by entering text in the entry field to the right of the
+"Title:" check button, for example enter the text "First line" and click
+on plot again -- your function will be re-displayed with a different entry
+in the key.
+
+To plot a data file simply enter the file name in the field you used to enter
+the function, but select the "File" radio button (only one of Function or
+File can be selected at any one time).  The format of the file must conform
+to that specified normally for gnuplot (see the gnuplot manual for more
+details).  You may select the columns of the file to plot by entering
+appropriate numbers in the columns fields at the bottom of the line entry
+panel.
+
+To plot more than one function/file simply make entries in any one of the
+ten line entry panels (you can see them all by using the scrollbar to the
+right of the main Xgnuplot window).  Only those lines for which the "Line"
+checkbutton is "on" are actually plotted when the "Plot" button is clicked
+on.
+
+If the function is a function of x and y or the data file is a function of
+two coordinates, you should select a 3D plot by clicking on the Radio button
+in the main command bar to select a 3D plot option.
+
+Line and symbol styles used to display the data are selected from the
+"Style:" "Line:" and "Point:" menus n the third row of the line entry panel.
+
+
+Hard Copy Output
+----------------
+
+To obtain hard copy output select "Hard Copy Output ..." from the File
+menu.  A new window will appear which will allow you to type the name of
+an output file (the default is "dump") and select the type of hardcopy
+output (Postscript or Fig output may be selected from the menu).
+
+
+Defining Functions
+------------------
+
+Function definitions can be entered using a scratch pad; select 
+"Function Scratch Pad ..." from the File menu and a window will appear
+in which you can enter function definitions in a format suitable for
+gnuplot, for example:
+
+   f(x) = x**2
+
+Function definitions may be saved by clicking on "Save".  To make the
+function definitions available for use in functions to plot you need to
+click on the "Apply" button.
+
+
+Options
+-------
+
+A full range of options may be specified for the plots.  The options
+appropriate to each line are set in the line panels themselves (i.e.
+type -- Function/File -- style, line-style, point-style, columns to plot
+etc.).  Options for the complete plot can be set by selecting an appropriate
+entry from the Options menu.  In each case a new window will appear in
+which options can be set:
+
+  Main...       Titles, axes and data range, data sampling etc.
+  3D...         3D plot options, orientation, style, contour options etc.
+  Parametric... Options for parametric (f(t)) plots
+  Polar...      Options for polar plots
+  Miscellaneous Various options which do not fit in anywhere else.
+
+For more details on exactly what the options mean consult the gnuplot
+manual for details of the options that you may wich to set and then
+select these from the appropriate menus.  Alternatively just give it a
+try and see what happens.
+
+
+Tools
+-----
+
+The tools menu is a "place holder" for furture additions to the options
+available from Xgnuplot.
+

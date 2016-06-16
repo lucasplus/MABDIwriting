@@ -1,0 +1,72 @@
+======================================================================
+@LaTeX-style-file{
+   filename        = "setspace.sty",
+   version         = "5.0",
+   date            = "Tue 6 February 1996",
+   time            = "15:40 UT+11",
+   author          = "Geoffrey Tobin",
+   address         = "School of Electronic Engineering
+                      Faculty of Science and Technology
+                      La Trobe University
+                      Bundoora VIC 3124
+                      Australia",
+   email           = "G.Tobin@latrobe.edu.au (Internet)",
+   telephone       = "(+ 613) 479-3736",
+   FAX             = "(+ 613) 479-3025",
+   supported       = "yes",
+   archived        = "CTAN",
+   keywords        = "LaTeX package, line spacing",
+
+DESCR:  LaTeX Document style option "setspace"
+        Usage:  \usepackage{setspace}
+        Based on the doublespace option created by Stephen Page.
+
+This style option provides commands and environments for doing double and
+one-and-a-half spacing based on pt size.
+
+Single spacing is the default.
+
+Three commands, \doublespacing, \onehalfspacing, and \singlespacing, are for
+use in the preamble to set the overall spacing for the document.  If a
+different spacing is required then the \setstretch{baselinestretch} command
+can be used in the preamble to set the baselinestretch appropriately.  The
+default spacing with this style option is single spacing.
+
+Three environments, singlespace, onehalfspace, and doublespace, allow the
+spacing to be changed within the document.  For example, the doublespace
+environment is envoked using the commands \begin{doublespace} text
+\end{doublespace}. Both the onehalfspace and doublespace environments are
+intended to increase the spacing, so the onehalfspace environment should not
+be used in a double spaced document.  If an increased spacing different from
+one-and-a-half or double spacing is required then the spacing environment can
+be used.  The spacing environment takes one argument which is the larger
+baselinestretch to use, (e.g., \begin{spacing}{2.5} text \end{spacing}.
+
+\footins is adjusted the same as \parskip - appears to work. Lose stretch
+parts but don't consider that to be crucial
+
+MODS:
+       Redefinition of \spacing and \endspacing for consistency with
+       TeX 3.x inserted by George Greenwade.  Modification provided by
+       Philip Ross (ROSS@UK.AC.ABDN.BIOMED) and John Byrne via INFO-TeX.
+
+PLEASE REPORT ANY BUGS
+
+Old Documentation follows:
+       1. A new environment "singlespace" is provided, within which single
+          spacing will apply.
+          JFL - changed so that it works in regular text and so that
+          vertical space before and after is correctly computed
+       2. Double spacing is turned off within footnotes and floats (figures
+          and tables).
+       3. Proper double spacing happens below tabular environments and in
+          other places where LaTeX uses a strut.
+       4. Slightly more space is inserted before footnotes.
+       5. JFL - fixes spacing before and after displayed math
+
+
+POSSIBLE BUGS:
+  . Increasing struts may possibly cause some other obscure part of
+    formatting to fall over.
+  . \begin{singlespace}\begin{quote} produces the wrong spacing before
+    the quote (extra glue is inserted).

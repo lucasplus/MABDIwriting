@@ -1,0 +1,968 @@
+\documentclass[11pt,titlepage]{article}
+%::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+%                      AMS-LaTeX packages
+%  These packages include the functions of AMS-LaTeX.
+%::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+\usepackage{amsmath}
+\usepackage{amsbsy}
+\usepackage{amsopn}
+\usepackage{amsthm}
+\usepackage{upref}
+%::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+%                      AMSFonts packages
+%  These packages give access to the various AMS fonts.
+%::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+\usepackage{amsfonts}
+\usepackage[mathscr]{eucal}
+\usepackage{eucurs}
+%::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+%                      Graphics packages
+%  These packages allow PostScript figures to be included.
+%::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+\usepackage{epsfig}
+\usepackage{psfrag}
+%::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+%                       Table and Figure packages
+%  These packages modify the 'tabular' and 'array' environments.  Also 
+%  they modify the 'caption' command and create a 'subfigure' environment.
+%::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+\usepackage{array}
+%\usepackage{tabularx}
+\usepackage{hhline}
+\usepackage[sl,bf,hang,small]{caption}
+%::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+%                          List packages
+%  This package modifies the 'enumerate' environment.
+%::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+\usepackage{enumerate}
+%::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+%                      Miscellaneous packages
+%::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+\usepackage{fancyheadings}
+\usepackage{fancybox}
+
+\newlength{\enumerateindent}
+\setlength{\enumerateindent}{\leftmargini}
+\addtolength{\enumerateindent}{-\labelsep}
+\addtolength{\enumerateindent}{-0.4\labelwidth}
+
+\setlength{\textheight}{8.75in}
+\setlength{\textwidth}{6.9in}
+\setlength{\oddsidemargin}{-0.15in}
+\setlength{\evensidemargin}{-0.15in}
+\setlength{\topmargin}{-0.4in}
+\setlength{\headheight}{5ex}
+\setlength{\footskip}{5ex}
+\setlength{\parskip}{2ex}
+\setlength{\parindent}{1em}
+
+\renewcommand{\floatpagefraction}{1.0}
+\renewcommand{\textfraction}{0.0}
+\renewcommand{\topfraction}{1.0}
+\renewcommand{\bottomfraction}{1.0}
+\setlength{\textfloatsep}{2ex}
+
+%\renewcommand{\captionmargin}{50pt}
+
+\newcommand{\bm}[1]{\boldsymbol{#1}}
+\newcommand{\er}[1]{\mathcur{#1}}
+\newcommand{\es}[1]{\mathscr{#1}}
+
+\newcolumntype{C}{>{$}c<{$}}
+\allowdisplaybreaks
+%\renewcommand{\tabularxcolumn}[1]{m{#1}}
+
+\def\AmS{{$\mathcal{A}$\kern-.14em\lower.5ex\hbox{$\mathcal{M}$}%
+\kern-.05em$\mathcal{S}$}}
+\def\AmSLaTeX{\protect\AmS-\protect\LaTeX}
+\def\TiPs{T\kern-.1667em\lower.5ex\hbox{I}\kern-.1emP%
+\kern-.09em\raise.48ex\hbox{\small S}}
+\def\TeXTiPs{\TeX\kern-.1em\TiPs}
+\def\PiC{P\kern-.12em\lower.5ex\hbox{I}\kern-.075emC}
+\def\PiCTeX{\PiC\kern-.11em\TeX}
+\def\BiB{B\kern-.12em\lower.5ex\hbox{I}\kern-.075emB}
+\def\BiBTeX{\BiB\kern-.11em\TeX}
+\def\AucTeX{{\scshape A\kern-.06emu\kern-.035emc}\kern-.06em\TeX}
+\def\Xy-pic{\kern-.1em X\kern-.3em\lower.4ex\hbox{Y\kern-.15em}-pic}
+
+\pagestyle{fancy}
+\lhead{\Large\TeXTiPs \vspace{0.25ex} }
+\rhead{Page \thepage \vspace{0.25ex} }
+\cfoot{Last Revision: \today}
+
+\begin{document}
+%
+\thisfancyput(3.3in,-4.5in){%
+\setlength{\unitlength}{1in}%
+\thicklines%
+\fancyoval(6.125,8.75)%
+\thinlines%
+\fancyoval(6.025,8.65)}
+\title{{\fontfamily{cminch}\selectfont \Huge{\TeXTiPs}\\[0.5ex]} Supplementary
+  information about \LaTeXe \\
+ \large{\underline{Second Edition}}}
+%\title{{\fontfamily{cminch}\selectfont \TeXTiPs\hspace{6pt}}%
+%{\Huge $\stackrel{\textstyle\bullet\rule[-15pt]{0pt}{25pt}}{\bullet}$}%
+%\\[2ex] Some suggestions for using \LaTeXe}
+\author{James W. Howse, Los Alamos National Laboratory, \\
+        Neall E. Doren, Sandia National Laboratories}
+\maketitle
+%
+\noindent
+This article is a repository of helpful advice concerning the use of \TeX\ and
+some of the more common macro languages for it, specifically \LaTeXe\ and
+\AmSLaTeX .  Currently these pages contain the knowledge of only one
+person\footnote{specifically, James Howse}, but it is to be hoped that others
+will add to this as time goes on.  For those of you using \TeX\ for the first
+time, there are several things which are important to keep in mind.  First of
+all, it is very important to understand that \TeX\ is \underline{NOT} a word
+processor.  It is nothing like $\text{\textsc{Word}}^{\circledR}$ or
+$\text{\textsc{WordPerfect}}^{\circledR}$ in that it has no built-in text
+editor, page previewer, spelling checker, or printer drivers.  \TeX\ was
+written in the dark ages of computing before these additions were believed to
+be of any use.  It is much more helpful to think of the commands in \TeX\ as
+representing a programming language in which the user describes the desired
+document layout in a procedural manner.  The program \texttt{tex} compiles
+this language into a machine \textbf{\textit{independent}} binary file which
+is denoted by the extension \texttt{.dvi}.  \LaTeXe\ and \AmSLaTeX\ are macro
+packages for \TeX\ whose commands are written in the \TeX\ language.  Second,
+as one sage was heard to say, ``\LaTeX\ is just a hack''\footnote{attributed
+  to Bill Horne}.  For the most part, no one wants to program in \TeX, so
+higher level languages, such as \LaTeXe\ and \AmSLaTeX, were developed from it
+that are hopefully easier to learn and use.  The difficulty for the end user
+is that some of the commands in these languages implicitly contain very
+specific concepts of how a page of text should be laid out.  This presents no
+problem so long as the user's and the program author's concepts of proper page
+layout agree.  However, if they do not, it is in some cases extremely
+difficult to obtain a specific page format.
+
+\noindent
+\shadowbox{\parbox{17.1cm}{
+{\bf NOTE:}  The documentation files described herein can be downloaded via
+the web from from the site 
+\textsf{http://www.math.unm.edu/\hspace{.9mm}$\bf\tilde{}$\hspace{.3mm}nedoren/latex/textips\_docs}\;.  However, they may already be present on your local
+system.  Ask your administrator for their location, or for
+help in installing these utilities and documents,  if required.  }}
+
+As was previously mentioned, \TeX\ does not have a built-in text editor, page
+previewer, spell checker, or output device drivers.  However, there are
+programs available which perform each of these complementary functions.  A
+list of public domain programs for this purpose is documented in
+Table~\ref{tbl:aux_prog_tex}.
+%
+\begin{table}[htbp]
+\setlength{\topsep}{0in}
+\begin{center}
+\begin{tabular}{|>{\centering}m{0.85in}||m{5.5in}|}
+\hhline{--}
+\multicolumn{2}{|c|}{\rule[-0.075in]{0in}{0.25in}\Large\textbf{Programs to
+  complement \TeX}}
+\\ \hhline{|=:t:=|}
+\textsl{Program} & \multicolumn{1}{c|}{\textsl{Purpose of the program}} 
+\\ \hhline{-||-}
+\texttt{dvips} & Translates the compiled output of \texttt{tex} (i.e., the
+binary \texttt{.dvi} file) into the \textsc{PostScript} page description
+language (i.e., the ASCII \texttt{.ps} file).  This program has both a man
+page and external documentation, which is in the file
+\verb+dvips-5.58.dvi+. 
+\\ \hhline{-||-}
+{\texttt{xdvi \\ xtex}} & 
+Both are X-Windows screen previewers which provide an almost WSYWIG display of
+a compiled \texttt{tex} output file (i.e., the binary \texttt{.dvi} file).
+The only documentation for either of these programs is obtained by using the
+command \texttt{man} \textit{program}.  These man pages can be printed
+using the command \texttt{man -t} \textit{program}.  Note that
+\texttt{xtex} has \textbf{\textit{not}} been kept up to date by its authors.
+\\ \hhline{-||-}
+\texttt{ghostview} & An X-Windows screen previewer which provides an almost
+WSYWIG display of a \textsc{PostScript} file (i.e., the ASCII \texttt{.ps}
+file).  The only documentation for this program is obtained by using the
+command \texttt{man ghostview}.  These man pages can be printed using the
+command \texttt{man -t ghostview}. 
+\\ \hhline{-||-}
+\texttt{ps2pdf} \\ $\text{\textsc{Distiller}}^{\textsc{tm}}$ \\ \texttt{pstopdf}
+& Programs for converting \textsc{PostScript} generated by \texttt{dvips}
+into  $\text{\textsc{Adobe}}^{\circledR}$ \texttt{PDF} format.
+The Aladdin \texttt{ps2pdf} and Derek Noonburg's \texttt{pstopdf} (preferred)
+programs are
+freeware converters for both the 
+$\text{\textsf{Unix}}^{\circledR}$
+and  $\text{\textsc{MS-Windows}}^{\textsc{tm}}$ platforms.
+$\text{\textsc{Distiller}}^{\textsc{tm}}$ is available  from
+$\text{\textsc{Adobe}}^{\circledR}$ for 
+$\text{\textsc{MS-Windows}}^{\textsc{tm}}$ (at a significant cost).  
+It has been observed that $\text{\textsc{Distiller}}^{\textsc{tm}}$
+produces a tighter (smaller) output file, with no loss of output quality.
+Find \texttt{pstopdf} at \verb+http://www.foolabs.com/xpdf/+ .
+\\ \hhline{-||-}
+\texttt{ispell} & A spelling checker which is able to filter out most \TeX\
+and \LaTeXe\ commands.  This program also has non-English dictionaries and
+allows the user to build a personal dictionary. This program has both a man
+page and external documentation, which is in the file
+\verb+ispell-3.1.dvi+.
+\\ \hhline{-||-}
+\texttt{bibcard} & An X-Windows utility for simplifying the often daunting
+task of submitting bibliographic entries to the \BiBTeX database.  
+Pull-down menus for book, article, thesis, conference and technical report
+citations are at the touch of the mouse.  The source code for this freeware
+program compiles easily on most workstations and is available from 
+\textsf{ftp.iam.unibe.ch} in directory \texttt{/pub/X11/Bibcard-1.0.tar.Z}.
+\\ \hhline{-||-}
+\texttt{emacs} & A text editor that has a number of different editing modes,
+each well suited to a particular task.  The editor has an extensive array of
+features, all of which can be customized by the user. Arguably the best text
+editor available on a $\text{\textsf{Unix}}^{\circledR}$ platform.  This
+program has both a man page and an \textbf{\textit{extensive}} interactive
+help facility. The external documentation is in the file
+\verb+emacs-19.22.dvi+.
+\\ \hhline{-||-}
+\AucTeX & This is not a program, but rather a macro package for
+\texttt{emacs}. It defines a new \TeX/\LaTeXe\ mode for \texttt{emacs} that 
+allows all of the above programs to be used from within a single integrated
+environment. Furthermore, it defines power keys which expedite the entry of
+many \TeX\ and \LaTeXe\ commands.  Those of you interested in this package
+will probably have to install it yourself.  Documentation and installation
+instructions are in \verb+auctex-9.3.dvi+.  The ftp site is
+\textsf{sunsite.auc.dk} in \texttt{/packages/auctex/}.
+\\ \hhline{--} 
+\end{tabular}
+\end{center}
+\caption{Auxiliary programs which complement \TeX.}
+\label{tbl:aux_prog_tex}
+\end{table}
+%
+In addition to document formatting, \texttt{emacs} has editing modes for
+handling e-mail, writing programs, and a huge number of other things.
+Although \texttt{xdvi} and \texttt{xtex} are both \texttt{.dvi} file
+previewers, they have somewhat different features.  \texttt{xdvi} handles
+\textsc{PostScript} far better than \texttt{xtex}, particularly if
+\textsc{PostScript} fonts are used in the main body of the document.  Also the
+screen fonts of \texttt{xdvi} have a nicer appearance than those of
+\texttt{xtex}.  On the other hand, \texttt{xtex} has some useful features that
+\texttt{xdvi} lacks.  For example, \texttt{xtex} has a mouse driven ruler,
+which is very helpful if your document must conform to some type of page
+specification.  This is common practice both for articles in conference
+proceedings and for masters theses and doctoral dissertations.  Furthermore,
+\texttt{xtex} has commands that can be embedded in your document which display
+a red box around all cross references in the document.  Pressing the mouse
+button within any one of these boxes takes you to the occurrence of that cross
+reference.  For instance, at a bibliographic citation, you can press the mouse
+button in the red box around the reference number and you are taken to the
+point in the bibliography where the actual citation appears.  Releasing the
+mouse button returns you to your original position in the document.  Also
+\texttt{xtex} keeps track of the page number as part of its interface, which
+can be very helpful if the document has no page numbers, or it is inconvenient
+to be constantly moving to the part of the page on which they are located.
+Note that neither of these programs displays documents containing color
+properly.  In order to preview such documents, convert the \texttt{.dvi} file
+to a \textsc{PostScript} \texttt{.ps} file by executing the command
+\texttt{dvips} \textit{file} \texttt{-o}, then display the resulting
+\texttt{.ps} file with \texttt{ghostview}.  By default, the output of the
+\textsc{PostScript} translator \texttt{dvips} is sent to the default printer
+for the computer.  The printer that the output is sent to, can be changed for
+the duration of a login session, by executing the command 
+\verb+setenv PRINTER+ \textit{printer} \textbf{\textit{before}} running
+\texttt{dvips}.  To alter the printer used for only one print job, use the
+command \verb+dvips -P+\textit{printer} \textit{file}.
+
+Earlier, the \TeX\ macro packages \LaTeXe\ and \AmSLaTeX\ were mentioned.  The
+commands available in \LaTeXe\ are discussed in \cite{Lam94a}.  It can be
+purchased for about \$36, or try to borrow a copy of it from the system
+administrators, a professor, or a fellow student.  \AmSLaTeX\ is a macro
+package, written under commission for the American Mathematical Society, whose
+commands are a superset of \LaTeXe 's.  Some of the additional features of
+\AmSLaTeX\ are
+%
+\vspace{-\parskip}
+\begin{enumerate}[\hspace{\enumerateindent}1) ]
+\item Seven new alignment formats for equations.  For example, these alignment
+  formats allow the following two constructions which would be rather
+  difficult in \LaTeXe.  The first construction is
+\begin{gather}
+\hspace*{-10em}
+\begin{align*} \varphi(x,z)
+&=z-\gamma_{10}x-\sum_{m+n\ge 2}\gamma_{mn}x^mz^n\\
+&=z-Mr^{-1}x-\int_{2}^{\rule{0.08em}{0in}\infty} Mr^{-\tau}x^{(\tau-n)}z^{(\tau-m)} \, d\tau
+%\rule[-1ex]{1pt}{1ex}
+\end{align*}\\[6pt]
+\hspace*{-10em} \zeta^0=(\xi^0)^2,\\
+\hspace*{-10em} \zeta^1=\xi^0\xi^1 + \xi^1\xi^2 + \xi^0\xi^2,\\
+\hspace*{-10em} \zeta^2=(\xi^1)^2 + \xi^0\xi^1.
+\end{gather}
+The second construction is
+\begin{alignat}{2}
+x_0& = y_0 && \qquad \text {by (A.3)} \\
+x_1& = y_1 + 5 && \qquad \text {by (A.11)} \\
+x_0 + x_1& = y_0 + y_1 + 1 && \qquad \text {by Axiom 1.}
+\end{alignat}
+\item Two new math environments, \texttt{cases} and \texttt{matrix}.  The
+  \texttt{cases} environment allows the construction of equations such as
+\begin{equation} P_{r-j}=
+  \begin{cases}
+    0&  \text{if $r-j$ is odd},\\
+    r!\,(-1)^{\frac{r-j}{2}}&  \text{if $r-j$ is even}.
+  \end{cases}
+\end{equation}
+The \texttt{matrix} environment greatly reduces the number of commands that
+must be entered in order to create a matrix.
+\item A \texttt{proof} environment and three different theorem styles;
+  \texttt{theorem}, \texttt{definition} and \texttt{remark}.
+\end{enumerate}
+\vspace{-\parskip}
+%
+Complete documentation of all the features of \AmSLaTeX\ is in the user's
+manual which is in the file \verb+amsldoc.dvi+.
+
+The problem with both \LaTeXe\ and \AmSLaTeX\ is that some of the commands
+make implicit assumptions about the layout of the text.  If the user wants the
+text to appear differently, this can sometimes be a {\Large\emph{BIG}}
+problem.  Also there are functions that are not in either \LaTeXe\ or
+\AmSLaTeX\ which would, on various occasions, be extremely useful.  One
+solution to these problems is for the user to try to coerce \LaTeXe\ or
+\AmSLaTeX\ into doing what he wants.  This works very well for certain
+problems, and not at all for others.  Another solution is to revise or extend
+the existing commands.  One way of doing this is to write your own commands.
+While this is a potentially interesting adventure, in many cases it is likely
+to be quite time consuming, as most commands to accomplish anything of moment
+must be written in \TeX.  Another approach which is usually less time
+consuming is to use revisions or extensions that others have written.  There
+are a large number of these available, so before writing your own functions,
+it may be helpful to see whether one already exists.  The first thing to check
+if you have a problem that is not resolved by \cite{Lam94a} is the \TeX -FAQ
+(i.e., Frequently Asked Questions).  This is available via the World Wide Web
+at the site
+\verb+http://www.cogs.susx.ac.uk/cgi-bin/texfaq2html?introduction=yes+.  It is
+also posted monthly to two bulletin boards, \textsf{comp.text.tex} and
+\textsf{news.answers}.  It can also be obtained by anonymous ftp from the
+server \textsf{rtfm.mit.edu} in the directory
+\texttt{/pub/usenet/news.answers/tex-faq}.  The next place to look for
+solutions to your problems is \cite{Goo94a}.  This book discusses many of the
+packages that extend or modify the basic capacities of \LaTeXe.  This book is
+excellent because it is laid out based on the user's desired outcome, rather
+than being a reference manual.  For instance there is an entire chapter
+describing how to make floating bodies behave in specific ways.
+
+%::::::::
+% Beware \linebreaks
+%::::::::
+The revisions and extensions of \LaTeXe\ are called packages.  Note that
+\AmSLaTeX\ is merely a set of packages for \LaTeXe.  Packages are read into a
+document using the command \verb+\usepackage[+\textit{package \linebreak
+  options}\verb+]{+\textit{package name}\verb+}+.  These commands are usually
+entered immediately after the command \linebreak
+\verb+\documentclass[+\textit{class options}\verb+]{+\textit{class
+    name}\verb+}+, which is on the first line of the document.  Generally
+speaking, the \textit{class name} determines the overall format of the
+document, and \textit{package name} determines specific aspects of the
+document format.  The \textit{class options} and \textit{package options} are
+flags which select between specific format choices in the class or package.
+These options are a list of terms separated by commas and containing
+\textbf{\textit{no}} blank spaces.  In \LaTeXe\ the extensions and revisions
+that have been written by others are designed to be entered as packages.
+These packages are usually denoted by files whose names end in \texttt{.sty}.
+Packages whose file name ends in \texttt{.sty} can be loaded using the
+\verb+\usepackage{+$\cdot$\verb+}+ command \textbf{\textit{without}} this
+extension.  The following list describes some useful styles for \LaTeXe.  They
+are invoked with the \verb+\usepackage{+\textit{package name}\verb+}+ command
+unless otherwise indicated.
+%
+\vspace{-\parskip}
+\begin{description}
+\item[\mdseries\AmSLaTeX:] As stated previously \AmSLaTeX\ is a package
+  written for the American Mathematical Society which greatly expands the
+  mathematical capacities of \LaTeXe.  Most of the useful features are loaded
+  using the command \verb+\usepackage{amsmath,amsbsy,amsopn,amsthm,upref}+.
+  Complete documentation is contained in the file \verb+amsldoc.dvi+.
+\item[\textmd{\texttt{endfloat.sty:}}] Many journals require that all tables
+  and figures appear at the end of the document, each on a separate page.
+  Further, a list of both tables and figures is often required.  This style
+  file removes tables and figures from within a document, transfers them all
+  to the end, indicates where they were in the original, puts them all on
+  separate pages, and compiles separate lists of tables and figures.
+  Note that this package should only be loaded \textit{\textbf{after}} your
+  document has been finished with all of the figures in their correct
+  locations.  Documentation is found in the file \verb+endfloat.dvi+.
+\item[\textmd{\texttt{theapa.sty \& theapa.bst:}}] These two files define a
+  bibliographic citation format that is used by the American Psychology
+  Association (APA).  The biggest difference between this format and the
+  standard \LaTeXe\ one is that rather than citing references by number from
+  the bibliography, they are cited alphabetically by the first author's last
+  name and the year of publication.  This citation format is required by some
+  journals, for instance \textit{Neural Networks}. The first file defines the
+  way citations appear in the main body of the paper, the second defines the
+  way that they appear in the bibliography.  In order to use this format, the
+  commands \verb+\usepackage{theapa}+ and \verb+\bibliographystyle{theapa}+
+  must be placed into your document.  The documentation is in the file
+  \verb+theapa.doc+.
+\item[\textmd{\texttt{fancyheadings.sty:}}] This file defines a format to
+  customize the headers and footers on each page.  Both the headers used in
+  the \cite{Lam94a}, and the headers and footers in this document, are
+  examples of the sort of customization that can be done.  The package is
+  documented in the file \verb+fancyheadings.dvi+.
+\item[\textmd{\texttt{fancybox.sty:}}] This file defines commands which allow
+  a box to be drawn around virtually anything.  Equations, lists, floats, and
+  entire pages are among the things that can be boxed.  The box on the title
+  page of this document is an example of what can be done with this package.
+  The documentation for the package is in the file
+  \verb+fancybox.dvi+, and it contains many useful examples of how to
+  box various things.
+\item[\textmd{\texttt{merge.sty:}}] This file defines a format for producing
+  form letters by merging addresses, openings and closings into a standard
+  main body.  Note that the file containing the addresses, etc., can
+  \textbf{\textit{not}} contain \textbf{\textit{any}} blank lines, even at the
+  end of the file.  The package is documented in the file
+  \verb+merge.doc+.
+\item[\textmd{\texttt{setspace.sty:}}] This package provides commands to set
+  arbitrary line spacing in documents.  Professors often request double
+  spacing for drafts of papers, as it gives them more space in which to write
+  encouraging remarks.  The package provides three commands,
+  \verb+\doublespacing+, \verb+\onehalfspacing+, and \verb+\singlespacing+,
+  for setting the overall spacing for the document in the preamble.  There are
+  also three environments with the same names which allow the spacing to be
+  changed within the document.  If a different spacing is required initially,
+  then the \verb+\setstretch{+\textit{spacing multiplier}\verb+}+ command can
+  be used in the preamble to set \texttt{baselinestretch} appropriately.  The
+  package is documented in the file \verb+setspace.doc+.
+\item[\textmd{\texttt{subequations, subfigure.sty:}}] The first list entry is
+  an environment that is contained in \AmSLaTeX , and the second entry is a
+  package.  These environments allow related equations or figures to be given
+  the same reference number followed by different letters.  Note that the
+  individual members of the subequation or subfigure can be referenced
+  separately by using a different \verb+\label{+\textit{name}\verb+}+ command
+  for each member.  The equation
+  \begin{subequations}
+    \begin{align}
+      \zeta^0 & = (\xi^0)^2,\\
+      \zeta^1 & = \xi^0\xi^1 + \xi^1\xi^2 + \xi^0\xi^2,\\
+      \zeta^2 & = (\xi^1)^2 + \xi^0\xi^1,
+    \end{align}
+  \end{subequations}
+  is an example of the use of the \texttt{subequations} environment.  The
+  \texttt{subfigure} package defines the command
+  \verb+\subfigure[+\textit{caption text}\verb+]{+\textit{figure
+      name}\verb+}+.  Note that each of the subfigures may have a different
+  caption.  The \texttt{subequations} environment is documented in the file
+  \verb+amsldoc.dvi+, and the \texttt{subfigure} package is
+  documented in \verb+subfigure.dvi+
+\item[\textmd{\texttt{array.sty:}}] This package expands the column formatting
+  options available in the \texttt{array} and \texttt{tabular} environments.
+  For instance, columns whose entries are \textbf{\textit{vertically}}
+  centered, or columns whose entries are assumed to be mathematical
+  expressions are easily created.  Furthermore it allows the vertical line to
+  be replaced by an arbitrary command. The package is documented in the file
+  \verb+array.dvi+.
+\item[\textmd{\texttt{tabularx.sty:}}] This package is an extension of the
+  \texttt{array.sty} package.  It implements a version of the \texttt{tabular}
+  environment in which the total width of the table is specified, and the
+  widths of some columns are adjusted in order to achieve this overall width.
+  Note that this is \textbf{\textit{different}} from the \texttt{tabular*}
+  environment.  The package is documented in the file
+  \verb+tabularx.dvi+.
+\item[\textmd{\texttt{hhline.sty:}}] This package defines the command
+  \verb+\hhline{+\textit{options}\verb+}+ which is similar to \verb+\hline+
+  except that resulting horizontal line's interaction with vertical lines can
+  be controlled by the user with the \textit{options} list.  The package is
+  documented in the file \verb+hhline.dvi+.
+\item[\textmd{\texttt{enumerate.sty:}}] This package redefines the standard
+  \texttt{enumerate} environment so that it has an optional argument which
+  specifies the style of the list counter.  The package is documented in the
+  file \verb+enumerate.dvi+.
+\item[\textmd{\texttt{caption.sty:}}] This package redefines the standard
+  \verb+\caption{+\textit{caption text}\verb+}+ command so that the caption
+  format can be customized by the user.  For instance, the package allows the
+  font size used in the caption to be changed, and allows the caption text to
+  be hung from the caption label.  The package is documented in the file
+  \verb+caption.dvi+.  The package has an unusual bug, the length
+  \verb+\captionmargin+ can \textbf{\textit{not}} be specified in inches, all
+  other units appear to work.
+\item[\textmd{\texttt{twocolumnconf.cls:}}] This item is actually a new
+  document class written by James Howse, rather than a package.  This class
+  defines a two column format which conforms to that required by many
+  conferences for proceedings submissions.  This class is selected with the
+  command
+  \verb+\documentclass[+\linebreak\textit{options}\verb+]{twocolumnconf}+.
+  The major difference between it and the standard two column format is that
+  in this format the abstract spans both columns, the section headings are not
+  numbered, and the pages have no numbers on them.  The title section is
+  entered exactly as in \cite[pages 181--182]{Lam94a} except that the command
+  \verb+\begin{abstract}+ \textit{text} \verb+\end{abstract}+ occurs
+  \textbf{\textit{before}} the \verb+\maketitle+ command.  This class has the
+  same \textit{options} as the standard \texttt{article} class in \cite[page
+  177]{Lam94a}, \textbf{\textit{except}} the \verb+notitlepage+ $|$
+  \verb+titlepage+ and \verb+onecolumn+ $|$ \verb+twocolumn+ options do not
+  exist.  Also the \verb+final+ $|$ \verb+draft+ option has been modified so
+  that under the \verb+draft+ option the page numbers appear at the bottom of
+  each page, and under \verb+final+ the pages have no numbers.  The amount
+  that the abstract text is indented is controlled by the length
+  \verb+\abstractmargin+.  The default value of \texttt{0.5in} can be changed
+  with the command \verb+\setlength{\abstractmargin}{+\textit{length}\verb+}+.
+\item[\textmd{\texttt{unmeethesis \& unmeereport:}}] These two items are
+  actually new document classes written by James Howse, rather than packages.
+  The \texttt{unmeethesis} class conforms to the dissertation and thesis
+  requirements of the Office of Graduate Studies at the University of New
+  Mexico\footnote{Although compliance is not guaranteed, the authors'
+    dissertations were accepted without difficulty.}.  The \texttt{unmeereport}
+  class is intended to produce well-formated technical reports for the
+  Department of Electrical Engineering at the University of New Mexico.  Both
+  of these classes are documented in the file
+  \verb+styles.ps+ (\textsc{PostScript}) or \verb+styles.pdf+ 
+  ($\text{\textsc{Adobe}}^{\circledR}$ \texttt{PDF}), available through
+  the UNM Office of Graduate Studies (OGS).
+  Or alternatively, on the mirror website
+  \textsf{http://www.math.unm.edu/\hspace{.9mm}$\bf\tilde{}$\hspace{.3mm}nedoren/latex} in the subdirectory \textsf{style\_sheets}\hspace{1mm}.
+\end{description}
+\vspace{-\parskip} Note that this list contains only a small number of the
+packages available for \LaTeXe .  For the documentation of additional
+packages, ask your system administrator.
+
+There are two major issues not covered by the above list of style options.
+They are the construction and inclusion of figures in \TeX\ documents, and the
+use of \textsc{PostScript} fonts in \TeX\ documents.  There are two possible
+ways to put figures into \TeX\ documents.  The first is to use an auxiliary
+program to draw the figure and then use some package to incorporate the figure
+into the document.  The second approach is to use some set of macros to draw
+the figures within \TeX.  The advantage of the first approach is that it
+allows almost any type of drawing to be created fairly quickly.  \TeX\ has an
+\textbf{\textit{extremely}} limited ability to perform mathematical
+computations, so drawing arbitrary shapes, particularly graphs of mathematical
+functions, is generally very slow at best.  Also, since \TeX\ was not designed
+for figure drawing, the figure must be drawn by command entry, and there is no
+interactive way to see what is being drawn.  The advantage of the second
+approach is that all of \TeX 's formating capabilities can be used to annotate
+the figure.  This means that mathematical equations and symbols can be used in
+the figure.  It is generally not possible to do much, if any, mathematical
+annotation in a drawing program.  Also, in this scheme the type font of the
+figure and document will be identical.  A package called \texttt{psfrag} gives
+the best of both worlds by allowing \textbf{\textit{any}} text string in a
+\textsc{PostScript} figure to be replaced by \textbf{\textit{any}} \LaTeXe\ 
+string.  Table~\ref{tbl:ext_draw_tex} lists some public domain drawing
+programs, and covers several methods for incorporating their output into \TeX\ 
+documents.
+%
+\begin{table}[htbp]
+\setlength{\topsep}{0in}
+\begin{center}
+\begin{tabular}{|>{\centering}m{1in}||m{5.5in}|}
+\hhline{--}
+\multicolumn{2}{|c|}{\rule[-0.075in]{0in}{0.25in}\Large\bf Incorporating
+  External Drawings into \TeX}
+\\ \hhline{|==|}
+\multicolumn{2}{|c|}{\large\textit{Auxiliary Drawing Programs for \TeX}} 
+\\ \hhline{--}
+\textsl{Program} & \multicolumn{1}{c|}{\textsl{Description of the program}}
+\\ \hhline{-||-}
+{\texttt{xfig \\ tgif \\ idraw}\footnotemark} & 
+All of these are interactive drawing programs.  They are all designed for free
+hand type drawing.  None are suitable for high precision drawing such as CAD,
+for plotting sets of data, or for plotting mathematical functions.  All are
+capable of \textsc{PostScript} output.  Essentially they are all more or less
+imitations of $\text{\textsf{Mac}}^{\circledR}$ drawing programs, such as
+$\text{\textsf{Canvas}}^{\circledR}$, designed to work under X-Windows.  The
+only documentation for any of these programs is obtained by using the command
+\texttt{man} \textit{program}.  These man pages can be printed using the
+command \texttt{man -t} \textit{program}.
+\\ \hhline{-||-}
+{\texttt{dataplot \\ gnuplot \\ xmgr \\ xprism2 \\ xprism3}\footnotemark} &
+All of these programs are designed to plot lists of data points and
+mathematical functions.  \texttt{xmgr}, \texttt{xprism2}, and \texttt{xprism3}
+are menu-driven packages with built-in X-Windows interfaces.
+\texttt{dataplot} and \texttt{gnuplot} are command-driven packages whose plots
+appear in separate windows.  Both of these packages have auxiliary X-Windows
+interfaces built on Tcl/Tk.  \texttt{xprism2} is for 2-dimensional plots,
+while \texttt{xprism3} produces 3-dimensional plots.  \texttt{xmgr},
+\texttt{dataplot}, and \texttt{gnuplot} can create either 2 or 3-dimensional
+plots.  All are capable of \textsc{PostScript} output.  The only documentation
+for \texttt{xmgr}, \texttt{xprism2}, and \texttt{xprism3} is that available
+interactively via the \textsf{help} menu.  Both \texttt{dataplot} and
+\texttt{gnuplot} have man pages and external documentation. 
+For \texttt{gnuplot}, the manuals are
+in the files \verb+gnuplot-3.5.dvi+, \verb+gnuplot_tutor.dvi+,
+\verb+gnuplot_refcard.dvi+, and \verb+xgnuplot.doc+.
+\\ \hhline{|=:b:=|}
+\multicolumn{2}{|c|}{\large\textit{Packages to Incorporate Drawings into
+  \TeX}}
+\\ \hhline{--}
+\textsl{Package} & \multicolumn{1}{c|}{\textsl{Description of the package}}
+\\ \hhline{-||-}
+{\texttt{epsfig.sty \\ graphicx.sty \\ graphics.sty}} & 
+All of these packages are designed to incorporate \textsc{PostScript}
+files into a \TeX\ \texttt{.dvi} output file.  They are entered as packages
+with the command \verb+\usepackage{+\textit{package name}\verb+}+.  To enter a
+centered figure into a document with \texttt{epsfig.sty}, use the command
+\verb+\centerline{\psfig{\figure=+\textit{file}\verb+,+\textit{options}\verb+}}+
+at the desired location in the document.  For \texttt{graphicx.sty} and
+\texttt{graphics.sty} the required command is
+\verb+\centerline{\includegraphics[+\textit{options}\verb+]{+\textit{file}\verb+}}+.
+The documentation for all three of these packages is in 
+the file \verb+grfguide.dvi+.
+\\ \hhline{-||-}
+\texttt{psfrag.sty} &
+This package allows \textbf{\textit{any}} text string in a \textsc{PostScript}
+figure to be replaced by \textbf{\textit{any}} \LaTeXe\ construction.  This
+allows graphs and drawings produced by other packages to be annotated with
+equations or other scientific text from \LaTeXe.  The package is invoked with
+the command \verb+\usepackage{psfrag}+.  The figure text is replaced by the
+\LaTeXe\ text with the command \verb+\psfrag{+\textit{figure
+    text}\verb+}{+\textit{\LaTeXe\ text}\verb+}+.  In order for this command
+to work the figure must be preprocessed with the command \texttt{ps2frag}
+\textit{file}.  The documentation for this package is in the file
+\verb+pfgguide.ps+, and there is a man page for \texttt{ps2frag}.
+\\ \hhline{--}
+\end{tabular}
+\end{center}
+\caption{Programs and packages for incorporating external drawings into \TeX.}
+\label{tbl:ext_draw_tex}
+\end{table}
+%
+
+The packages \texttt{epsfig}, \texttt{graphicx}, \texttt{graphics}, and
+\texttt{psfrag} can only use \textsc{PostScript} files that follow the
+bounding box comment convention.  This is a comment of the form
+\texttt{\%\%Bounding Box:}\textit{ bbllx bblly bburx bbury}.  The four numbers
+specify the lower left and upper right $x$ and $y$ coordinates in points.  If
+this comment does not appear at the beginning of your \textsc{PostScript}
+document, then you must specify the bounding box by hand in order to use any
+of these packages.  The packages \texttt{epsfig}, \texttt{graphicx}, and
+\texttt{graphics} all allow scaling, rotation, and clipping of the
+\textsc{PostScript} image.  \textsc{PostScript} files incorporated using any
+of these packages can be previewed with either \texttt{xdvi} or \texttt{xtex}.
+Alternately the \texttt{.dvi} can be converted to \textsc{PostScript} using
+\texttt{dvips}, and the resulting \texttt{.ps} file previewed using
+\texttt{ghostview}, but this introduces two additional steps into document
+processing.  
+%::::::::
+% Manually insert footnotes from table 2
+%::::::::
+\addtocounter{footnote}{-1}%
+\footnotetext{The author prefers \texttt{xfig} to  \texttt{idraw}, and has
+  very little experience with \texttt{tgif}.}%
+\addtocounter{footnote}{1}%
+\footnotetext{The author recommends either \texttt{gnuplot} or \texttt{xmgr}.}%
+%
+If your favorite drawing program does not output \textsc{PostScript}, then its
+output must be converted.  The program \texttt{xv} can convert \texttt{.gif},
+\texttt{.tif}, and \texttt{.jpg} formats to \textsc{PostScript}.  By the way,
+this program has a number of other useful functions for image processing work.
+As stated earlier, there are also packages of macros for drawing within \TeX .
+These packages are briefly discussed in Table~\ref{tbl:prod_draw_tex}.
+%
+\begin{table}[htbp]
+\setlength{\topsep}{0in}
+\begin{center}
+\begin{tabular}{|>{\centering}m{1in}||m{5.5in}|}
+\hhline{--}
+\multicolumn{2}{|c|}{\rule[-0.075in]{0in}{0.25in}\Large\bf Producing Drawings
+  in \TeX}
+\\ \hhline{|=:t:=|}
+\textsl{Package} & \multicolumn{1}{c|}{\textsl{Description of the package}}
+\\ \hhline{-||-}
+{\texttt{picture \\ epic.sty \\ eepic.sty}} &
+\texttt{picture} is picture drawing environment that is built in to \LaTeXe .
+It is very low level and requires that explicit coordinates be specified for
+\textbf{\textit{every}} object in the picture.  Also it can only draw lines of
+certain slopes and circles of certain radii.  \texttt{epic} is an extension of
+\texttt{picture} and \texttt{eepic} an extension of \texttt{epic}.  The
+\texttt{picture} environment is documented in \cite[pages 118--129]{Lam94a}.
+\\ \hhline{-||-}
+{\PiCTeX \\ \Xy-pic\footnotemark} &
+Both of these packages are extensive extensions of the \LaTeXe\
+\texttt{picture} environment.  They are designed at allow graphs and diagrams
+to be drawn inside \TeX\ and \LaTeXe.   They are both entered as packages in
+\LaTeXe\ with the commands \verb+\usepackage{pictex}+ and
+\verb+\usepackage[+\textit{options}\verb+]{xy}+ respectively.  The manual for
+\PiCTeX\ is \textbf{\textit{not}} public domain, even though the macro files
+are.  The system administrator should have a copy of the manual, which is
+excellent due to the plethora of useful examples.  The documentation for
+\Xy-pic\ is in the directory \verb+doc+ in the files \texttt{xyguide.dvi}
+and \texttt{xyrefer.dvi}.  The \Xy-pic\ package has been kept far more up to
+date by its authors than the \PiCTeX\ package.
+\\ \hhline{-||-}
+{\TeX draw \\ \textsc{PSTricks}\footnotemark} &
+Both of these are macro packages that allow \textsc{PostScript} drawings to be
+produced in \TeX .  Both of these packages basically allow a large number of
+both low and high-level \textsc{PostScript} commands to be used from within a
+\TeX\ or \LaTeXe\ document.  They are both entered as packages in \LaTeXe\
+with the commands \verb+\usepackage{texdraw}+ and \verb+\usepackage{pstricks}+
+respectively.  The documentation for both packages is in the directory
+\verb+doc+.  For \TeX draw the manual is the file \texttt{texdraw.ps},
+and for \textsc{PSTricks} the documentation is in the files
+\texttt{pst-usr1.ps}, \texttt{pst-usr2.ps}, \texttt{pst-usr3.ps}, and
+\texttt{pst-usr4.ps}.  Note that neither of these packages has been updated
+for \LaTeXe , although both should work with it.
+\\ \hhline{--}
+\end{tabular}
+\end{center}
+\caption{Packages for producing drawings in \TeX.}
+\label{tbl:prod_draw_tex}
+\end{table}
+%
+
+The final issue to discuss is the inclusion of \textsc{PostScript} fonts in
+\TeX\ documents.  If you are using \LaTeXe, then changing fonts in the main
+body of the document is actually quite easy.  The general font selection
+procedure is described in detail in the document \verb+fntguide.dvi+.
+%::::::::
+% Manually insert footnotes from table 3
+%::::::::
+\addtocounter{footnote}{-1}%
+\footnotetext{The author feels that \PiCTeX\ and \Xy-pic\ are far superior to
+  the \texttt{picture} environment and its extensions.}%
+\addtocounter{footnote}{1}%
+\footnotetext{The author has never used either of these packages.}%
+%
+This font selection scheme, which is often called \textsf{nfss}, was developed
+by Mittelbach and Sch\"{o}pf for \AmSLaTeX , and was recently incorporated
+into \LaTeXe .  With the introduction of this font selection mechanism,
+accessing both the original \TeX\ fonts and \textsc{PostScript} fonts has
+become much easier.  For instance, the \textsf{Concrete} fonts developed by
+Donald Knuth are accessed with the command \verb+\usepackage{concmath}+.  The
+naming convention used in \LaTeXe\ for \textsc{PostScript} fonts is described
+in the document \verb+fontname.dvi+.  The \textsf{psnfss} package
+provides numerous style files which redefine the default fonts to
+\textsc{PostScript} fonts.  The fonts \textsf{Avant Garde}, \textsf{Bookman},
+\textsf{Helvetica}, \textsf{New Century Schoolbook}, \textsf{Palatino},
+\textsf{Times Roman}, \textsf{Utopia}, and \textsf{Zapf Chancery} all
+currently work.  These fonts are made the default font in a document using the
+commands \verb+\usepackage{avant}+, \verb+\usepackage{bookman}+,
+\verb+\usepackage{helvet}+, \verb+\usepackage{newcent}+,
+\verb+\usepackage{palatino}+, \verb+\usepackage{times}+,
+\verb+\usepackage{utopia}+, and \verb+\usepackage{chancery}+, respectively.
+The file \verb+PSFonts/ps_font_test.dvi+ contains complete character
+tables and tests of the available series and shape variations for all of these
+\textsc{PostScript} fonts and for all of the original \TeX\ fonts.  Note that
+character tables and a great deal of other information can be obtained for
+\textit{\textbf{any}} font by copying the file
+\verb+/usr/local/texmf/lib/tex/latex/inputs/testdoc/nfssfont.tex+ into a
+personal directory, executing the command \verb+latex nfssfont.tex+, and
+following the subsequent instructions.  The real difficulty is incorporating
+\textsc{PostScript} math fonts into a document.  The package
+\texttt{mathtime.sty} replaces some of the normal \TeX\ math symbols with
+their \textsc{PostScript} equivalents.  There are two principle problems with
+using \textsc{PostScript} math symbols.  The first is that not all of the math
+symbols in \LaTeXe\ and \AmSLaTeX\ are available in the public domain
+\textsc{PostScript} fonts.  This means that the two sets of fonts must be
+combined in order to retain all of the symbols.  The second is that the math
+symbols in \TeX\ are accessed by commands of the form \verb+\+\textit{symbol}
+(e.g., \verb+\gamma+, or \verb+\sum+), so these commands must all be redefined
+in terms of the \textsc{PostScript} fonts.  If you want to see how this can be
+done, see the file \texttt{mathtime.sty}, and \cite[pages 154--156, 357--360,
+and 428--433]{Knu86a}.  The \textsf{psnfss} package is documented in the file
+\verb+psnfss2e.dvi+ and in \cite[pages 332--340]{Goo94a}.  One nice
+feature of the \textsf{psnfss} package is the \texttt{pifont.sty} package.
+This allows the characters from the \textsf{Zapf Dingbats} font to be used as
+labels in a list or elements in a line.  Note that when using
+\textsc{PostScript} fonts in a document, it is best to preview it with
+\texttt{ghostview} rather than \texttt{xdvi}.  For some unknown reason
+\texttt{ghostview} displays ragged right margins, even when the margins are
+justified as in this document.  In spite of the on-screen appearance, the
+document margins are justified when printed.
+
+If all of these hacks to get \textsc{PostScript} into \TeX\ are making you
+nauseous\footnote{The author definitely falls into this category.}, there is
+one other alternative.  There is a document layout program called
+$\mathcal{LOUT}$, which is similar to \TeX\ in that it resembles a programming
+language, whose compiled output is native \textsc{PostScript}.  Furthermore,
+in the same way that \TeX\ resembles a procedural programming language,
+$\mathcal{LOUT}$ resembles an object oriented programming language.
+Essentially $\mathcal{LOUT}$ was written as the result of 10 years of using
+\TeX\ and seeing some of it's pitfalls in hindsight.  $\mathcal{LOUT}$ was
+written by Jeffrey Kingston of the Basser Department of Computer Science at
+the University of Sydney.  It is available from \textsf{ftp.cs.su.oz.au} in
+the directory \texttt{/jeff/lout} as \texttt{lout.3.06.tar.Z}.
+
+In closing, here are a few \TeX\ tricks that are not in the \TeX -FAQ.  The 3
+characters $\setminus$, \symbol{"5E}, and \symbol{"7E} are used in \LaTeXe\ as
+parts of commands, and can not normally be printed.  One way to print them is
+to use the commands \verb+$\setminus$+, \verb+\symbol{"5E}+, and
+\verb+\symbol{"7E}+ respectively.  By default, \AmSLaTeX\ does
+\textbf{\textit{not}} break pages in the middle of equations.  Putting the
+command \verb+\allowdisplaybreaks+ after \verb+\documentclass{+$\cdot$\verb+}+
+and before \verb+\begin{document}+ allows page breaks to occur in equations.
+  If your document is a few lines over some page limit, insert the command
+  \verb+\enlargethispage*{+\textit{length}\verb+}+ somewhere in the text of
+  the what you want to be the final page.  As a rule of thumb, set
+  \textit{length} to \verb+2ex+ for each line that does not fit on the page.
+  The font used on the title page is selected using the command
+  \verb+\fontfamily{cminch}\selectfont+.  If the chosen font size is 12 points
+  or larger, then the letters are one inch tall, otherwise they are about
+  three-fourths of an inch tall.  Also, if you like the tables in this
+  document, read the examples in \cite[pages 204--207]{Lam94a} carefully. The
+  tables were formatted using the commands shown in the following example.
+
+\noindent\textbf{Table Example:} \LaTeXe\ code
+%
+\vspace{-\parskip}
+\begin{verbatim}
+\usepackage{array}
+\usepackage{hhline}
+\usepackage[sl,bf,hang,small]{caption}
+\end{verbatim}
+%
+\vspace{-1.25\parskip}
+\hspace{1em}$\vdots$
+\vspace{-1.25\parskip}
+%
+\begin{verbatim}
+\begin{table}[htbp]
+\setlength{\topsep}{0in}
+\begin{center}
+\begin{tabular}{|>{\centering}m{1in}||m{5.5in}|}
+\hhline{--}
+\multicolumn{2}{|c|}{\rule[-0.075in]{0in}{0.25in}\Large\bf Incorporating
+  External Drawings into \TeX}
+\\ \hhline{|==|}
+\multicolumn{2}{|c|}{\large\textit{Auxiliary Drawing Programs for \TeX}} 
+\\ \hhline{--}
+\textsl{Program} & \multicolumn{1}{c|}{\textsl{Description of the program}}
+\\ \hhline{-||-}
+\end{verbatim}
+%
+\vspace{-1.25\parskip}
+\hspace{1em}$\vdots$
+\vspace{-1.25\parskip}
+%
+\begin{verbatim}
+{\texttt{epsfig.sty \\ graphicx.sty \\ graphics.sty}} & 
+All of these packages are designed to incorporate \textsc{PostScript}
+files into a \TeX\ \texttt{.dvi} output file.  They are entered as packages
+with the command \verb+\usepackage{+\textit{package name}\verb+}+.  To enter a
+centered figure into a document with \texttt{epsfig.sty}, use the command
+\verb+\centerline{\psfig{\figure=+\textit{file
+      name}\verb+,+\textit{options}\verb+}}+ at the desired location
+in the document.  For \texttt{graphicx.sty} and \texttt{graphics.sty} the
+required command is
+\verb+\centerline{\includegraphics[+\textit{options}\verb+]{+\textit{file
+      name}\verb+}}+.  The documentation for all three of these packages is in
+the file \verb+grfguide.dvi+.
+\\ \hhline{-||-}
+\end{verbatim}
+%
+\vspace{-1.25\parskip}
+\hspace{1em}$\vdots$
+\vspace{-1.25\parskip}
+%
+\begin{verbatim}
+\\ \hhline{--} 
+\end{tabular}
+\end{center}
+\caption{Programs and packages for incorporating external drawings into \TeX.}
+\label{tbl:ext_draw_tex}
+\end{table}
+\end{verbatim}
+%
+Note that the column specifier \verb+m{+\textit{length}\verb+}+ vertically
+centers the two adjacent columns.  The prefix command \verb+>{\centering}+
+horizontally centers the entries in the first column.  Also note the use of
+the \verb+\multicolumn+ environment spanning only one column in order to
+center the header for column two.  The vertical bar only needs to appear on
+the right of this specifier because the original declaration following
+\verb+\begin{tabular}+ inserts it on the left side.  The enumerated list was
+formatted using the commands shown in the following example.
+
+\noindent\textbf{List Example:} \LaTeXe\ code
+%
+\vspace{-\parskip}
+\begin{verbatim}
+\usepackage{enumerate}
+
+\newlength{\enumerateindent}
+\setlength{\enumerateindent}{\leftmargini}
+\addtolength{\enumerateindent}{-\labelsep}
+\addtolength{\enumerateindent}{-0.4\labelwidth}
+\end{verbatim}
+%
+\vspace{-1.25\parskip}
+\hspace{1em}$\vdots$
+\vspace{-1.25\parskip}
+%
+\begin{verbatim}
+\begin{enumerate}[\hspace{\enumerateindent}1) ]
+\item Seven new alignment formats for equations.  For example, these alignment
+  formats allow the following two constructions which would be rather
+  difficult in \LaTeXe.  The first construction is
+\end{verbatim}
+%
+\vspace{-1.25\parskip}
+\hspace{1em}$\vdots$
+\vspace{-1.25\parskip}
+%
+\begin{verbatim}
+\end{enumerate}
+\end{verbatim}
+%
+Notice that in order to indent the elements of the list, a space
+\textbf{\textit{must}} be explicitly inserted.  One last example which may be
+useful is an example of putting a double box around a title page using
+\texttt{fancybox.sty}.  Note that this set of commands is
+\textbf{\textit{not}} taken from this document.
+
+\noindent\textbf{Box Example:} \LaTeXe\ code
+%
+\vspace{-\parskip}
+\begin{verbatim}
+\usepackage{fancybox}
+\end{verbatim}
+%
+\vspace{-1.25\parskip}
+\hspace{1em}$\vdots$
+\vspace{-1.25\parskip}
+%
+\begin{verbatim}
+\begin{document}
+
+\thisfancyput*(-0.1in,-9.1in){%
+  \setlength{\unitlength}{1in}%
+  \linethickness{2\fboxrule}%
+  \framebox(6.7,9.2){%
+    \linethickness{\fboxrule}%
+    \framebox(6.6,9.1)\protect\rule{0in}{0pt}%
+    }%
+  }
+\title{{\fontfamily{cminch}\selectfont \TeXTiPs\\[0.5ex]} Supplementary
+  information about \LaTeXe}
+\author{James W. Howse}
+\maketitle
+\end{verbatim}
+%
+The command \verb+\protect\rule{0in}{0pt}+ is an ``invisible'' character which
+insures that the two boxes are both vertically and horizontally centered with
+respect to each other.  Note that the position of the box is determined by the
+location of the lower-left hand corner.  If you are curious about the commands
+used to achieve any other formatting in this document, see the file
+\verb+tex_tips.tex+.
+
+\vspace{8mm}
+\noindent
+{\bf \Large Contacting the Author}
+
+\noindent
+This document is maintained by Neall Doren.  He can be reached via email
+at \texttt{nedoren@sandia.gov}\,.  Please report any anomalies or
+suggestions for changes to Dr.\ Doren, via email only.
+The document you are reading is
+is available via the OGS website.  As an alternative, it can be downloaded from
+the mirror website
+\textsf{http://www.math.unm.edu/\hspace{.9mm}$\bf\tilde{}$\hspace{.3mm}nedoren/latex} in the subdirectory \textsf{user\_manuals}
+under filename \textsf{textips.ps} (\textsc{PostScript}) or
+\textsf{textips.pdf}
+($\text{\textsc{Adobe}}^{\circledR}$ \texttt{PDF}).
+
+
+%
+\bibliographystyle{alpha}
+\bibliography{%
+/research/mesquite/howse/write/Bibtex/howse_doc_prep%
+}
+\end{document}
+
+% LocalWords:  pt titlepage amsmath amsbsy amsopn amsthm upref amsfonts mathscr
+% LocalWords:  eucal eucurs epsfig psfrag hhline sl bf fancyheadings fancybox
+% LocalWords:  emP emC emu emc pic cminch Howse tex dvi Horne htbp dvips ps ftp
+% LocalWords:  PostScript xdvi xtex WSYWIG ghostview sunsite auc dk auctex FAQ
+% LocalWords:  comp rtfm mit edu usenet faq sty endfloat theapa bst APA cls Tcl
+% LocalWords:  setspace baselinestretch subequations subfigure subequation xfig
+% LocalWords:  tabularx twocolumnconf unmeethesis unmeereport tgif idraw xmgr
+% LocalWords:  dataplot gnuplot xprism Tk graphicx frag bbllx bblly bburx bbury
+% LocalWords:  gif tif jpg eepic xyguide xyrefer PSTricks texdraw pst usr nfss
+% LocalWords:  Mittelbach Schopf psnfss Garde Bookman Palatino Zapf mathtime cs
+% LocalWords:  pifont Dingbats Basser su oz au jeff lout ICS Sch pf

@@ -1,0 +1,73 @@
+Moving Least-Squares (MLS) applied to surface reconstruction
+ Mesh-independent surface interpolation (2003) t
+  Tel Aviv University, Israel - David Levin
+
+Fusion of depth maps into a mesh representation 
+ Real-time visibility-based fusion of depth maps (2007) t (Mesh.txt)
+
+Barycentric Mapping (2007) t
+ Institut fur Informatik - Kai Hormann 
+- really not sure. Something to do with the interior angles of the faces
+
+CGAL - A very popular C++ library for mesh operations
+Triangulations in CGAL (2000) t
+
+Incremental registration of RGB-D images (2012)
+- Registration based on a two step procedure
+- Step one. Rough alignment by using an edge detector in consecutive frames
+- Step two. ICP
+
+Automatic registration of partial overlap three-dimensional surfaces (2010)
+
+Sparse Sparse Bundle Adjustment - 2010
+
+Generalized ICP - 2009
+
+Openmesh-a generic and efficient polygon mesh data structure (2002)
+
+Bundle adjustment – a modern synthesis - 2000
+
+__________________________________________________ Pose Graph Optimization or Loop Closure
+
+Hierarchical optimization on manifolds for online 2D and 3D mapping - 2010
+
+Photo tourism: Exploring photo collections in 3D
+
+Mapping large loops with a single hand-held camera
+
+FrameSLAM: From bundle adjustment to real-time visual mapping
+
+Navigating, recognising and describing urban spaces with vision and laser
+
+Estimation of accurate maximum likelihood maps in 3D - (TORO)
+
+________________________________________ Jacobs University, Planes-based pose registration 
+
+Fast registration based on noisy planes with unknown correspondences for 3-D mapping (2010)
+ Jacobs University Bremen - Bremen, Germany - Kaustubh Pathak, Andreas Birk, Narunas Vaskevicius, Jann Poppinga
+ http://robotics.jacobs-university.de/projects/3Dmap/
+- Robot-pose-registration algorithm which is entirely based on large planar-surface patches extracted from point clouds. 
+- Simpler case of known plane correspondences is tackled first by deriving expressions for least-squares pose estimation considering plane-parameter uncertainty 
+- Present a new algorithm named the “Minimally Uncertain Maximal Consensus” (MUMC) to determine the unknown plane correspondences 
+- Results presented are quite amazing really. They mention they would have a weakness in environments with little to no planes such as outdoors. 
+- Their results also compare their method to two different ICP algorithms. They claim computational times much greater than a second for these algorithms which doesn’t make sense to me. I’m pretty sure I’ve seen online implementations of these algorithms. 
+- They present a large amount of the “mathematical machinery” of their algorithm. This paper does not talk about the method for extracting the planes (which is the first step) but summarizes it in an Appendix.
+- Their method operates in the 2 Hz range. Low in comparison to other algorithms. However, it seems to be able to handle very large movements between frames so in this respect operating in the 20 Hz range may not be needed. 
+- They introduce a new algorithm to determine the unknown plane correspondences. It has a way to incorporate IMU data so I need to make sure I can justify whatever I propose. 
+
+Fast plane detection and polygonalization in noisy 3D range images
+ Jacobs University Bremen - Bremen, Germany - Kaustubh Pathak, Andreas Birk, Narunas Vaskevicius, Jann Poppinga
+- Method for surface extraction from 3D point clouds
+- Algorithm consists of picking a point and testing it’s neighbors to see if they pass a criterion. In the end all points are either in a region or not. 
+- The calculation for the optimal plane given a cluster of points is shown. 
+- Finding the decomposition of the plane into complex polygons is shown. Seems simple. 
+- Several results are shown. They show that they can quickly extract planes from point cloud data. Also show that the computational time is directly related to the number of plane regions in the point cloud. 
+- They show that the planes which are extracted are then turned into to “proper surface models”
+- The polygonalization is said to reduce the amount of data needed to be saved. 
+
+Uncertainty analysis for optimum plane extraction from noisy 3D range-sensor point-clouds 
+ Jacobs University Bremen - Bremen, Germany - Kaustubh Pathak, Andreas Birk, Narunas Vaskevicius
+
+Revisiting Uncertainty Analysis for Optimum Planes Extracted from 3D Range Sensor Point-Clouds
+
+Online three-dimensional SLAM by registration of large planar surface segments and closed-form pose-graph relaxation

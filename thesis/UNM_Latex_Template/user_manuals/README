@@ -1,0 +1,35 @@
+This directory  contains all  the user manuals  for using  the UNM  thesis and
+dissertation style  sheets.  If you  attended the  LaTeX seminar  given by the
+Office of Graduate Studies (OGS), then you were  given hard (paper) copies  of
+all the manuals presented here.
+
+The documents are  available in either PostScript (ps) or  Adobe Acrobat (pdf)
+formats.
+
+These  manuals should be  all you need to get started  writing  your thesis or
+dissertaiton using LaTeX2e, in conformance with the UNM OGS guidlines.
+
+The manuals within this subdirectory include:
+
+styles:  Describes the specifics of using the  unmeethesis.cls style sheet for
+         dissertations  and theses, and  the  unmeereport.cls  style sheet for 
+         reports.  The  dissertation/thesis style can be used to write a paper
+         conforming to the UNM OGS guidelines.
+textips: Describes the use of certain LaTeX2e  support programs, such as those
+         for editing  input files, generating output files and viewing output.
+         Also  describes  certain  packages that  can enhance the capabilities
+         LaTeX2e when  incorporated into your document.  The parent  directory
+         "textips_docs" contains additional help files that act as a supplemnt
+         to the textips manual.
+slides1: A copy of the overhead slide presentation given in the "LaTeX Seminar
+         for  Creating a Thesis or  Dissertation,"  offered  by the OGS.  This 
+         document ties together all of the  concepts required for writing your 
+         thesis or dissertation in LaTeX2e.  Presented by Neall Doren.
+slides2: A  copy of  the  overhead slide  presentation  given by  James Howse, 
+         covering some relevant LaTeX2e examples.
+
+--
+These files are maintained by Neall Doren (nedoren@sandia.gov).  Email with 
+corrections or questions.
+
+Last modified: 08/01/2000

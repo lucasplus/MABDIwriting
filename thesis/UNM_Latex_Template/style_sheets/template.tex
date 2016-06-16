@@ -1,0 +1,117 @@
+% Example template for using the unmeethesis style
+% This example is for a Master's candidate in Mathematics
+% It contains examples of front matter and most sections that the
+% typical graduate student would need to include
+% By: N. Doren 02/10/00
+%     Minor mods by N. Doren 08/26/11
+
+% Use the following specification for BOTTOM page numbering:
+\documentclass[botnum, fleqn]{unmeethesis}
+                 % OR
+% Use the following specification for TOP page numbering:
+% \documentclass[fleqn]{unmeethesis}
+
+\begin{document}
+
+\frontmatter
+
+% Uncomment the next command if you see weird paragraph spacing:
+% That is, if you see paragraphs float with lots of white space
+% in between them:
+
+% \setlength{\parskip}{0.30cm}
+
+
+\title{An Awesome Thesis That Will Prove \\ to the Universe
+       That I Really Deserve This Honorable Degree}
+
+\author{Albert Richard Einstein, III}
+
+\degreesubject{M.S., Mathematics}
+
+\degree{Master of Science \\ Mathematics}
+
+\documenttype{Thesis}
+
+\previousdegrees{A.A.S., University of Southern Swampland, 1988 \\
+                 M.S., Art Therapy, University of New Mexico, 1991}
+
+\date{December, \thisyear}
+
+\maketitle
+
+%\makecopyright
+%Copyright page is no longer necessary D. Murrell
+
+\begin{dedication}
+   To my parents, Albert II and Gladys, for their support,
+   encouragement and the Corvette they're giving me for graduation. \\[3ex]
+   ``A bird in hand is worth two in the bush''
+         -- Anonymous
+\end{dedication}
+
+\begin{acknowledgments}
+   \vspace{1.1in}
+   I would like to thank my advisor, Professor Martin Sheen, for his support
+   and some great action movies.  I would also like to thank my dog, Spot,
+   who only ate my homework two or three times.  I have several other people
+   I would like to thank, as well.\footnote{To my brother and sister, who
+   are really cool.}
+\end{acknowledgments}
+
+\maketitleabstract %(required even though there's no abstract title anymore)
+
+\begin{abstract}
+   The theory of relativity is a real ``toughie'' to prove, but with the
+   help of my family and my great grandpa Al, this paper presents the
+   proof in its entirety.  Most of the math is correct, and the
+   part about ``warp speed'' and ``parallel universe'' sounds very high-tech.
+\clearpage %(required for 1-page abstract)
+\end{abstract}
+
+\tableofcontents
+\listoffigures
+\listoftables
+
+\begin{glossary}{Longest  string}
+   \item[$a_{lm}$]
+      Taylor series coefficients, where $l,m = \{0..2\}$
+   \item[$A_{\bf{p}}$]
+      Complex-valued scalar denoting the amplitude and phase.
+   \item[$A^T$]
+      Transpose of some relativity matrix.
+\end{glossary}
+
+\mainmatter
+
+\chapter{Introduction}
+\section{\label{section:overview}Overview}
+   The classic approach to proving a theorem is some really difficult 
+   mathematics.  For the theory of relativity, I asked grandpa Al exactly 
+   how he proved it.  He gave me a few hints, including some stuff about
+   rest mass and big electro-motive force.  I think he is really smart.
+\section{Conclusions}
+   I conclude that this is a really short thesis.
+
+\chapter{Future Work}
+   I'm sure my future work will consist of lots of other famous stuff.
+
+\chapter*{Appendices}
+
+\addcontentsline{toc}{chapter}{Appendices}
+ % Next lines duplicated from .toc file and used to create mini
+ % "Appendix Table of Contents," if desired:
+   \contentsline {chapter}{\numberline {A}Proving $E=MC^2$}{4}
+   \contentsline {chapter}{\numberline {B}Derivation of $A = \pi r^2$}{5}
+ % End mini table of contents
+
+\appendix
+\chapter{Proving $E=MC^2$}
+   I refer the reader to many of grandpa's famous books on this subject.
+\chapter{Derivation of $A = \pi r^2$}
+   A circle is really a square without corners.  QED.
+
+%\bibliographystyle{AMS}
+%\bibliography{bibfile_name}
+
+\end{document}

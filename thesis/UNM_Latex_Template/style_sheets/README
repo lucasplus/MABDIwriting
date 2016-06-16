@@ -1,0 +1,58 @@
+UPDATE: 10/15/14:   Added a latex file "signature.tex" that will help generate
+			a correct signature page.  Removed the copyright page
+			requirement and adjusted the page numbering system to 
+			match.
+
+
+UPDATE:  08/26/11:  DOWNLOAD THE NEW  unmeethesis.cls  file found here  to
+                    comply with the new OGS requirements for no title page
+                    red box and no abstract title page.
+
+                    You can replace  your previous copy  with the new  one 
+                    to meet this requirement.  The  rest of your  document
+                    will remain unchanged.
+
+This directory  contains the  necessary thesis and dissertation  style sheets,
+for  writing a  paper to submit  to the UNM Office of Graduate Studies  (OGS).
+
+These files are  described in the  manual "styles," in the user_manuals parent
+directory.
+
+These files  can be placed in your local thesis working directory or installed
+globally by your system administrator. 
+
+FOR A THESIS  OR  DISSERTATION, only  the  unmeethesis.cls, unm12.clo and  the
+template.tex files are required!!
+
+The files in this directory are described as follows:
+
+unmeethesis.cls: REQUIRED LaTeX2e  file for using  the UNM thesis/dissertation
+                 style. 
+unm10.clo,
+unm11.clo,
+unm12.clo:       REQUIRED font spacing specification files for reports, theses
+                 or  dissertations.  Only unm12.clo (12 pt.) file is  required 
+                 for  a thesis or dissertation conforming to OGS requirements. 
+template.tex:    A complete  but short thesis  example.  Should  compile under
+                 LaTeX2e without modifications.  Modify this template for your
+                 own  thesis  or dissertation (does  not require  sample.bib).
+unmeereport.cls: Required LaTeX2e style file for generating technical reports.
+                 Not necessary for a thesis or dissertation. 
+eeceTR.cls:      Improved  technical report  style.  Corrects  bugs in chapter  
+                 numbering,  tables and  figures,  etc.  Not  necessary  for a
+                 thesis or dissertation. 
+report.tex:      A LaTeX example for  generating a technical  report.  Used in 
+                 conjunction with eeceTR.cls and sample.bib.  Modify as needed
+                 for  reports.    Not  needed  for a  thesis  or dissertation.
+unm_logo.eps:    Required UNM  logo for  generating  technical  reports.   Not
+                 necessary for a thesis or dissertation.
+sample.bib:      A sample  BiBTeX bibliography database (text file).  Contains
+                 completed  examples of  the  following  entries:  proceedings,
+                 article,  phdthesis,   book,  techreport,  misc,  unpublished,
+                 and  mastersthesis.   An  example of its  use is  in the  file
+                 report.tex.
+--
+These  files are  maintained  by Neall Doren (nedoren@sandia.gov).  Email with 
+corrections or questions.
+
+Last modified: 08/26/2011

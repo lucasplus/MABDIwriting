@@ -1,0 +1,75 @@
+
+
+_____________________________________________________________________________________ Mesh 
+
+Jarek Rossignac
+ 3D Compression Made Simple : Edgebreaker on a Corner-Table Notation and Corner-Table (2001)
+- Seems like the first to create the Corner-Table representation of a graph
+- Antonio considers his work to be very good
+
+Waqar Saleem
+A flexible framework for learning-based Surface Reconstruction (Saleem 2004) t Mesh.txt
+Towards Stable and Salient Multi-View Representation of 3D Shapes (Yamauchi et al. 2006) t Mesh.txt
+On stochastic methods for surface reconstruction (Saleem et al. 2007) t Mesh.txt
+
+__________________________________________________________________________________  Places
+
+Open Source Robotics Foundation (OSRF) - An organization that was pretty much unheard of until DARPA recently awarded them with a contract to produce the a standard simulation environment for its Humanoid Challenge. Now it’s being populated with some very big names.
+
+The Droid Works - A very small start up company by Helen Greiner (who is also a co-founder of iRobot). The Droid Works was awarded a Small Business Innovation Research grant by NSF to create technologies that will allow small UAVs to navigate inside buildings. 
+
+Robotics Technology Consortium (RTC) -  A non-profit organization established to speed the creation and deployment of ground robotics technology.
+
+_____________________________________________________________________________ Laboratories
+
+ETH Zurich, Switzerland - Autonomous Systems Lab (what don’t they do)
+ Professors - Dr. Roland Siegwart
+ Post docs - Dr. Stephane Magnenat; Dr. Fancis Colas
+- Involved in RGB-D SLAM 
+- Involved in MAV control in unstructured environments (sFly)
+
+University of Freiburg, Germany - Laboratory for Autonomous Intelligent Systems - Computer Vision and Pattern Recognition Group
+ Professors - Dr. Jürgen Sturm; Dr. Daniel Cremers
+- One of the 11 institutions that got a PR2 as part of the Willow Garage Beta Program
+- Computer Science department involved in RGB-D SLAM algorithms
+
+Jacobs University Bremen - Bremen, Germany 
+ Professors - Kaustubh Pathak, Andreas Birk
+- http://robotics.jacobs-university.de/projects/3Dmap/
+- Working on robot-pose-registration algorithms based entirely on large planar-surface patches extracted from point clouds
+
+_________________________________________________________________________________ Projects
+
+sFly - a project being developed by the European Community’s Seventh Framework Programme
+- ETH Zurich, Switzerland
+- INRIA: Institut National de Recherche en Informatique et en Automatique, France
+- TUC: Technical University of Crete, Greece
+- CSEM Centre Suisse d’Electronique et de Microtechnique SA, Switzerland
+- ATG: Ascending Technologies GMBH, Germany
+- CERTH: Centre for Research and Technology, Hellas
+
+______________________________________________________________________ People in Companies 
+
+Brain Gerkey - Director of Open Source Development at Willow Garage. He is moving to the OSRF to take over as CEO. 
+
+Helen Greiner - Started “The Droid Works.” Now she is on the board of OSRF. She is also the president of the Robotics Technology Consortium (RTC).
+
+Ryan Gariepy - He is the co-founder and CTO of Clearpath Robotics. Now is apart of OSRF.
+
+Wolfram Burgard - Now involved in OSRF. Also, is in charge of the Laboratory for Autonomous Intelligent Systems at the University of Freiburg. 
+
+Sam Park - Part of the OSRF. Executive vice president of Yujin Robot, a South Korean company best known for their home and entertainment robots. 
+
+________________________________________________________________________________ Companies 
+
+Kiva Systems
+
+Heartland Robotics
+
+Harvest Automation
+
+Clearpath Robotics - The first field robotics company to fully adopt and support ROS. They know how to integrate ROS in industrial R&D environments. 
+
+Yujin Robot
+
+ 
