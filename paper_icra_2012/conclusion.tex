@@ -1,0 +1,27 @@
+\section{Conclusion} \label{sec:conclusion} 
+
+% this work presents 
+% by ...
+
+% needs:
+% created a measurement noise model 
+% cheap method to estimate "ground truth"
+% generated model which would will be more accurate then ad hoc models
+% our model should work for other Kinect sensors reasonably well
+% maybe need to regenerate if have an ASUS
+% we provide our methodology so that one can do that
+% future work - apply to KinectFusion
+
+This work has presented a novel methodology for generating a measurement noise
+model for Kinect-style sensors.  Classical work in sensor modeling has defined
+the uncertainty to be constant for all measurements. For many depth sensors,
+especially those like Kinect, this constant assumption simply isn't true. In
+recent work ad hoc models have been created to be more realistic. Our method
+generates sensor models from a thorough stochastic analysis of a large data
+set. We give our generated model and compare the results with a validation set.
+Our method is better than an ad hoc guess, however a model may need to be
+generated for a specific sensor depending on the needs of the algorithm it will
+be used for. We have made it easy to generate a model for your own sensor by
+making the code freely available. In future work we intend to improve our model
+by taking into account the error induced by lens distortion. Additionally, we
+would like to evaluate our model with existing SLAM algorithms.

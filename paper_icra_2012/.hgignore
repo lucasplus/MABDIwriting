@@ -1,0 +1,10 @@
+syntax: glob
+
+*.DS_Store
+*.aux
+*.log
+*.synctex.gz
+*.swp
+*.bbl
+*.blg
+James_Notes

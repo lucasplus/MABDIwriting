@@ -1,0 +1,163 @@
+\section{Results} \label{sec:results} 
+
+With the captured data, it was possible to fill 72.9\% of the original
+neighborhoods with, at least, a threshold of 500 points. The distribution of
+number of points across the $X$ space is illustrated by Figure
+\ref{fig:numberOfPointsPerBin}.
+
+We performed a quantile-quantile regression with the data shown in the
+histogram from Figure \ref{fig:distancesToPlane} with a gaussian distribution,
+and obtained a coefficient of determination of 0.805, which validates the
+hypothesis that the error $e_i$ can be approximated by a Gaussian random
+variable with zero mean.  Figure \ref{fig:sampleMeanFigure} shows the average
+of the error calculated from the samples at each neighborhood $N_j$. Since most
+of its values are dispersed close to zero, we can say that the approximation of
+a zero-centered distribution for each neighborhood does not compromise our
+model, whilst making it simpler for real applications.
+
+Next we will show the results of our model generation. In Figure \ref{fig:stdImageZeroMean} we can see
+the variance $\sigma_j$ in each neighborhood $N_j$ and observe that $\sigma_j$
+increases with distance, which is a trend we expected. One important
+observation is that, according to our model, the angle $\alpha$ does not play a
+major role in determining the variation $\sigma_j$.  In Figure \ref{fig:scatterWithZeroMean} we can see a
+scatter plot showing our generated polynomial surface $\sigma(\alpha,d)$;
+$\sigma_j$ obtained from our data set; and $\sigma_j$ obtained from our
+validation set. The surface represents the best fit polynomial surface through
+the original estimations. The green dots represent the original estimations;
+the red ones were acquired from the XtionPRO, while the black points were
+computed from a different Kinect sensor.
+
+We asses the ability of our model to describe our data by the coefficient of
+determination. This allows us to determine the percentage of points whose
+variation are described by $\sigma(\alpha,d)$. In Table \ref{tab:CD_coefs} we
+can see the value of this coefficient for our large data set and also our
+validation set. Our results show that our model could be used for other
+Kinect device with a reasonable confidence, but that a new model would be needed
+for the Xtion, should the application require a high accuracy model. 
+
+%{\setlength\abovedisplayskip{-4pt} \setlength\belowdisplayskip{-6pt} % needed to make spacing more compact
+\begin{table}[h!]
+\caption{Coefficient of determination.}
+\begin{center}
+\begin{tabular}{|c|c|c|}
+\hline
+Original Kinect & Another Kinect & ASUS XtionPRO \\ \hline
+$90.0\%\ $ & $74.7\%\ $ & $50.7\%\ $ \\ \hline
+\end{tabular}
+\end{center}
+\label{tab:CD_coefs}
+\end{table}
+%}
+
+The resulting measurement noise model from our analysis is given by (\ref{eq:model}) and the list of coefficients are in Table \ref{tab:Poly_coefs}.
+
+{\setlength\abovedisplayskip{-4pt} \setlength\belowdisplayskip{-6pt} % needed to make spacing more compact
+\begin{multline}
+\sigma(d,\alpha) = A +  B \alpha  + Cd + D\alpha^2  + E\alpha d \\ +  Fd^2  + G\alpha^3   +H \alpha^2 d   +I\alpha d^2    +Jd^3
+\label{eq:model}
+\end{multline}
+}
+
+%{\setlength\abovedisplayskip{-4pt} \setlength\belowdisplayskip{-6pt} % needed to make spacing more compact
+\begin{table}[h]
+\caption{Polynomial coefficients for the surface $\sigma(d,\alpha)$.}
+\begin{center}
+\begin{tabular}{|c|c|c|c|}
+\hline
+$A$ & $0.0125$ & $F$ & $0.0037$ \\ \hline
+$B$ & $-6.0904\times 10^{-4}$ & $G$ & $3.4986 \times 10^{-8}$ \\ \hline
+$C$ & $-0.0061$ & $H$ & $-3.9492 \times 10^{-6}$ \\ \hline
+$D$ & $8.0999\times 10^{-6}$ & $I$ & $-2.7408 \times 10 ^{-6} $ \\ \hline
+$E$ & $1.5757 \times 10^{-4}$ & $J$ & $-1.1158 \times 10^{-4}$ \\
+\hline
+\end{tabular}
+\end{center}
+\label{tab:Poly_coefs}
+\end{table}
+%}
+
+\setlength\figureheight{.25\textwidth} 
+\setlength\figurewidth{.4\textwidth}
+\begin{figure}[h]
+\centering 
+\beginpgfgraphicnamed{tikzExt/distancesToPlane} 
+\input{tikzFigs/distancesToPlane.tikz} 
+\endpgfgraphicnamed 
+\caption{ 
+Histogram of the error $e_i$ for all the points $p_i$ in our data set. This shows that a normal distribution is a good approximation to our data.
+} 
+\label{fig:distancesToPlane}
+\end{figure} 
+
+\setlength\figureheight{0.31603\textwidth} 
+\setlength\figurewidth{ 0.238  \textwidth}
+\begin{figure}[p]
+\centering 
+\beginpgfgraphicnamed{tikzExt/numberOfPointsPerBin} 
+\input{tikzFigs/numberOfPointsPerBin.tikz} 
+\endpgfgraphicnamed 
+\caption{ 
+Number of points in each neighborhood $N_j$. In this image, each neighborhood is represented by a pixel centered at the neighborhood centroid. 
+} 
+\label{fig:numberOfPointsPerBin}
+\end{figure} 
+
+\setlength\figureheight{0.31603\textwidth} 
+\setlength\figurewidth{ 0.238  \textwidth}
+\begin{figure}[p]
+\centering 
+\beginpgfgraphicnamed{tikzExt/sampleMeanFigure} 
+\input{tikzFigs/sampleMeanFigure.tikz} 
+\endpgfgraphicnamed 
+\caption{ 
+Mean value of $e_i$ in each neighborhood $N_j$ which we define as $\overline{e_k}$. In our analysis we set this value equal to zero. This graph gives some experimental justification for this assumption.   
+} 
+\label{fig:sampleMeanFigure}
+\end{figure} 
+
+\setlength\figureheight{0.31603\textwidth} 
+\setlength\figurewidth{ 0.238  \textwidth}
+\begin{figure}[p]
+\centering 
+\beginpgfgraphicnamed{tikzExt/stdImageZeroMean} 
+\input{tikzFigs/stdImageZeroMean.tikz} 
+\endpgfgraphicnamed 
+\caption{ 
+Values for standard deviation $\sigma_j$ at each neighborhood. We can see the variance increases with larger values distance $d$ while being weakly influenced by the incident angle $\alpha$.
+} 
+\label{fig:stdImageZeroMean}
+\end{figure} 
+
+%\setlength\figureheight{.28\textwidth} 
+%\setlength\figurewidth{.28\textwidth}
+%\begin{figure}[h]
+%\centering 
+%%\beginpgfgraphicnamed{tikzExt/scatterWithZeroMean} 
+%\input{tikzFigs/stdImageZeroMean.tikz} 
+%%\endpgfgraphicnamed 
+%\caption{ 
+%Standard deviation of $e_i$ in each neighborhood $N_j$, using $\mu=0$
+%} 
+%\label{fig:stdImageZeroMean}
+%\end{figure} 
+
+% had to edit tikz file
+%  - comment every other line of surface out
+%  - use "hot" instead of "jet"
+%  - specify "mark size=.3pt" in addplot3
+\pgfplotsset{xlabel shift = -1ex}
+\pgfplotsset{ylabel shift = -1ex}
+\setlength\figureheight{.35\textwidth} 
+\setlength\figurewidth{.32\textwidth}
+\begin{figure}[p]
+\centering 
+\beginpgfgraphicnamed{tikzExt/scatterWithZeroMean} 
+\input{tikzFigs/scatterWithZeroMean.tikz} 
+\endpgfgraphicnamed 
+\caption{ 
+Our noise model for the Kinect. The dots represent the local estimation of $\sigma$ for a particular neighborhood $N_j$. 
+} 
+\label{fig:scatterWithZeroMean}
+\end{figure} 
+
+

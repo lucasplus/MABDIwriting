@@ -1,0 +1,107 @@
+\section{Related Works}	\label{sec:related_works}  
+
+% The initial need for a sensor model comes came from SLAM algorithms 
+% - \cite{smith1990estimating} - Estimating Uncertain Spatial Relationships in Robotics (1987) - one of the first works to lay our EKF based SLAM - "system variance matrix to describe the uncertainty in the object's estimated location" 
+% - \cite{durrant2006simultaneous} - Simultaneous localisation and mapping (SLAM): Part I the essential algorithms - shows measurement update model used in most SLAM methods
+% - \cite{kaess2008isam} - iSAM: Incremental smoothing and mapping - modern example of the state-of-the-art 
+% 
+% need to argue all these works in SLAM have some underlying model for describing the measurement uncertainty 
+
+% \cite{Kahlmann2006} - Calibration for swiss ranger 
+
+% Similar methods have been developed for the swissranger
+
+% Directly kinect related
+%  - \cite{Fallon2012} - Efficient Scene Simulation for Robust Monte Carlo Localization using an RGB-D Camera 
+%  - \cite{Newcombe2011} - KinectFusion (new) 
+% current 6 DOF SLAM methods use ICP for the pose estimation step. A weight matrix is used in ICP to control the contribution of each match to the optimization. This weight matrix is often used to make measurements at farther distances less influential. 
+% - RGB-D mapping: Using Kinect-style depth cameras for dense 3D modeling of indoor environments 
+
+One of the major drivers behind sensor noise modeling is the problem of
+\ac{SLAM}. The most popular and well-used solutions to this problem have a
+Kalman Filter based framework. This field of work began in 1987 with Smith et
+al. \cite{smith1990estimating} and continues today as in \cite{kaess2008isam}
+and \cite{newman2009navigating}. All these methods have some core requirements
+as described in \cite{durrant2006simultaneous}. One such core requirement is a
+measurement model by which to describe the measurement uncertainty. This is
+typically modeled by the Gaussian measurement equation
+%
+{\setlength\abovedisplayshortskip{-6pt} \setlength\belowdisplayskip{-4pt} % needed to make spacing more compact
+\begin{equation*}
+z(k)=h_k(x_{k},m)+v_k,
+\end{equation*}
+}
+%
+
+\noindent where the geometry of the measurement is described by $h_k()$ as a 
+function of pose $x_k$ and a set of landmarks $m$; and $v_k$ is a zero
+mean Gaussian additive noise. The parameters chosen for
+the distribution of $v_k$ describe the measurement uncertainty and, in most
+applications, they are empirically estimated. In addition, the uncertainty is
+usually modeled as a constant for simplicity, which may be an incorrect
+assumption. 
+
+There have been works focused on creating a more complex sensor model from experimental
+data. The works which are most relevant to this paper create sensor models for
+\ac{TOF} cameras. In Kahlmann et al. \cite{Kahlmann2006} the effects of
+distance and change of temperature on the measurements are looked at. The authors
+found that a planar surface provided the a good test surface for calibration
+purposes and generated a Fixed Pattern Noise model. The work of Chiabrando et
+al. \cite{Chiabrando2009} performed a similar calibration of a \ac{TOF} but
+also considered the effect of measurement incident angle. 
+
+There have been two major works with Kinect-style \mbox{RGB-D} sensors in which an ad hoc sensor model was created. In Fallon et al. \cite{Fallon2012} they define a likelihood function in which $\sigma_d$ is used to describe the measurement uncertainty. Their resulting model evaluates measurements that have larger depth values with higher variance. The next work by Newcombe et al. \cite{Newcombe2011} is a well-known application of the Kinect sensor. They modeled the uncertainty as a function of distance and incident angle. In their work the model is presented as 
+
+%
+%{
+%\setlength\abovedisplayskip{-4pt} \setlength\belowdisplayskip{6pt} % needed to make spacing more compact
+%\begin{equation*}
+%p(z_k^i \mid A_k^{(p)}) = \beta c_r \mathcal{N}(z_k^i;z_{(p)}^i,\sigma_d^2)+(1-\beta)\mathcal{U}(0,1),
+%\end{equation*}
+%}
+%
+
+%
+{
+%\setlength\abovedisplayshortskip{-6pt} \setlength\belowdisplayskip{6pt} % needed to make spacing more compact
+\begin{equation*}
+W_{R_k} \propto \frac{ \cos(\theta) }{R_k(x)},
+\end{equation*}
+}
+%
+
+\noindent where $\theta$ is the angle of incidence and $R_k(x)$ is the depth measurement. They use $W_{R_k}$ as a way describe the uncertainty in the measurement. 
+
+The Kinect-style sensor model that we present here is based on
+thorough observation of real world data, rather than ad hoc models
+typically found in the literature for this class of sensors. 
+
+% \cite{Thrun:2005:PR:1121596} - Probabilistic Robotics (book)
+% \cite{Hahnel2004} - Mapping and localization with RFID technology
+% \cite{Borenstein95} - Correction of Systematic Odometry Errors in Mobile Robots - from Luiz
+% \cite{Wu07} - Camera Sensor Model for Visual SLAM - from Luiz
+% \cite{Levinson2007} - Map-Based Precision Vehicle Localization in Urban Environments
+% \cite{Se2001} - Vision-based mobile robot localization and mapping using scale-invariant features
+% \cite{Wavering1993} - TRICLOPS: a high-performance trinocular active vision system
+% \cite{Freedman2008} - Depth mapping using projected patterns
+% \cite{Izadi2011} - KinectFusion : Real-time 3D Reconstruction and Interaction Using a Moving Depth Camera
+% \cite{Xia2011} - Human Detection Using Depth Information by Kinect
+% \cite{Stowers2011} - Altitude control of a quadrotor helicopter using depth map from Microsoft Kinect sensor
+% \cite{ROS_kinect} - Website on ROS for kinect
+% \cite{Kahlmann2006} - Calibration for increased accuracy of the range imaging camera swissranger\texttrademark
+% \cite{Chiabrando2009} - Sensors for 3D Imaging: Metric Evaluation and Calibration of a CCD/CMOS Time-of-Flight Camera
+% \cite{Fallon2012} - Efficient scene simulation for robust monte carlo localization using an RGB-D camera
+% \cite{Newcombe2011} - KinectFusion: Real-time dense surface mapping and tracking
+% \cite{Elfes1989} - Using Occupancy Grids for Mobile Robot Perception and Navigation
+% \cite{smith1990estimating} - Estimating uncertain spatial relationships in robotics
+% \cite{durrant2006simultaneous} - Simultaneous localisation and mapping (SLAM): Part I the essential algorithms
+% \cite{kaess2008isam} - iSAM: Incremental smoothing and mapping - modern example of the state-of-the-art 
+% \cite{clemente2007mapping} - Mapping large loops with a single hand-held camera 
+% \cite{may2009three} - Three-dimensional mapping with time-of-flight cameras 
+% \cite{newman2009navigating} - Navigating, recognizing and describing urban spaces with vision and lasers
+% \cite{henry2012rgb} - RGB-D mapping: Using Kinect-style depth cameras for dense 3D modeling of indoor environments
+
+% As mentioned in the previous section, the development of a accurate sensor model is an important task for any sensor to be used. Without having some understanding of the limitations and errors inherent in a given system there is no way to know whether the information that the system is returning has any value. For instance, when using the Kinect sensor it is important to take into account the presence of sunlight as it has a very drastic effect on the depth data returned. While there are several key areas to be evaluated in any sensor, this work looks specifically to investigate the noise inherent in values returned by the Microsoft Kinect. 
+
+
+

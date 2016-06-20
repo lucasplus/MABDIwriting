@@ -1,0 +1,3 @@
+The polynomial that best describes the standard deviation with mean=0 is:
+
+0.0124 +  8.3739\times 10^{-4} \alpha   -0.0182d   -3.2761\times 10^{-5}\alpha^2  + 3.3057 \times 10^{-4}\alpha d +  0.0050d^2  + 2.4451 \times 10^{-7}\alpha^3   -2.3006 \times 10^{-7}\alpha^2 d   -7.7506 \times 10 ^{-5} \alpha d^2    1.4519 \times 10^{-4}d^3
