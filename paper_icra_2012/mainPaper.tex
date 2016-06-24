@@ -29,7 +29,7 @@
 % added in order to create pretty pseudocode - lucas
 \usepackage{eqparbox}
 \usepackage{algorithm,caption}
-\usepackage[noend]{algorithmic} 
+\usepackage[noend]{algorithmic}
 %\renewcommand{\algorithmiccomment}[1]{\hspace{2em}// #1}
 \renewcommand\algorithmicthen{} % remove then
 \renewcommand\algorithmicdo{} % remove do
@@ -46,12 +46,12 @@
 %\usepackage[pdftex,hidelinks]{hyperref} % to link our dataset - csantos
 
 \usepackage{tikz,pgfplots} % to make sweet tikz plots - lucas
-\pgfplotsset{compat=newest} 
+\pgfplotsset{compat=newest}
 \pgfplotsset{plot coordinates/math parser=false}
-\newlength\figureheight 
-\newlength\figurewidth 
+\newlength\figureheight
+\newlength\figurewidth
 
-% items needed to externalize graphics 
+% items needed to externalize graphics
 \pgfrealjobname{mainPaper}
 \long\def\beginpgfgraphicnamed#1#2\endpgfgraphicnamed{\includegraphics{#1}}
 % pdflatex --jobname=<fig_name> mainPaper.tex
@@ -72,7 +72,7 @@ Development of a Measurement Noise Model for Kinect-style Sensors%
 }
 
 \author{Lucas Chavez$^{1}$, Cl\'audio dos S. Fernandes$^{2}$, James Milligan$^{3}$, \\
-	Mario F. M. Campos$^{2}$, Luiz Chaimowicz$^{2}$, Ron Lumia$^{1}$, Rafael Fierro$^{1}$, and  M. Ani Hsieh$^{3}$% 
+	Mario F. M. Campos$^{2}$, Luiz Chaimowicz$^{2}$, Ron Lumia$^{1}$, Rafael Fierro$^{1}$, and  M. Ani Hsieh$^{3}$%
 \thanks{$^{1}$ Mechanical Engineering Department and Electrical \& Computer Engineering Department, University of New Mexico,
 	Albuquerque, NM, USA
 	{\tt\small \{lucasc,lumia\}@unm.edu},
@@ -117,18 +117,58 @@ Development of a Measurement Noise Model for Kinect-style Sensors%
 
 \begin{abstract}
 
-%Kinect-style RGB-D sensors have provided an economical depth sensing technology. Since measurements from these sensors are noisy, most algorithms which use this technology require an underlying model to describe the uncertainty in the measurements. Models, up until now, have been ad hoc. This work will develop a measurement noise model based on thorough statistical analysis of a large data set. In this paper, we describe our entire methodology and give the generated model. Also, we validate our model with two different sensors. Finally, our implementation is freely available online.  
+% Kinect-style RGB-D sensors have provided an economical depth sensing
+% technology. Since measurements from these sensors are noisy, most algorithms
+% which use this technology require an underlying model to describe the
+% uncertainty in the measurements. Models, up until now, have been ad hoc. This
+% work will develop a measurement noise model based on thorough statistical
+% analysis of a large data set. In this paper, we describe our entire methodology
+% and give the generated model. Also, we validate our model with two different
+% sensors. Finally, our implementation is freely available online.
 
 % What did we do? Why? To whom is it going to be useful?
 
-%We present an approximate measurement noise model for the Kinect sensor by using frames captured from a large flat wall. This work aims to provide the reader with a more detailed noise description than the models currently available on the literature. Such models are of crucial importance for probabilistic algorithms in the robotics field, such as stochastic environmental mapping and Monte Carlo Localization frameworks.
+% We present an approximate measurement noise model for the Kinect sensor by using frames
+% captured from a large flat wall. This work aims to provide the reader with a
+% more detailed noise description than the models currently available on the
+% literature. Such models are of crucial importance for probabilistic algorithms
+% in the robotics field, such as stochastic environmental mapping and Monte Carlo
+% Localization frameworks.
 
-% This work looks to develop an error model for the Microsoft Kinect sensor for use in further research in the field of computer vision. The model takes into account both the distance and orientation the object within the field of measurement. Using data collected experimentally a 3D-surface was generated using the distance, orientation, and a sensor reliability weight. This sensor reliability weight can then be used as a means to minimize the effects of outliers and error in generating point cloud data using the Microsoft Kinect. 
+% This work looks to develop an error model for the Microsoft Kinect sensor for
+% use in further research in the field of computer vision. The model takes into
+% account both the distance and orientation the object within the field of
+% measurement. Using data collected experimentally a 3D-surface was generated
+% using the distance, orientation, and a sensor reliability weight. This sensor
+% reliability weight can then be used as a means to minimize the effects of
+% outliers and error in generating point cloud data using the Microsoft Kinect.
 
-% The availability of economical, depth-based sensing technology, such as the Microsoft Kinect, has been a major factor in the recent advance of robotics. However, measurements made by these inexpensive sensors are often quite noisy . Current algorithms hoping to make use of this data require underlying models to describe this uncertainty.  This work looks to improve on the ad hoc models typically used by developing a statistical model based on the analysis of a significantly large data set. In this paper, the process used in gathering a representative data set for the Kinect and the statistical methodology used in generating a sensor model is described.  A representative function of sensor noise based on inputs of distance and angle of incident is presented and further validated with two additional data sets generated by different sensors.  The full implementation of this work is freely available online.
+% The availability of economical, depth-based sensing technology, such as the
+% Microsoft Kinect, has been a major factor in the recent advance of robotics.
+% However, measurements made by these inexpensive sensors are often quite noisy .
+% Current algorithms hoping to make use of this data require underlying models to
+% describe this uncertainty.  This work looks to improve on the ad hoc models
+% typically used by developing a statistical model based on the analysis of a
+% significantly large data set. In this paper, the process used in gathering a
+% representative data set for the Kinect and the statistical methodology used in
+% generating a sensor model is described.  A representative function of sensor
+% noise based on inputs of distance and angle of incident is presented and further
+% validated with two additional data sets generated by different sensors.  The
+% full implementation of this work is freely available online.
 
 % James abstract 2
-Kinect-style RGB-D sensors have provided an economical depth sensing technology. However, measurements made with these sensors contain significant noise.  This work aims to develop a measurement noise model for the depth values acquired from Kinect-style sensors using a statistical analysis of a large real-world data set.  We present the methods used for collecting a data set as well as a summary of the statistical analysis performed to obtain a sensor model using a Kinect sensor. Our generated model shows that uncertainty is strongly influenced by distance and weakly influenced by incident angle. A verification of our model was performed using a second Kinect and an ASUS Xtion PRO. The results show our model would be a good approximation for other Kinect-style RGB-D sensors, but that a model may need to be generated for a specific sensor to obtain higher accuracy. Additionally, our implementation is freely available online.  
+Kinect-style RGB-D sensors have provided an economical depth sensing technology.
+However, measurements made with these sensors contain significant noise.  This
+work aims to develop a measurement noise model for the depth values acquired
+from Kinect-style sensors using a statistical analysis of a large real-world
+data set.  We present the methods used for collecting a data set as well as a
+summary of the statistical analysis performed to obtain a sensor model using a
+Kinect sensor. Our generated model shows that uncertainty is strongly influenced
+by distance and weakly influenced by incident angle. A verification of our model
+was performed using a second Kinect and an ASUS Xtion PRO. The results show our
+model would be a good approximation for other Kinect-style RGB-D sensors, but
+that a model may need to be generated for a specific sensor to obtain higher
+accuracy. Additionally, our implementation is freely available online.
 
 \end{abstract}
 
@@ -146,7 +186,7 @@ Kinect-style RGB-D sensors have provided an economical depth sensing technology.
 The authors would like to thank professors Ant\^onio W. Vieira and Renato
 Assun\c{c}\~ao for their valuable theoretical input. This work is partially
 supported by NSF grant OISE \#1131305 and Sandia National Laboratories under PO
-1179196, and by the brazilian institutes CAPES, CNPq and FAPEMIG. 
+1179196, and by the brazilian institutes CAPES, CNPq and FAPEMIG.
 
 \bibliographystyle{IEEEtran}
 \bibliography{bibliography}

@@ -1,0 +1,98 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%2345678901234567890123456789012345678901234567890123456789012345678901234567890
+%        1         2         3         4         5         6         7         8
+
+\documentclass[letterpaper, 10 pt, conference]{ieeeconf}  % Comment this line out if you need a4paper
+
+%\documentclass[a4paper, 10pt, conference]{ieeeconf}      % Use this line for a4 paper
+
+\IEEEoverridecommandlockouts                              % This command is only needed if
+                                                          % you want to use the \thanks command
+
+\overrideIEEEmargins                                      % Needed to meet printer requirements.
+
+% See the \addtolength command later in the file to balance the column lengths
+% on the last page of the document
+
+\usepackage{graphicx} % needed to include png files
+\usepackage{multirow} % for the table 
+
+% The following packages can be found on http:\\www.ctan.org
+\usepackage{graphics} % for pdf, bitmapped graphics files
+% \usepackage{epsfig} % for postscript graphics files
+% \usepackage{mathptmx} % assumes new font selection scheme installed
+% \usepackage{times} % assumes new font selection scheme installed
+% \usepackage{amsmath} % assumes amsmath package installed
+% \usepackage{amssymb}  % assumes amsmath package installed
+
+\title{\LARGE \bf
+Mesh Adition Based on the Depth Image (MABDI)
+}
+
+
+\author{Lucas Chavez$^{1}$ and Ron Lumia$^{2}$% <-this % stops a space
+\thanks{*This work was not supported by any organization}% <-this % stops a space
+\thanks{$^{1}$Lucas is with Mechanical Engineering Department and Electrical \& Computer Engineering Department, University of New Mexico,
+	Albuquerque, NM, USA
+        {\tt\small \{lucasc,lumia\}@unm.edu}}%%
+}
+
+
+\begin{document}
+
+
+
+\maketitle
+\thispagestyle{empty}
+\pagestyle{empty}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{abstract}
+
+% introspection
+% classification
+% using mesh methods
+
+The goal of this work is to design a method which can create a reliable
+mesh representation of the environment from sequential registered noisy
+point cloud data sets. We will name this method MABDI which stands for Mesh
+Adaptation Based on the Depth Image. The method must be computationally
+feasible for online applications and have a low memory requirement. In
+addition, the method must update the representation when new measurements of
+revisited parts of the environment are made.
+
+\end{abstract}
+
+\input{introduction}
+% set up what environmental mapping is, what a mesh is
+% design goals of the system
+
+% \input{related_works}
+% show many mesh based algorithms are black box
+% systems capable of introspection such as kinectfusion rely on volumetric
+% representation and are computationally and memory expensive
+
+% \input{approach}
+% How Mabdi works, describe the algorithm
+% How Mabdi is implemented
+
+% \input{experimental_setup}
+% describe the simulation environment
+% maybe determine speed of walker
+% discuss noise
+
+% \input{results}
+% Results of the runs
+% Definitely talk about how adding a bunny worked well
+
+% \input{conclusion}
+% discuss difficulty with noise
+% how to expand to deal with object deletion
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\bibliographystyle{IEEEtran}
+\bibliography{bibliography}
+
+\end{document}
