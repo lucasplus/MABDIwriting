@@ -18,84 +18,61 @@ In robotics map building in an unknown environment is referred to as
 the Simultaneous Localization and Mapping (SLAM) problem \cite{Thrun2002}. This label
 describes the fact that a methodology which solves the SLAM problem must
 simultaneously locate the robot in the environment as well as map the
-environment.
+environment. The focus of this work is the mapping aspect of the SLAM problem. Fig. \ref{fig:goal} gives a visualization of the goal.
 
-The focus of this work is the mapping aspect of the SLAM problem.
-Early mapping methods represented
-the environment as a set of landmark locations. The result was a sparse set
-of points usually on a 2D plane. This allowed research to show that their
-SLAM solutions worked but it soon became clear that a richer representation
-of the world was needed for a growing number of applications. In response
-several methods were developed using various other representations.  A
-number of representations are compared in Table \ref{tab:rep}.
+\begin{figure}[h]%[thpb]
+\centering
+\includegraphics[width=.5\textwidth]{figures/diagram_goal.png}
+\caption{Goal is to create a map from depth images}
+\label{fig:goal}
+\end{figure}
+
+
+There are different types of data structures that can define a map. All of which have intrinsic characteristics that impact the algorithms that generate them and create constraints that must be considered for real-world applications. In addition, we are concerned with rich representation types, in contrast to sparse representation types \cite{Dissanayake2001}, because rich types have the most use in applications such as human robot interaction.
 
 \begin{table}[h]
 \begin{footnotesize}
 \begin{center}
 \begin{tabular}{|l|c|c|c|c|c|}
 \hline
-\multirow{2}{*}{} & Adaptability & Computationally & Low Memory & SA: & SA: \\
- & & Inexpensive & Requirement & Robot & Human \\\hline
-Landmark Locations  	& x & x & x & - & - \\
-Point Clouds		& - & x & - & - & - \\
-Surfels             	& x & x & x & - & x \\
-Implicit Functions 	& x & - & - & x & x \\
-Static Mesh	 	& - & x & x & x & x \\
-Adaptive Mesh	 	& x & o & o & x & x \\
+\multirow{2}{*}{} & Supported & Computationally & Low Memory \\
+ & & Inexpensive & Requirement \\\hline
+Point Clouds		& x & x & - \\
+Surfels             	& - & x & x \\
+Implicit Functions 	& x & - & - \\
+Mesh	 	& x & x & x \\
 \hline
 \end{tabular}
 \end{center}
 \end{footnotesize}
-\caption{Characteristics of current forms of representation}
+\caption{Comparison of constraints for different map types}
 \label{tab:rep}
 \end{table}
 
-Table \ref{tab:rep} compares the characteristics of map the
-representations. Adaptability describes the ability of the representation
-to correct itself given new information. Computational expense describes
-how difficult it is to create and maintain a representation.  Memory
-requirement describes how much memory a method must use to run.  Situation
-Awareness (SA) describes how well suited a representation is for both robot
-and human decision making. Robot decision making requires a representation
-that can be used for such problems as obstacle avoidance. Human decision
-making requires a method that can be allow an operator to intuitively
-understand the state of the robot given the map. The Table is supposed to
-reflect what a representation is capable of and not necessarily where the
-state-of-the-art is.
-
-A mesh based representation is arguably an extremely good choice in
-comparison to the other representations. It has been used extensively by
-the gaming community because it is the best for representing large
-environments with the minimum memory. Also, this sort of representation
-works well to increase the SA of a robot because methods for performing
-physical simulations such as obstacle collision detection already exist. In
-addition, a mesh based environment is a very natural method to display
-information to a human operator.
-
-Currently, the problem with mesh-based environmental mapping techniques is
-that they are greedy in the sense that the mesh elements can not be
-corrected using new information. Once the mesh is in place there is no
-mechanism to adapt to newer measurements. The problem of adapting a mesh to
-new information is a very well studied problem in computer graphics, but
-these methods were not designed with large scale environmental mapping in
-mind. The biggest questions are:
+When considering what type of map is best for real-world applications, we must consider the constraints imposed by each type:
 
 \begin{itemize}
-\item How can we quickly decide which measurements should be used to adapt
-which part of the mesh?
-\item How can we quickly detect new and removed objects?
-\item How can we robustly deal with noise and obtain a methodology that makes use of the new
-measurements of an already existing part of the representation?
+\item Supported - Is there software, tools, research, algorithms, etc. for this type of map?
+\item Computationally Inexpensive - Can the algorithms be run on cost effective hardware?
+\item Low Memory Requirement - Can the algorithms be run on hardware with standard process memory?
 \end{itemize}
 
-So the real question is can we develop a methodology that can address all
-of the above questions and still have a manageable memory requirement and
-be computationally feasible? The goal of this work is to show that MABDI is
-capable of addressing these questions.
+Table \ref{tab:rep} compares the constraints of common map types. We can see, in
+general a mesh type map satisfies real-world constraints. It has been used
+extensively by the gaming and graphics communities, and so benefits from an
+incredible amount of continued research and advances in hardware such as GPUs.
 
-\begin{figure}[thpb]
+Currently, one of the issues with mesh mapping techniques is they are generally
+``black box'' methods. Meaning the data comes in from the sensor, those
+measurements are turned into a mesh, and then that mesh is appended to a global
+mesh. Fig. \ref{fig:pipeline} visualizes this common pipeline in black. The goal
+of this work is to design an algorithm to close the loop (as visualized in red)
+and allow the system to make decisions about the incoming data based on what it
+already knows.
+
+\begin{figure}[h]%[thpb]
 \centering
-\includegraphics[width=.5\textwidth]{figures/diagram_goal.png}
-\caption{In this work, the goal of mapping is to generate  }
-\label{fig:goal}
+\includegraphics[width=.5\textwidth]{figures/diagram_general_pipeline.png}
+\caption{Common ``black box'' pipeline in black. The contribution of MABDI in red.}
+\label{fig:pipeline}
 \end{figure}

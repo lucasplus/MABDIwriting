@@ -212,7 +212,7 @@ FUNCTION {bbl.standard}{ "Std." }
 FUNCTION {bbl.techrep}{ "Tech. Rep." }
 FUNCTION {bbl.mthesis}{ "Master's thesis" }
 FUNCTION {bbl.phdthesis}{ "Ph.D. dissertation" }
-FUNCTION {bbl.urlprefix}{ "[Online]. Available:" }
+FUNCTION {bbl.urlprefix}{ "" }
 FUNCTION {bbl.st}{ "st" }
 FUNCTION {bbl.nd}{ "nd" }
 FUNCTION {bbl.rd}{ "rd" }
@@ -363,7 +363,6 @@ FUNCTION {initialize.controls}
   default.ALTinterwordstretchfactor 'ALTinterwordstretchfactor :=
   default.name.format.string 'name.format.string :=
   default.name.latex.cmd 'name.latex.cmd :=
-  default.name.url.prefix 'name.url.prefix :=
 }
 
 
