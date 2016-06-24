@@ -1,3 +1,9 @@
 
 Questions
 * Should I thank an organizations. Perhaps the NSF grant that I received?
+
+* Why are we throwing out the line: "The code is freely available..."
+
+* vtkPolyData?? - Should I describe these types? (vtkImageData and vtkPolyData) I had assumed their meaning was clear from context. Is it not? Totally understand if it isn't.
+
+* The caption will be shortened.

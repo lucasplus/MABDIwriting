@@ -1,33 +1,31 @@
 \section{Related Works}	\label{sec:related_works}
 
 Works related to MABDI are generally based on RGB-D sensors. This type of sensor has
-become very popular since the release of the Kinect from Microsoft TODO ref, which
+become very popular since the release of the Kinect from Microsoft, which
 was the first mass produced RGB-D sensor of its kind. RGB-D sensors are
 inexpensive and produce noisy 640x480 depth images at 30fps. The RGB-D
 sensor has excited the robotics community because this has been the first
 time that depth data has been so readily accessible from such an
-inexpensive sensor. Therefore, these methodologies must be able to quickly
+inexpensive sensor. Therefore, methodologies that use RGB-D data must be able to quickly
 deal with very high rates of information.
 
-One very impressive work came
-from Henry et al. in 2012 \cite{Henry2012}. In this work they designed a
-system which used a RGB-D sensor to build a map made of surfels. In order to
-generate and maintain the surfel map they used the work of Weise et al.
-\cite{Weise2009}. Surfels are circular disks which have a particular
-position and orientation and also a radial size based on confidence. The
-map consists of a large number of surfels. The surfel map can be updated
-given the new registered depth images from the sensor. Decisions are made
-of how to handle each measurement in the depth image based on the
-difference between an expectation generated using the current map and the
-actual readings from the sensor. Rendering a surfel map requires special
-methods \cite{Pfister2000} and is difficult to use in applications such as
-obstacle avoidance.
+One very impressive work came from Henry et al. in 2012 \cite{Henry2012}. In
+this work they designed a system which used a RGB-D sensor to build a map made
+of surfels (Surfels are circular disks which have a particular position and
+orientation and also a radial size based on confidence.). In order to generate
+and maintain the surfel map they used the work of Weise et al. \cite{Weise2009}.
+The map consists of a large number of surfels. The surfel map can be updated
+given new registered depth images from the sensor. Decisions are made how
+to handle each measurement in the depth image based on the difference between an
+expectation generated using the current map and the actual readings from the
+sensor. Rendering a surfel map requires special methods \cite{Pfister2000} and
+is difficult to use in applications such as obstacle avoidance.
 
 One of the next major advances was published by Whelan
 et al. in 2012 \cite{Whelan2012} and more recently in 2013
 \cite{Whelan12tr}. The system they developed was named Kintinuous and was
 able to produce a high quality mesh representation of the environment.
-Their system was a hybrid system and utilized the KinectFusion method
+Their hybrid system utilized the KinectFusion method
 \cite{Newcombe2011a} of Newcombe et al. to create a volumetric
 representation of the portion of the environment in front of the sensor. As
 the sensor moves, portions of the environment that leave the volume in
@@ -44,8 +42,8 @@ adaptive to the environment and their experiments only showed results of mapping
 single flat wall with no robot movement. The system needs to be tested for
 object addition and removal.
 
-Research and development of new mapping algorithms are trending towards
+Research and development of new mapping algorithms trend towards
 leveraging the information in the global map to make decisions about the
 incoming data. One can see parallels with how we as humans see the world. MABDI
-proposes do this in a computationally feasible way by using simply using
+proposes do this in a computationally feasible way by simply using
 differencing and thresholding imaging methods.
