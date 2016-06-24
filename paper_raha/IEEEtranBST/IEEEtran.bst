@@ -363,6 +363,7 @@ FUNCTION {initialize.controls}
   default.ALTinterwordstretchfactor 'ALTinterwordstretchfactor :=
   default.name.format.string 'name.format.string :=
   default.name.latex.cmd 'name.latex.cmd :=
+  default.name.url.prefix 'name.url.prefix :=
 }
 
 
