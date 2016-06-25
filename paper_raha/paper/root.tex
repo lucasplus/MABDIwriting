@@ -16,6 +16,7 @@
 
 \usepackage{graphicx} % needed to include png files
 \usepackage{multirow} % for the table
+\usepackage{stfloats}
 
 % The following packages can be found on http:\\www.ctan.org
 \usepackage{graphics} % for pdf, bitmapped graphics files
@@ -30,17 +31,13 @@ Mesh Addition Based on the Depth Image (MABDI)
 }
 
 
-\author{Lucas Chavez$^{1}$ and Ron Lumia$^{2}$, \textit{Fellow, IEEE}% <-this % stops a space
-\thanks{*This work was support in part by Sandia National Laboratories under Purchase Order: 1179196}% <-this % stops a space
-\thanks{$^{1}$Lucas is with Mechanical Engineering Department and Electrical \& Computer Engineering Department, University of New Mexico,
+\author{Lucas Chavez$^{1}$ and Ron Lumia$^{1}$, \textit{Fellow, IEEE}% <-this % stops a space
+\thanks{$^{1}$Mechanical Engineering Department and Electrical \& Computer Engineering Department, University of New Mexico,
 	Albuquerque, NM, USA
-        {\tt\small \{lucasc,lumia\}@unm.edu}}%%
-}
-
+        {\tt\small golucasplus@gmail.com, \{lucasc,lumia\}@unm.edu}}%%
+}%
 
 \begin{document}
-
-
 
 \maketitle
 \thispagestyle{empty}
@@ -70,35 +67,58 @@ inexpensive once the environment is known, but can also react to new objects.
 
 \end{abstract}
 
-\input{introduction}
+\input{s_introduction}
 % set up what environmental mapping is, what a mesh is
 % design goals of the system
 
-\input{related_works}
+\input{s_related_works}
 % show many mesh based algorithms are black box
 % systems capable of introspection such as kinectfusion rely on volumetric
 % representation and are computationally and memory expensive
 
-\input{approach}
+\input{s_approach}
 % How Mabdi works, describe the algorithm
 % How Mabdi is implemented
 
-\input{experimental_setup}
+\input{s_experimental_setup}
 % describe the simulation environment
 % maybe determine speed of walker
 % discuss noise
 
-% \input{results}
+\input{s_results}
 % Results of the runs
 % Definitely talk about how adding a bunny worked well
 
-% \input{conclusion}
+\input{s_conclusion}
 % discuss difficulty with noise
 % how to expand to deal with object deletion
+
+\input{s_acknowledgment}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \bibliographystyle{IEEEtran}
 \bibliography{bibliography}
+
+% \begin{figure}[hp]%[thpb]
+% \centering
+% \includegraphics[width=\textwidth]{figures/run1_dashboard.png}
+% \caption{Run 1 results. Static table environment with no noise.}
+% \label{fig:run1d}
+% \end{figure}
+%
+% \begin{figure}[hp]%[thpb]
+% \centering
+% \includegraphics[width=\textwidth]{figures/run3_dashboard.png}
+% \caption{Run 1 results. Static table environment with no noise.}
+% \label{fig:run1d}
+% \end{figure}
+
+\begin{figure}[hp]%[thpb]
+\centering
+\includegraphics[width=\textwidth]{figures/run123.png}
+\caption{Results of all experimental runs. See Results Section for discussion.}
+\label{fig:run123}
+\end{figure}
 
 \end{document}

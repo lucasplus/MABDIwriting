@@ -1,0 +1,49 @@
+\section{Related Works}	\label{sec:related_works}
+
+Works related to MABDI are generally based on RGB-D sensors. This type of sensor has
+become very popular since the release of the Kinect from Microsoft, which
+was the first mass produced RGB-D sensor of its kind. RGB-D sensors are
+inexpensive and produce noisy 640x480 depth images at 30fps. The RGB-D
+sensor has excited the robotics community because this has been the first
+time that depth data has been so readily accessible from such an
+inexpensive sensor. Therefore, methodologies that use RGB-D data must be able to quickly
+deal with very high rates of information.
+
+One very impressive work came from Henry et al. in 2012 \cite{Henry2012}. In
+this work they designed a system which used a RGB-D sensor to build a map made
+of surfels (Surfels are circular disks which have a particular position and
+orientation and also a radial size based on confidence.). In order to generate
+and maintain the surfel map they used the work of Weise et al. \cite{Weise2009}.
+The map consists of a large number of surfels. The surfel map can be updated
+given new registered depth images from the sensor. Decisions are made how
+to handle each measurement in the depth image based on the difference between an
+expectation generated using the current map and the actual readings from the
+sensor. Rendering a surfel map requires special methods \cite{Pfister2000} and
+is difficult to use in applications such as obstacle avoidance.
+
+One of the next major advances was published by Whelan
+et al. in 2012 \cite{Whelan2012} and more recently in 2013
+\cite{Whelan12tr}. The system they developed was named Kintinuous and was
+able to produce a high quality mesh representation of the environment.
+Their hybrid system utilized the KinectFusion method
+\cite{Newcombe2011a} of Newcombe et al. to create a volumetric
+representation of the portion of the environment in front of the sensor. As
+the sensor moves, portions of the environment that leave the volume in
+front of the sensor are ray cast and turned into a mesh. They obtain very
+impressive results but also mention a limitation of their system for future
+work. The limitation is that the mesh can not be updated once created,
+which is an issue when revisiting parts of the environment. One of the most
+impressive current works which has an adaptable mesh came from Cashier et
+al. in 2012 \cite{Cahier2012}. In this work, they were able to generate and
+update a mesh with new measurements from a ToF sensor. They used the
+difference between the existing model and the actual measurements to decide
+whether to adapt the mesh or add new elements. The mesh topology was not
+adaptive to the environment and their experiments only showed results of mapping a
+single flat wall with no robot movement. The system needs to be tested for
+object addition and removal.
+
+Research and development of new mapping algorithms trend towards
+leveraging the information in the global map to make decisions about the
+incoming data. One can see parallels with how we as humans see the world. MABDI
+proposes do this in a computationally feasible way by simply using
+differencing and thresholding imaging methods.
