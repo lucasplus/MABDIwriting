@@ -1,0 +1,107 @@
+\section{Experimental Setup}	\label{sec:experimental_setup}
+
+It was decided to develop and test MABDI in a completely simulated environment
+so that all results could be repeatable and also to facilitate the ability to
+debug during the development process. This ability was truly invaluable as some
+components of the algorithm proved to be complex from an implementation
+perspective. In addition, we can now compare the resultant
+global mesh to ground truth.
+
+\subsection{Simulation Parameters}
+
+The simulation was designed to be highly configurable and is implemented by a
+class named MabdiSimulate. The class is initialized with parameters that control
+all aspects of the simulation. Parameters of a particular importance are
+discussed in more detail here:
+
+\begin{itemize}
+    \item  Environment - This parameter specifies the environment used to generate
+    the simulated depth images. \textit{Table} is an environment consisting of a
+    table and two cups placed on the table. The table is 1 meter tall.
+    \textit{Bunnies} is an environment consisting of three bunnies who are
+    around 1.5 meters tall. These bunnies are created using the Stanford Bunny
+    \cite{Turk1994}, a well known data set in computer graphics.
+    \item Noise - If true, adds noise to the depth image of the simulated sensor.
+    \item Dynamic - If true, adds an object during the simulation. In the case
+    of this analysis, a third bunny is added half-way through the simulation.
+    \item Iterations - The number of iterations the simulation will have. This
+    parameter affects the distance the sensor travels from frame to frame.
+\end{itemize}
+
+% parameters chosen the experimental runs
+For this paper we will be exploring three experimental runs to demonstrate the
+ability of the MABDI implementation to generate valid results. Additionally, the
+experimental runs will be able to show the capabilities of the MABDI algorithm
+such as handling object addition in the environment.
+
+\begin{table}[h]
+  \caption{Description of the experimental runs.}
+  \label{tab:run}
+  \begin{footnotesize}
+  \begin{center}
+    \begin{tabular}{|l|c|c|c|c|}
+    \hline
+           & Environment & Noise   & Dynamic & Iterations \\\hline
+    Run 1	 & Table       & False   & False   & 30 \\
+    Run 2  & Bunnies     & True    & False   & 50 \\
+    Run 3  & Bunnies     & True    & True    & 50 \\
+    \hline
+    \end{tabular}
+  \end{center}
+  \end{footnotesize}
+\end{table}
+
+All experimental runs define a helical path for the sensor to follow during the
+simulation. The path circles the objects in the environment twice. A helical
+path was chosen because it returns to a part of the environment that has been
+already mapped and is thus ``known'' to the global mesh. Also, because the path
+is a helix and not just a circle, the sensor views the environment from a
+slightly different position on each pass.
+
+\subsection{Analysis of Simulated Noise}
+
+In order to realistically simulate the sensor in a real-world environment we add
+noise to the depth image $D$. See Fig. \ref{fig:system}. The magnitude of the
+noise added is based on the accuracy of real-world sensors. As new RGB-D sensors
+have been developed, such as the Asus Xtion and the Kinect for Xbox One, the
+accuracy of the sensors has continued to improve \cite{lachat2015first}. For
+this work, we take a conservative approach and utilize the well known error
+modeling work of Khoshelham \cite{Khoshelham2012} that is based on the original
+Kinect.
+
+The depth image used by the MABDI algorithm $E$ and the depth image that comes
+from simulating the environment $D$ both use a pinhole camera model. This method
+has been validated in the localization work of Fallon \cite{Fallon2012}. The
+intrinsic camera parameters of the pinhole hole model were chosen to emulate the
+Kinect sensor \cite{sitekinectspecs}. The pinhole model defines a transformation
+matrix used to transform between viewpoint coordinates and real-world
+coordinates. The z component of the viewpoint coordinates constitutes the depth
+image and are defined to vary between 0 and 1. Due to how the transformation
+works, differences in the depth image do not linearly correspond to changes in
+real-world coordinates as can be seen in Fig. \ref{fig:depth}.
+
+\begin{figure}[h]%[thpb]
+\centering
+  \includegraphics[width=.5\textwidth]{figures/plot_depth.png}
+  \caption{Viewpoint coordinates to real world coordinates analysis.}
+  \label{fig:depth}
+\end{figure}
+
+The noise added to $D$ is defined by the equation below. The standard deviation
+$\sigma\mathsmaller{=}0.001$ was chosen so that the resultant errors in the
+real-world coordinates would correlate to the error model in
+\cite{Khoshelham2012}. The text boxes in Fig. \ref{fig:depth} show the resultant
+real-world error for two values of $D$; they match the error model of
+\cite{Khoshelham2012}.
+
+$$
+D_{noisy}(i,j) = D(i,j) + D(i,j)*\mathcal{N} (\mu\mathsmaller{=}0, \sigma\mathsmaller{=}0.001)
+$$
+
+% Can add equation showing addition of noise if there is space later
+
+% Viewpoint coordinates to real-world coordinates analysis. Viewpoint coordinates
+% are obtained when a mesh is rendered into a render window, and can be
+% transformed to real-world coordinates using the transformation matrix of the
+% camera. Noise is added in simulation to the viewpoint coordinates. This graph
+% shows the effect of that noise in real-world coordinates.

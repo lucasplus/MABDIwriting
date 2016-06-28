@@ -1,0 +1,77 @@
+%\documentclass{unmeereport}
+%\documentclass[final]{eeceTR} - using the final option changes layout
+\documentclass{eeceTR}
+
+% fixes the error "LaTeX Error: Unknown graphics extension: .eps"
+% http://tex.stackexchange.com/questions/29664/latex-error-unknown-graphics-extension-eps
+\usepackage{epstopdf}
+
+\title{Mesh Addition Based on the Depth Image (MABDI)}
+
+\techrepnum{00-xxx}
+
+\author{Lucas E. Chavez \thanks{Supported in part by Sandia National Laboratories under Purchase Order: 1179196 and  NSF grant OISE \#1131305.}\\
+Department of Mechanical Engineering\\
+The University of New Mexico\\
+Albuquerque, NM 87131\\
+e-mail: {\tt lucasc@unm.edu}
+}
+
+\abstract{
+Many robotic applications, especially those whose goal is to aid or assist
+through human-robot interaction, utilize a rich map of the world for reasoning
+tasks such as collision detection, path planning, or object recognition. Such
+map, and the method used to produce it, must take into consideration real-world
+constraints. Most mesh-based mapping algorithms resemble a ``black box'' and do
+not provide a mechanism to close the loop and make decisions about the
+incoming information. MABDI leverages the global mesh by finding the difference
+between what we expect to see and what we are actually seeing, and using this to
+classify the incoming measurements as novel or not. This allows the surface
+reconstruction method to be run only on data that has not yet been represented in
+the global mesh. The result is an algorithm that becomes computationally
+inexpensive once the environment is known, but can also react to new objects.
+}
+
+\keywords{environmental mapping, depth senor, RGB-D}
+
+\begin{document}
+
+\maketitle
+\makeabstract
+
+\input{s_introduction}
+% set up what environmental mapping is, what a mesh is
+% design goals of the system
+
+\input{s_related_works}
+% show many mesh based algorithms are black box
+% systems capable of introspection such as kinectfusion rely on volumetric
+% representation and are computationally and memory expensive
+
+\input{s_approach}
+% How Mabdi works, describe the algorithm
+% How Mabdi is implemented
+
+\input{s_experimental_setup}
+% describe the simulation environment
+% maybe determine speed of walker
+% discuss noise
+
+\input{s_results}
+% Results of the runs
+% Definitely talk about how adding a bunny worked well
+
+\input{s_conclusion}
+% discuss difficulty with noise
+% how to expand to deal with object deletion
+
+\input{s_acknowledgment}
+\appendix
+
+\section{Data}
+First appendix.
+
+\bibliographystyle{plain}
+\bibliography{sample}
+
+\end{document}

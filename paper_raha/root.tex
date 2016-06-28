@@ -1,0 +1,112 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%2345678901234567890123456789012345678901234567890123456789012345678901234567890
+%        1         2         3         4         5         6         7         8
+
+% \newcommand{\CLASSINPUTtoptextmargin}{72pt}
+% \newcommand{\CLASSINPUTbottomtextmargin}{2cm}
+\documentclass[letterpaper, 10pt, conference, final]{ieeeconf}  % Comment this line out if you need a4paper
+
+%\documentclass[a4paper, 10pt, conference]{ieeeconf}      % Use this line for a4 paper
+
+\IEEEoverridecommandlockouts     % This command is only needed if you want to use the \thanks command
+\overrideIEEEmargins             % Needed to meet printer requirements.
+
+% See the \addtolength command later in the file to balance the column lengths
+% on the last page of the document
+
+% \usepackage{microtype} - to make a little more room
+\usepackage{graphicx} % needed to include png files
+\usepackage{multirow} % for the table
+\usepackage{stfloats}
+\usepackage{relsize}
+
+% The following packages can be found on http:\\www.ctan.org
+\usepackage{graphics} % for pdf, bitmapped graphics files
+% \usepackage{epsfig} % for postscript graphics files
+% \usepackage{mathptmx} % assumes new font selection scheme installed
+% \usepackage{times} % assumes new font selection scheme installed
+% \usepackage{amsmath} % assumes amsmath package installed
+% \usepackage{amssymb}  % assumes amsmath package installed
+
+\title{\LARGE \bf
+Mesh Addition Based on the Depth Image (MABDI)
+}
+
+
+\author{Lucas Chavez$^{1}$ and Ron Lumia$^{1}$, \textit{Fellow, IEEE}% <-this % stops a space
+\thanks{$^{1}$Mechanical Engineering Department and Electrical \& Computer Engineering Department, University of New Mexico,
+	Albuquerque, NM, USA
+        {\tt\small golucasplus@gmail.com, \{lucasc,lumia\}@unm.edu}}%%
+}%
+
+\begin{document}
+
+\maketitle
+\thispagestyle{empty}
+\pagestyle{empty}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{abstract}
+
+% introspection
+% classification
+% using mesh methods
+
+Many robotic applications, especially those whose goal is to aid or assist
+through human-robot interaction, utilize a rich map of the world for reasoning
+tasks such as collision detection, path planning, or object recognition. Such
+map, and the method used to produce it, must take into consideration real-world
+constraints. Most mesh-based mapping algorithms resemble a ``black box'' and do
+not provide a mechanism to close the loop and make decisions about the
+incoming information. MABDI leverages the global mesh by finding the difference
+between what we expect to see and what we are actually seeing, and using this to
+classify the incoming measurements as novel or not. This allows the surface
+reconstruction method to be run only on data that has not yet been represented in
+the global mesh. The result is an algorithm that becomes computationally
+inexpensive once the environment is known, but can also react to new objects.
+
+
+\end{abstract}
+
+\input{s_introduction}
+% set up what environmental mapping is, what a mesh is
+% design goals of the system
+
+\input{s_related_works}
+% show many mesh based algorithms are black box
+% systems capable of introspection such as kinectfusion rely on volumetric
+% representation and are computationally and memory expensive
+
+\input{s_approach}
+% How Mabdi works, describe the algorithm
+% How Mabdi is implemented
+
+\input{s_experimental_setup}
+% describe the simulation environment
+% maybe determine speed of walker
+% discuss noise
+
+\input{s_results}
+% Results of the runs
+% Definitely talk about how adding a bunny worked well
+
+\input{s_conclusion}
+% discuss difficulty with noise
+% how to expand to deal with object deletion
+
+\input{s_acknowledgment}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\bibliographystyle{IEEEtran}
+\bibliography{bibliography}
+
+\begin{figure}[hp]%[thpb]
+\centering
+\includegraphics[width=\textwidth]{figures/run123.png}
+\caption{Results of all experimental runs. See Results Section for discussion.}
+\label{fig:run123}
+\end{figure}
+
+\end{document}
