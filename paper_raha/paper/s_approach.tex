@@ -1,4 +1,4 @@
-\section{Approach}	\label{sec:related_works}
+\section{Approach}	\label{sec:approach}
 
 The algorithmic structure of MABDI can be seen in Fig. \ref{fig:system}. The
 diagram is very similar to Fig. \ref{fig:pipeline} with the exception of the
@@ -19,8 +19,8 @@ The Classification component consists of two elements:
     small, those points are thrown away and if the differences are large, those
     points are kept as $D_n$. The idea behind this is, if the difference is
     large, the measurements are coming from a part of the environment that has
-    not been seen before i.e., novel. The implication of this assumption is that
-    this version of MABDI can not handle object removal. It is worth noting
+    not been seen before, i.e. novel. The implication of this assumption is that
+    this version of MABDI cannot handle object removal. It is worth noting
     that MABDI can be extended to handle object removal by using the sign of the
     difference between $E$ and $D$ instead of the absolute value.
 \end{enumerate}
@@ -36,16 +36,15 @@ From a software perspective, the major difficulty of implementing the MABDI
 algorithm was found to be creating both the simulated depth image $D$ and the
 expected depth image $E$. In addition, managing the complexity of the data
 pipeline needed to run the algorithm and the simulation of the sensor proved to
-be quite overwhelming. Thankfully, Kitware, who is a leading
+be difficult. Thankfully, Kitware, who is a leading
 edge developer of open-source software, created the Visualization Toolkit (VTK)
 \cite{schroeder2004visualization, sitevtk}. At the time of this writing the VTK
 Github repository has over 60,000 commits and is contributed to by supporters
-such as Sandia National Labs \cite{sitevtkoverview}.
+such as Sandia National Labs \cite{sitesandia}.
 
-MABDI is implemented with Python and uses VTK. The code is freely available  the
-code is available upon request to me at golucasplus@gmail.com. At the time of this
-writing, it consists of over 1,400 lines. The code that implements the MABDI
-algorithm itself is around 750 lines.
+MABDI implemented in Python and uses VTK. The code is available upon request to
+golucasplus@gmail.com. At the time of this writing, it consists of over 1,400
+lines. The code that implements the MABDI algorithm itself is around 750 lines.
 
 VTK is aptly designed for the implementation of MABDI for many reasons. Perhaps
 the most important is the concept of a vtkAlgorithm (often called a Filter).
