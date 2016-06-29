@@ -282,12 +282,19 @@
   \date{\today}
 
 \newcommand\maketitle{%
-   \thisfancypage{%
-     \setlength{\fboxsep}{10pt}%
-     \doublebox}{}
    \@maketitle
   \if@twoside\begin{titlepage}\mbox{}\end{titlepage}\fi
 }
+
+% {\Huge\sc Department of}%
+% \vskip 0.5ex%
+% {\Huge\sc Mechanical Engineering \par}%
+% \vskip 2ex%
+% {\Huge\sc School of Engineering}%
+% \vskip 0.5ex%
+% {\Huge\sc University of New Mexico \par}%
+% \vskip 3ex%
+% {\large  \@reporttype \@techrepnum \par}%
 
 \def\@maketitle{%
   \begin{titlepage}%
@@ -298,25 +305,23 @@
     \null\vfil
     \begin{center}%
       \vspace{-4ex}%
-      {\Huge\sc Department of}%
-      \vskip 0.5ex%
-      {\Huge\sc Mechanical Engineering \par}%
-      \vskip 2ex%
-      \psfig{file=unm_logo.eps,width=1.5in}%
-      \vskip 1ex%
-      {\Huge\sc School of Engineering}%
-      \vskip 0.5ex%
-      {\Huge\sc University of New Mexico \par}%
-      \vskip 3ex%
       {\Large\bfseries \@title \par}%
+      \vskip 12ex plus2ex minus8ex%
+      {\Large\bfseries BY \par}%
       \vskip 12ex plus2ex minus8ex%
       {\large %
       \lineskip .75em%
       \begin{tabular}[t]{c}%
         \@author
       \end{tabular}\par}%
+      \vskip 3.5in%
+      {\large THESIS \par \par}
+      {\large Submitted in Partial Fulfillment of the \par}
+      {\large Requirements for the Degree of: \par}
+      {\large \bfseries Master of Science in Mechanical Engineering}
       \vskip 10ex plus2ex minus7ex%
-      {\large  \@reporttype \@techrepnum \par}%
+      {\large The University of New Mexico}
+      {\large Albuquerque, New Mexico}
       \vskip 3ex%
       {\large \@date \par}%
     \end{center}\par
