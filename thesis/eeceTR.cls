@@ -318,7 +318,8 @@
       {\large THESIS \par \par}
       {\large Submitted in Partial Fulfillment of the \par}
       {\large Requirements for the Degree of: \par}
-      {\large \bfseries Master of Science in Mechanical Engineering}
+      {\large \bfseries Master of Science \par}
+      {\large \bfseries Mechanical Engineering}
       \vskip 10ex plus2ex minus7ex%
       {\large The University of New Mexico}
       {\large Albuquerque, New Mexico}
