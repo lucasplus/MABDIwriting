@@ -1,77 +1,513 @@
 \section{Related Works}	\label{sec:related_works}
 
-Works related to MABDI are generally based on RGB-D sensors. This type of sensor has
-become very popular since the release of the Kinect from Microsoft, which
-was the first mass produced RGB-D sensor of its kind. RGB-D sensors are
-inexpensive and produce noisy 640x480 depth images at 30fps. The RGB-D
-sensor has excited the robotics community because this has been the first
-time that depth data has been so readily accessible from such an
-inexpensive sensor. Therefore, methodologies that use RGB-D data must be able to quickly
-deal with very high rates of information.
-
-One highly-related work was published by Whelan
-et al. in 2012 \cite{Whelan2012} and more recently in 2013
-\cite{Whelan12tr}. The system they developed was named Kintinuous and was
-able to produce a high quality mesh representation of the environment.
-Their hybrid system utilized the KinectFusion method
-\cite{Newcombe2011a} of Newcombe et al. to create a volumetric
-representation of the portion of the environment in front of the sensor. As
-the sensor moves, portions of the environment that leave the volume in
-front of the sensor are ray cast and turned into a mesh. They obtain very
-impressive results but also mention a limitation of their system for future
-work. The limitation is that the mesh can not be updated once created,
-which is an issue when revisiting parts of the environment. One of the most
-impressive current works which has an adaptable mesh came from Cashier et
-al. in 2012 \cite{Cahier2012}. In this work, they were able to generate and
-update a mesh with new measurements from a ToF sensor. They used the
-difference between the existing model and the actual measurements to decide
-whether to adapt the mesh or add new elements. The mesh topology was not
-adaptive to the environment and their experiments only showed results of mapping a
-single flat wall with no robot movement. The system needs to be tested for
-object addition and removal.
-
-Research and development of new mapping algorithms trend towards
-leveraging the information in the global map to make decisions about the
-incoming data. One can see parallels with how we as humans see the world. MABDI
-proposes do this in a computationally feasible way by simply using
-differencing and thresholding imaging methods.
-
-
-
-
-
-
-
-
-% One very impressive work came from Henry et al. in 2012 \cite{Henry2012}. In
-% this work they designed a system which used a RGB-D sensor to build a map made
-% of surfels (Surfels are circular disks which have a particular position and
-% orientation and also a radial size based on confidence.). In order to generate
-% and maintain the surfel map they used the work of Weise et al. \cite{Weise2009}.
-% The map consists of a large number of surfels. The surfel map can be updated
-% given new registered depth images from the sensor. Decisions are made how
-% to handle each measurement in the depth image based on the difference between an
-% expectation generated using the current map and the actual readings from the
-% sensor. Rendering a surfel map requires special methods \cite{Pfister2000} and
-% is difficult to use in applications such as obstacle avoidance.
+% Works related to MABDI are generally based on RGB-D sensors. This type of sensor has
+% become very popular since the release of the Kinect from Microsoft, which
+% was the first mass produced RGB-D sensor of its kind. RGB-D sensors are
+% inexpensive and produce noisy 640x480 depth images at 30fps. The RGB-D
+% sensor has excited the robotics community because this has been the first
+% time that depth data has been so readily accessible from such an
+% inexpensive sensor. Therefore, methodologies that use RGB-D data must be able to quickly
+% deal with very high rates of information.
 %
-% One of the next major advances was published by Whelan
-% et al. in 2012 \cite{Whelan2012} and more recently in 2013
-% \cite{Whelan12tr}. The system they developed was named Kintinuous and was
-% able to produce a high quality mesh representation of the environment.
-% Their hybrid system utilized the KinectFusion method
-% \cite{Newcombe2011a} of Newcombe et al. to create a volumetric
-% representation of the portion of the environment in front of the sensor. As
-% the sensor moves, portions of the environment that leave the volume in
-% front of the sensor are ray cast and turned into a mesh. They obtain very
-% impressive results but also mention a limitation of their system for future
-% work. The limitation is that the mesh can not be updated once created,
-% which is an issue when revisiting parts of the environment. One of the most
-% impressive current works which has an adaptable mesh came from Cashier et
-% al. in 2012 \cite{Cahier2012}. In this work, they were able to generate and
-% update a mesh with new measurements from a ToF sensor. They used the
-% difference between the existing model and the actual measurements to decide
-% whether to adapt the mesh or add new elements. The mesh topology was not
-% adaptive to the environment and their experiments only showed results of mapping a
-% single flat wall with no robot movement. The system needs to be tested for
-% object addition and removal.
+% Research and development of new mapping algorithms trend towards
+% leveraging the information in the global map to make decisions about the
+% incoming data. One can see parallels with how we as humans see the world. MABDI
+% proposes do this in a computationally feasible way by simply using
+% differencing and thresholding imaging methods.
+
+
+A major problem in robotics has been and continues to be: How can we create
+the ``best'' representation of an unknown environment? There are two main
+communities of researchers who been working on developing algorithms
+and methods to answer precisely this question. They are the robotics
+community and the computer graphics community and each community has a
+slightly different motivation for solving this problem. The robotics
+community is concerned with developing a real-time solution of generating
+representations in large environments. These representations are used by
+both fully autonomous and teleoperated systems. The common name which is
+used by the robotics community for this problem is Simultaneous
+Localization and Mapping or SLAM. The name SLAM refers to the problem of
+mapping and locating a robot in an unknown environment. Early methods
+generated very sparse representations of the world, as time and sensor
+technology progressed the representations became denser. A dense
+representation is desired for any system which must have good situational
+awareness of its environment. The computer graphics community is concerned
+with generating high quality representations of smaller environments and
+single objects. They generally refer to the problem as surface
+reconstruction. These representations are used by augmented reality,
+computer game object creation, 3D printing, and more applications. In the following
+sections we will trace the development of representation generating methods
+in both communities. We will then discuss what is needed in future work.
+
+\subsection{SLAM}
+
+The problem of SLAM has been a primary focus of the robotics community for
+more than 25 years. A complete solution to the SLAM problem must be able to
+generate a representation of an unknown environment and track the robot in
+this new representation. In this body of literature the act of generating a
+representation is referred to as mapping. A good overview of the problem
+can be found in \cite{Durrant-Whyte2006} and \cite{Bailey2006}. Each
+solution is designed to consider the goal application, type of sensor,
+computational constraints, and memory limits. All these factors influence
+the researcher's choice of what type of representation to use for the
+mapping procedure. In 2002 Thrun wrote a famous survey \cite{Thrun2002} of
+the SLAM literature which categorized existing algorithms on many traits
+including the representation. The representation choice of prior work can
+be roughly categorized into 3 types. The first type is characterized by
+some sort of list of 2D or 3D points and are usually considered to be
+sparse representations. Common names for these types are landmark locations
+and point clouds. The second type are considered to be more volumetric
+based and are often times considered to be a dense representation. Common
+names for these types are occupancy grid and Truncated Signed Distance
+Function (TSDF). The last type have the characteristic of being a surface
+representation and are also considered to be a dense representation. Common
+names for these types are surfels and mesh. In the following sections we
+will trace the history of each of the 3 types of representation that is
+seen in the SLAM literature.
+
+\subsubsection{Point Locations}
+
+One of the most well known and earliest solution to the SLAM problem, which
+uses a point location representation, was proposed by Smith et al. in 1990
+\cite{Smith1990}. The mathematical framework that he created was the origin
+of a family of solutions based on the Extended Kalman Filter (EKF). The
+representation he chose was simply a list of 2D landmark locations. Each
+location was part of a state matrix which was estimated at every iteration.
+A list of landmark locations was chosen because it allowed the method to
+have a low computational cost and use a small amount of memory, important
+factors in the days of early computing. There have been many improvements
+to the family of SLAM solutions which generate a list of point locations
+since Smith's work. One of the first practical implementations on a real
+robot was done by Thrun in 1998 \cite{Thrun1998}. In this work the SLAM
+problem was posed in an Expectation Maximization (EM) framework which is
+similar to the EKF framework in that landmark locations are saved
+in a state vector which is estimated at every iteration. In Thrun's work an
+occupancy grid map is generated as a post processing step from sonar
+measurements. The results showed that their representation could become
+more accurate over time by using new observations to improve the current
+estimate. This a highly desired ability of any representation generation
+method. The next step was the ability of these methods to include a loop
+closure procedure. A loop closure procedure was proposed by Gutmann in 1999
+\cite{Gutmann1999}. The key ability of the method was it could recognize
+when the robot was revisiting a prior location and adjust the entire
+representation with the constraint that the two points must coincide. In
+2001 Dissanayake et al. \cite{Dissanayake2001} derived 3 theorems to
+theoretically prove the convergence of the SLAM problem. Their test
+platform used a millimeter-wave radar mounted on a vehicle and generated a
+list of 2D landmark locations. In 2001 Thrun et al. \cite{Thrun2001} cast
+the SLAM problem using particle filter techniques. Their results generated
+a 2D map and showed an increased robustness and lower computational cost
+than prior methods. One of the key disadvantages of methods up to this
+point was that complexity scaled quadratically with the number of landmark
+locations.  In 2002 Montemerlo et al. \cite{Montemerlo2002} created a SLAM
+solution named FastSLAM which was able to handle a much larger number of
+landmarks. They showed results with maps containing more than 50,000
+points. Then, SLAM solutions using point locations became much more
+directed towards 3D.
+
+Some of the first interesting works which represented the world as a list
+of 3D point locations were done by Thrun et al. in 2000 \cite{Thrun2000},
+Liu and Emery in 2001 \cite{Liu2001}, and H\"{a}hnel et al. in 2003. In
+these works the 2D landmark locations and robot position were estimated
+using very similar techniques from past work. Once this had been done the 3D
+laser scan data was simply appended to each estimated robot location. Then,
+a mesh was created by post processing the 3D point cloud. They utilized the
+fact that the laser collected the data in an incremental manner and simply
+connected neighboring 3D points. Finally, the mesh was simplified by
+looking for large planar sections and merging the corresponding mesh
+elements. One of the first SLAM solutions which used a single camera to
+generate a list of 3D points was done by Davison in 2003
+\cite{Davison2003}. Here he used a single camera to generate a very sparse
+list of 3D points. This method was limited to small environments. Future
+advances allowed representations of larger environments. In 2003 Thrun et
+al.  \cite{Thrun2003} created a SLAM procedure which did not rely on having
+a structured environment and was applied to mapping large mines. In 2004
+Howard et al. \cite{Howard2004} created a SLAM systems based on a Segway
+platform equipped with a 3D laser which could map large areas of roughly 0.5
+km on each side.  One of the results showed a map with approximately 8
+million points. In 2006 Cole and Newman \cite{Cole2006} continued work in
+large-scale SLAM by increasing robustness and also generated maps with many
+3D points using a laser sensor. In 2007 Clemente et al. created a
+large-scale SLAM system that used a single camera. The system had an
+advanced loop closing procedure based on visual features and created large
+maps of 3D points. In 2001 Klein and Murray \cite{Klein2007} developed a
+SLAM solution which used a single camera. The uniqueness of their
+method was the algorithmic structure. Their SLAM solution consisted of 2
+separate processes: a tracking processes and a map building process. This
+algorithmic structure has become very common in many current SLAM solutions
+because of the advances in pose estimation technology. Klein and Murray
+were able to get very good results for a small environment and showed
+Augmented Reality (AR) applications.  Many of the future advances of SLAM
+solutions, which generated 3D point sets, dealt with camera systems
+\cite{Paz2008,Konolige2008,Strasdat2010} and improved in speed and
+robustness. Many of the most current methods which produce a list of points
+are systems that use a relatively new type of sensor named a RGB-D sensor.
+One good example is a work that was produced in 2011 by Engelhard et al.
+\cite{Engelhard2011}. In this work they used an algorithm named the
+Iterative Closest Point (ICP) \cite{Rusinkiewicz} to align point clouds
+from coming from the RGB-D sensor into a large colored point cloud.  The
+resulting maps were visually impressive. However, the map could not be
+adapted to new information and was not well suited for other applications,
+such as obstacle avoidance. These limitations are inherent in maps that
+consist of lists of points.
+
+\subsubsection{Volumetric}
+
+Many SLAM solutions generate a 2D volumetric representation of the world
+because they are especially advantageous in dealing with noisy sensors. Two
+of the first major works which generated a 2D volumetric representation
+were done in 1998 by Yamauchi et al. \cite{Yamauchi1998} and Schultz et al.
+\cite{Schultz1998}. These works generated a 2D occupancy grid which is a
+type of volumetric representation. Here the environment was divided into a
+2D grid.  Each square of the grid contained the probability that it was
+occupied with an object. All squares would be updated iteratively based on
+the current sensor readings. Occupancy grids, like any other
+volumetric-based representation, are limited by the amount of available
+memory. In 2002 Biswas et al. \cite{Biswas2002} extended occupancy grid
+methods by allowing dynamic environments. This was done by looking at past
+``snapshots'' of the map. In 2004 Eliazar and Parr \cite{Eliazar2004}
+continued the advancement by decreasing computational cost and implemented
+a loop closure method.
+
+There have been a few impressive SLAM solutions which generate a 3D
+volumetric representation. There are three major works which generated
+something very similar to a 3D occupancy grid which was saved as in a
+octree data structure
+\cite{Magnusson2007,Nuchter2007,Huang2011,Endres2012}. Each work had a
+slightly different name and procedure for generating the representation,
+but in general the representations divided the environment into cubes and
+had a scalar value representing the belief of a surface being there.
+Octrees were used to save memory by only having a fine resolution of cubes
+at places where there was a surface. There are many advantages to a 3D
+occupancy grid representation. When applied to obstacle avoidance and path
+planning algorithms. Also, the representation is very adaptable to new
+information. The major disadvantage is that the representation can not be
+visualized immediately. In order to render, an image must be generated at
+each desired viewpoint by ray tracing the volume. This can be a problem
+when using such method for applications such as teleoperation due to the
+computational cost of rendering. The current state of the art for
+generating a volumetric representation was done by Newcombe et al.  in 2011
+\cite{Newcombe2011a}.  Their system used a RGB-D sensor and generated a 3D
+voxelized grid Truncated Signed Distance Function (TSDF) of the
+environment. For this type of representation each cube contains the value
+of the distance to the nearest surface. The sign of the value is based on
+which side of the surface the cube is relative to the sensor. This work has
+been the most capable at dealing with extremely noisy data and dynamic
+scenes. However, due to memory constraints the method can only represent
+environments that are about the size of a 4m cube. Also, it must be ray
+traced in order to be visualized.
+
+\subsubsection{Surface}
+
+One of the first major works which created a surface representation of the
+environment in real-time was done by Martin and Thrun in 2002
+\cite{Martin2002}. Their method utilized an EM framework to fit plane
+models to 3D point cloud data. Polygon mesh elements were then easily
+assigned to each plane. The main drive behind this work was to generate a
+map of the environment that uses a low amount of memory. Their  method
+worked well for structured environments. One of the major limitations of
+their method, and other methods that only mesh large planar sections, is
+that the representation will only consist of planar sections and not
+capture the fine detail of the environment. In 2004 Viejo and Cazorla
+\cite{springerlink:10.1007/978-3-540-30463-0_30} developed a methodology
+for generating a mesh that can contain more information of the environment
+than large planar sections. Due to this ability, they termed their method
+to be ``unconstrained.'' Essentially their method was based on a 3D
+Delaunay triangulation algorithm. Giesen surveyed Delaunay triangulation
+methods in \cite{Giesen2004}. Viejo and Cazorla were not able to obtain
+real-time results and, in fact, it has been seen that it is extremely
+difficult to run a 3D Delaunay triangulation in real time because of the
+numerous amount of distance calculations that are needed.  One of the next
+major advances came from Weingarten and Siegwart in 2006
+\cite{Weingarten2006}. Their work also created a mesh that was only capable
+of capturing large planar surfaces. However, they showed increased
+robustness. In 2007 Pollefeys et al. published a work with multiple
+researchers \cite{Akbarzadeh2006,Pollefeys2007}. They developed a large
+urban mapping system consisting of a vehicle and eight camera systems. The
+processing was carried out by multiple CPUs and optimized with Graphics
+Processing Unit (GPU) calculations. In their work they used the camera
+systems to generate depth maps. The set of depth maps was then fused to
+create a new smaller set of depth maps that were more accurate. The depth
+maps in the smaller set were more accurate because the error was averaged
+out by using near-by depth maps. The smaller set was then used by a
+triangulation procedure to create a mesh of the environment.  The mesh
+generation procedure was based on a work from 2002 by Pajarola et al.
+\cite{Pajarola2002}. This method defines a mesh in the depth image. It
+starts from a very coarse mesh and continues to refine in areas of the
+depth image based on a confidence criteria. In the work of Weingarten and
+Siegwart these meshes which are defined for each fused depth image are then
+checked for overlaps and duplicates are removed to make a single large
+mesh. One of the major drawbacks of this approach is that the output mesh
+can not be adapted by measurements which come from revisited parts of the
+scene. Another major advancement came in 2008 from Poppinga et al.
+\cite{Poppinga2008}. In this work they used a Time of Flight (ToF) camera
+to generate a mesh representation of the large planar structures in the
+environment. Here they also develop a procedure to determine a mesh in a
+depth image. They leverage the structure of the depth image to make the
+method computationally inexpensive. In their work they simply append the
+meshes which are created from each depth image into a global coordinate
+system. They obtain very good results from a simple method.  Once
+again, the method is not adaptive to new information. Also, a mesh is
+created for each depth image instead of updating and maintaining a global
+mesh. A major advancement came from a famous work done by Newcombe and
+Davison in 2010 \cite{Newcombe2010}. In this work they designed a method to
+create a mesh reconstruction from a single video camera. Their method used
+Structure From Motion (SFM) to obtain a sparse point cloud of the scene.
+Then an implicit function was fit to the point cloud using the methodology
+of Ohtake et al.  \cite{Ohtake2003}. A bundle of depth maps is then
+selected. From the bundle a single reference depth image is selected and a
+``base'' model is constructed by sampling the implicit surface for vertices
+in the reference frame. The neighboring frames are used to better the
+``base'' model and create a more accurate mesh. Each reference frame has
+its own mesh and all the meshes are put into a global coordinate system.
+Duplications are then detected and removed. Again, the representation is
+not adaptive to new information. In 2010 St\"{u}hmer et al.
+\cite{Stuhmer2010} advanced the field by publishing a method to generate
+very accurate depth maps from several color images in real-time. They
+showed very impressive results but their method was not designed to maintain
+a representation in a global coordinate frame.
+
+The next major advances in methods that generated surface representations of the
+environment, were based on RGB-D sensors.This type of sensor has become very
+popular since the release of the Kinect from Microsoft which was the first mass
+produced RGB-D sensor of its kind. RGB-D sensors are inexpensive and produce
+noisy 640x480 depth images at 30Hz. The RGB-D sensor has excited the robotics
+community because this has been the first time that depth data has been so
+readily accessible from such an inexpensive sensor. Therefore, these
+methodologies must be able to quickly deal with very high rates of information.
+One impressive work came from Henry et al. in 2012 \cite{Henry2012}. In this
+work they designed a system which used a RGB-D sensor to build a map made of
+surfels (Surfels are circular disks which have a particular position and
+orientation and also a radial size based on confidence.). In order to generate
+and maintain the surfel map they used the work of Weise et al. \cite{Weise2009}.
+The map consists of a large number of surfels. The surfel map can be updated
+given new registered depth images from the sensor. Decisions are made how to
+handle each measurement in the depth image based on the difference between an
+expectation generated using the current map and the actual readings from the
+sensor. Rendering a surfel map requires special methods \cite{Pfister2000} and
+is difficult to use in applications such as obstacle avoidance.
+
+One of the next major advances is a highly-related work that was published by
+Whelan et al. in 2012 \cite{Whelan2012} and more recently in 2013
+\cite{Whelan12tr}. The system they developed was named Kintinuous and was able
+to produce a high quality mesh representation of the environment. Their hybrid
+system utilized the KinectFusion method \cite{Newcombe2011a} of Newcombe et al.
+to create a volumetric representation of the portion of the environment in front
+of the sensor. As the sensor moves, portions of the environment that leave the
+volume in front of the sensor are ray cast and turned into a mesh. They obtain
+very impressive results but also mention a limitation of their system for future
+work. The limitation is that the mesh can not be updated once created, which is
+an issue when revisiting parts of the environment. One of the most impressive
+current works which has an adaptable mesh came from Cashier et al. in 2012
+\cite{Cahier2012}. In this work, they were able to generate and update a mesh
+with new measurements from a ToF sensor. They used the difference between the
+existing model and the actual measurements to decide whether to adapt the mesh
+or add new elements. The mesh topology was not adaptive to the environment and
+their experiments only showed results of mapping a single flat wall with no
+robot movement. The system needs to be tested for object addition and removal.
+
+\subsection{Surface Reconstruction}
+
+The computer graphics field has spent considerable effort to develop methodologies
+for creating representations from sets of data. Generally, these sets of
+data are acquired from a sensor. Methodologies have progressed steadily and
+are often designed for a specific application. One of the original motivations
+was to generate surfaces from medical imaging data. This
+allows doctors to make better decisions because the data are presented in a
+more intuitive manner. Current applications include augmented reality and
+3D printing. Older methodologies were not as concerned with speed and often
+times had a large computational cost. Also, the methodologies are often
+designed for single objects or small environments. Following the taxonomy
+of such well-known works as \cite{Gopi2002,Mencl1997}, the field can be
+roughly divided into representations that are generated with volume-based
+techniques and those that use surface-based techniques. Methods that use
+volume-based techniques are characterized by spatially subdividing the
+environmental volume and are usually computationally expensive and require
+a large amount of memory. Methods that use surface-based techniques
+generate the representation using surface properties of the input data.
+Both types of methods can have mechanisms to adapt the mesh to noisy or new
+information.  In the following section we will trace the progression of the
+methodologies.
+
+\subsubsection{Volume-based}
+
+Volume-based methods spatially subdivide the volume into smaller parts and
+operations are performed on the mesh to either implicitly imply the surface
+or define the surface depending on the information contained in each
+subdivision. One of the first well-known works that used a volume-based
+technique was proposed by Lorensen and Cline in 1987 \cite{Lorensen1987}.
+In this work they proposed a method named marching cubes which is still
+known for its reliability and simplicity and is used by applications which
+do not have a computational requirement. Marching cubes subdivides the
+space into cubes. The data contained in each cube dictate how the surface
+connectivity will be defined in that cube. Possible vertex locations are at
+the corners and along the edges. Once this has been done for all cubes the
+process is complete. One of the next major steps came from Hoppe et al. in
+1992 \cite{Hoppe1992} In this work they used the input points to define a
+Signed Distance Function (SDF) in 3D space and then meshed the zero-set to
+obtain the output mesh. A SDF is a spatial function which has the value of
+the distance to the nearest surface at each point. The sign is used to
+specify if the point is inside our outside of the surface relative to the
+sensor. The zero-set of the SDF is the surface where the values transition
+from positive to negative. Using a SDF has proven to be very effective and
+has been the core idea of many methodologies that came after this work of
+Hoppe et al., such as KinectFusion \cite{Newcombe2011a}. One of the next
+advances came from Edelsbrunner and M\"{u}cke in 1994
+\cite{Edelsbrunner1994} with a method named alpha shapes. Here they used 3D
+Delaunay triangulation and the input point set to decompose the volume into
+a Delaunay tetrahedrization. This gives a triangulation of the input set
+which involves all points. A sphere of radius alpha is then used to remove
+edges and vertices to obtain a mesh of user specified resolution. Many
+works have made use of 3D Delaunay triangulation to create a mesh. Methods
+which use 3D Delaunay on the input set have a large computational cost and
+often cannot be executed in real-time.  The next valuable contribution came
+from Bloomenthal in 1994 \cite{Bloomenthal1994} as open source software for
+surface polygonization of implicit functions. This was a stable and robust
+open source software that has been used in many well-known algorithms
+\cite{Newcombe2010}.  Another major advance came from Curless and Levoy in
+1996 \cite{Curless1996}. In this work they also constructed a Truncated
+Signed Distance Function (TSDF). A TSDF is very similar to a SDF, the only
+difference is that distance values are truncated after they exceed a
+certain threshold. Their method was one of the first to be able to handle
+several registered range scans.  Their work showed how well a TSDF can deal
+with several noisy scans by naturally integrating out the error. They
+obtained very good results but not even close to real-time. A speed up in
+processing time was achieved by Pulli et al. in 1997 \cite{Pulli1997} by
+utilizing octrees. They obtained good results and their method was used by
+Surmann et al. \cite{Surmann2003} in a well-known robotic mapping work.
+Another major advance came in 2001 from Zhao et al \cite{Zhao2001}. They
+used Partial Differential Equation (PDE) methods to obtain a final
+reconstruction that was of better quality than prior methods. In 2001 Carr
+et al. \cite{Carr2001} created a volumetric method based on the radial
+basis function (RBF). Their method was able to successfully deal with holes
+and generate water tight models. A water tight model is useful for single
+object reconstruction. However, it is not desired for mapping large
+environments. One of the next major advances was published in 2003 by
+Ohtake et al. \cite{Ohtake2003}. In this work they created a method which
+was faster than the work of Carr et al.  \cite{Carr2001} by implementing a
+hierarchical approach with compactly supported basis functions. Their work
+has been considered to be the state of the art for calculating an implicit
+function of a noisy point set and was used by Newcombe et al.
+\cite{Newcombe2010}. Volume-based methods have been able to create high
+quality representations and work well for single objects and small
+environments. These methods must spatially divide the environmental volume
+and therefore have a high memory requirement.
+
+\subsubsection{Surface-based}
+
+One of the first interesting and adaptive surface-based methods was
+published by Terzopoulos and Vasilescu in 1991 \cite{Terzopoulos1991a} and
+dealt with 2.5D data such as intensity and range images. The goal of their
+work was to create an adaptive mesh of an input image. The mesh was
+initialized as a 2D sheet of mesh elements with virtual springs along each
+edge. The stiffnesses of the virtual springs would then adjust based on the
+image information at that location. The mesh was able to adapt to be more
+dense in regions of higher intensity. In 1992 Terzopoulos and Vasilescu
+extended their methodology to 3D data \cite{Vasilescu1992}. In this work
+they used the distance between the mesh and the data to drive the vertices
+to be near the surface. In this early work they needed to initialize the
+mesh and control the subdivision of mesh elements to obtain a suitable
+resolution. In 1993 Hoppe et al. \cite{Hoppe:1993:MO:166117.166119}
+published a method to optimize to resolution of a given mesh by posing the
+problem in an energy minimization framework. They minimized an energy
+function which tried to adequately represent the surface in the most
+concise mesh possible. One of the next advances in physical based
+adaptation of meshes came in 1993 from Huang and Goldof \cite{Huang1993}.
+In this work they were able to adjust the size of the mesh elements to
+obtain a better resolution in areas of high frequency information using a
+physical based model. In addition, it was one of the first works to
+represent an object undergoing deformation. They method was able to perform
+tracking on simple simulation examples. Another advancement came in 1994
+Rutishauser et al. \cite{Rutishauser1994} with a method specifically
+designed for incremental data. Their methodology worked with a sequential
+input set of range data and used a probabilistic framework to adjust the
+vertices of a mesh to the expected value given the prior observations.
+Their methodology also modeled the noise of the sensor with a sensor model.
+In 1994 Delingette \cite{Delingette1994} developed a methodology to
+generate a simplex mesh model of structured and unstructured 3D datasets.
+Elastic behavior of the mesh surface was modeled by local stabilizing
+functionals. Also, they implemented an iterative refinement process to
+refine the mesh in areas of high frequency information. One of the next
+steps was published by Turk and Levoy in 1994 \cite{Turk1994}. Their method
+allowed overlapping meshes to be ``zippered'' into a single mesh surface.
+This ability is especially important for methods that generate a mesh for
+each depth image of the sensor and then need to combine all registered
+meshes into a single mesh. Their method is computationally expensive due to
+distance calculations. An interesting work came in 1995 from Chen and
+Medioni \cite{Chen1995}. They devised an adaptive mesh methodology based
+on the inflation of a balloon. A mesh sphere was first initialized within
+the registered range measurements of the object. Virtual inflation forces
+were then used to expand the balloon until the mesh surface was a minimal
+distance from the range data. This method was limited to objects which are
+water tight. A major advancement came in 1999 from Bernardini et al.,
+\cite{Bernardini1999a} in a method named the ball-pivoting algorithm. Their
+method is a good example of an advancing front method. These types of
+algorithms start with a seed mesh element and advance the boundary by
+adding new mesh elements in the immediate area of the boundary which is
+supported by measurements. Most advancing front algorithms differ in how it
+is decided to add new mesh elements. In the work of Bernardini et al. a
+virtual sphere of a user defined radius is rolled along the boundary of the
+mesh and new elements are added if the ball touches another measurement.
+Their methodology became popular because of its simplicity. One major
+disadvantage was that the generated mesh was a fixed topology. Another
+advancing front method came in 2001 from Gopi et al.
+\cite{Gopi2001,Gopi2002}. Here they sampled the input dataset to obtain a new
+dataset with a lower density of points in areas of lower frequency
+information. This effectively gave their method an adaptive topology. Next,
+a local neighborhood was computed at each data point and projected to a
+plane tangent to the surface. The triangulation is then computed on this
+local tangent plane. They obtained impressive results on datasets of
+varying sample density and curvature. An interesting work was published in
+2003 by Ivrissimtzis et al. \cite{Ivrissimtzis2003}. Here they used a
+neural network model to adapt a mesh model to the data. They claimed that
+their method is computationally independent of the size of the input
+dataset because the dataset is only sampled by the method. There obtained
+good results. In 2004 Alexa et al. published a very interesting
+work to generate point set surfaces from an input dataset \cite{Alexa2004}.
+They use moving least squares (MLS) to locally approximate the surface with
+polynomials. The original dataset is then no longer used. Instead, they
+develop tools to sample the approximated surface to any resolution desired
+so that the end result is another point set of user specified resolution
+lying closer to the surface than the input dataset. One drawback is they
+had to develop their own methodology to render a point set. In 2005
+Scheidegger et al. used the work of Alexa et al. to develop an advancing
+front methodology to generate concise meshes of high accuracy. Their main
+contribution was to augment an advancing front algorithm with global
+information so that the triangle size could adapt gracefully to any change.
+They obtained very impressive results. Most methodologies in Surface
+Reconstruction had been solely concerned with object or small environment
+recreation and have computational or memory requirements which do not work
+well with large environments. One of the first successful methods intended
+for large environments was published in 2009 by Marton et al.
+\cite{Marton2009}. Their methodology was an advancing front algorithm which
+worked on a point set which was sampled from the MLS surface of the
+original point set. They were able to obtain impressive and near real-time
+results on datasets of large environments. They also developed a method to
+deal with revisited parts of the scene by determining the overlapping area
+and reconstructing only the updated part of the surface mesh. While this is a
+step forward, it would be better if the mesh surface converged
+to the actual surface with an increasing number of measurements. To support
+dynamic scenes they developed mechanisms to decouple and reconstruct the
+mesh quickly. They only discussed these mechanisms in theory and had no
+results of how these mechanisms work. While Surface-based Surface Reconstruction
+techniques have developed impressively, several key issues arise
+when applying these techniques to mapping large environments.
+
+\subsection{Summary}
+
+The fields of Robotics and Computer Vision have developed many exciting
+methodologies to construct representations from a noisy input dataset.
+However there is still work to be done to obtain the ideal reconstruction
+method. A mesh is clearly a desirable type of representation and an
+efficient method should be able to generate and maintain a mesh
+representation. Also, many existing methods do not leverage the inherent
+structural information contained within the depth image. There are imaging
+processing techniques that could be used to answer some of the remaining
+problems in surface reconstruction, such as the need for adaptive topology
+and the need to decide how each measurement should be used to update the
+existing mesh. Henry et al. \cite{Henry2012} has already investigated using
+the difference between the expected and actual measurements to guide the
+decision of how to use each measurement. However, their work was intended
+for surfels and needs to be extended to meshes. A method to generate a
+representation is needed which is computationally and memory efficient and
+can better adapt the representation to new information.

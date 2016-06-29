@@ -318,7 +318,7 @@
       \vskip 10ex plus2ex minus7ex%
       {\large  \@reporttype \@techrepnum \par}%
       \vskip 3ex%
-      {\large Report Date: \@date \par}%
+      {\large \@date \par}%
     \end{center}\par
     \@thanks
     \vfil\null

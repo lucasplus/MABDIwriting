@@ -2,15 +2,23 @@
 %\documentclass[final]{eeceTR} - using the final option changes layout
 \documentclass{eeceTR}
 
+% TODO Date December 2016
+
 % fixes the error "LaTeX Error: Unknown graphics extension: .eps"
 % http://tex.stackexchange.com/questions/29664/latex-error-unknown-graphics-extension-eps
 \usepackage{epstopdf}
+
+\usepackage{multirow} % for the table
+\usepackage{relsize}
+
+\date{December 2016}
 
 \title{Mesh Addition Based on the Depth Image (MABDI)}
 
 \techrepnum{00-xxx}
 
-\author{Lucas E. Chavez \thanks{Supported in part by Sandia National Laboratories under Purchase Order: 1179196 and  NSF grant OISE \#1131305.}\\
+\author{Lucas E. Chavez \thanks{Supported in part by Sandia National
+Laboratories under Purchase Order: 1179196 and  NSF grant OISE \#1131305.}\\
 Department of Mechanical Engineering\\
 The University of New Mexico\\
 Albuquerque, NM 87131\\
@@ -38,6 +46,9 @@ inexpensive once the environment is known, but can also react to new objects.
 
 \maketitle
 \makeabstract
+
+\tableofcontents
+\pagebreak
 
 \input{s_introduction}
 % set up what environmental mapping is, what a mesh is
@@ -71,7 +82,7 @@ inexpensive once the environment is known, but can also react to new objects.
 \section{Data}
 First appendix.
 
-\bibliographystyle{plain}
-\bibliography{sample}
+\bibliographystyle{IEEEtran}
+\bibliography{bibliography}
 
 \end{document}
