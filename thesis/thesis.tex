@@ -1,59 +1,95 @@
 %\documentclass{unmeereport}
 %\documentclass[final]{eeceTR} - using the final option changes layout
-\documentclass{eeceTR}
+\documentclass[botnum, nobox]{unmeethesis}
 
-% TODO Date December 2016
-
-% fixes the error "LaTeX Error: Unknown graphics extension: .eps"
-% http://tex.stackexchange.com/questions/29664/latex-error-unknown-graphics-extension-eps
-\usepackage{epstopdf}
+% TODO Numbering starts on first chapter. Should be roman numerals before that, not required.
 
 \usepackage{multirow} % for the table
 \usepackage{relsize}
+\usepackage{graphicx}
 
-\date{December 2016}
+% \date{December 2016}
+%
+% \title{Mesh Addition Based on the Depth Image (MABDI)}
+%
+% \author{Lucas E. Chavez \\ \\
+% \bf{Previous Degrees:} \\
+% B.S., Mechanical Engineering \\
+% New Mexico Institute of Mining and Technology, 2009\\
+% }
+%
+% \abstract{
 
-\title{Mesh Addition Based on the Depth Image (MABDI)}
-
-\techrepnum{00-xxx}
-
-% The University of New Mexico\\
-% Albuquerque, NM 87131\\
-% e-mail: {\tt lucasc@unm.edu}
-
-% \thanks{Supported in part by Sandia National Laboratories under Purchase Order:
-% 1179196 and  NSF grant OISE \#1131305.}
-
-\author{Lucas E. Chavez \\ \\
-\bf{Previous Degrees:} \\
-B.S., Mechanical Engineering \\
-New Mexico Institute of Mining and Technology, 2009\\
-}
-
-\abstract{
-Many robotic applications, especially those whose goal is to aid or assist
-through human-robot interaction, utilize a rich map of the world for reasoning
-tasks such as collision detection, path planning, or object recognition. Such
-map, and the method used to produce it, must take into consideration real-world
-constraints. Most mesh-based mapping algorithms resemble a ``black box'' and do
-not provide a mechanism to close the loop and make decisions about the
-incoming information. MABDI leverages the global mesh by finding the difference
-between what we expect to see and what we are actually seeing, and using this to
-classify the incoming measurements as novel or not. This allows the surface
-reconstruction method to be run only on data that has not yet been represented in
-the global mesh. The result is an algorithm that becomes computationally
-inexpensive once the environment is known, but can also react to new objects.
-}
-
-\keywords{environmental mapping, depth senor, RGB-D}
+% }
+%
+% \keywords{environmental mapping, depth senor, RGB-D}
 
 \begin{document}
 
+\frontmatter
+
+% Uncomment the next command if you see weird paragraph spacing:
+% That is, if you see paragraphs float with lots of white space
+% in between them:
+
+% \setlength{\parskip}{0.30cm}
+
+
+\title{Mesh Addition Based on the Depth Image (MABDI)}
+
+\author{Lucas E. Chavez}
+
+\degreesubject{B.S., Mechanical Engineering}
+
+\degree{Master of Science \\ Mechanical Engineering}
+
+\documenttype{Thesis}
+
+\previousdegrees{B.S., Mechanical Engineering \\
+New Mexico Institute of Mining and Technology, 2009}
+
+\date{December, 2016}
+
 \maketitle
-\makeabstract
+
+\begin{dedication}
+   To my parents, Albert II and Gladys, for their support,
+   encouragement and the Corvette they're giving me for graduation. \\[3ex]
+   ``A bird in hand is worth two in the bush''
+         -- Anonymous
+\end{dedication}
+
+\begin{acknowledgments}
+   \vspace{1.1in}
+   I would like to thank my advisor, Professor Martin Sheen, for his support
+   and some great action movies.  I would also like to thank my dog, Spot,
+   who only ate my homework two or three times.  I have several other people
+   I would like to thank, as well.\footnote{To my brother and sister, who
+   are really cool.}
+\end{acknowledgments}
+
+\maketitleabstract %(required even though there's no abstract title anymore)
+
+\begin{abstract}
+  Many robotic applications, especially those whose goal is to aid or assist
+  through human-robot interaction, utilize a rich map of the world for reasoning
+  tasks such as collision detection, path planning, or object recognition. Such
+  map, and the method used to produce it, must take into consideration real-world
+  constraints. Most mesh-based mapping algorithms resemble a ``black box'' and do
+  not provide a mechanism to close the loop and make decisions about the
+  incoming information. MABDI leverages the global mesh by finding the difference
+  between what we expect to see and what we are actually seeing, and using this to
+  classify the incoming measurements as novel or not. This allows the surface
+  reconstruction method to be run only on data that has not yet been represented in
+  the global mesh. The result is an algorithm that becomes computationally
+  inexpensive once the environment is known, but can also react to new objects.
+\clearpage %(required for 1-page abstract)
+\end{abstract}
 
 \tableofcontents
 \pagebreak
+
+\mainmatter
 
 \input{s_introduction}
 % set up what environmental mapping is, what a mesh is
