@@ -4,25 +4,9 @@
 
 % TODO Numbering starts on first chapter. Should be roman numerals before that, not required.
 
-\usepackage{multirow} % for the table
+\usepackage{multirow}  % for the table
 \usepackage{relsize}
 \usepackage{graphicx}
-
-% \date{December 2016}
-%
-% \title{Mesh Addition Based on the Depth Image (MABDI)}
-%
-% \author{Lucas E. Chavez \\ \\
-% \bf{Previous Degrees:} \\
-% B.S., Mechanical Engineering \\
-% New Mexico Institute of Mining and Technology, 2009\\
-% }
-%
-% \abstract{
-
-% }
-%
-% \keywords{environmental mapping, depth senor, RGB-D}
 
 \begin{document}
 
@@ -31,7 +15,6 @@
 % Uncomment the next command if you see weird paragraph spacing:
 % That is, if you see paragraphs float with lots of white space
 % in between them:
-
 % \setlength{\parskip}{0.30cm}
 
 
@@ -52,20 +35,16 @@ New Mexico Institute of Mining and Technology, 2009}
 
 \maketitle
 
-\begin{dedication}
-   To my parents, Albert II and Gladys, for their support,
-   encouragement and the Corvette they're giving me for graduation. \\[3ex]
-   ``A bird in hand is worth two in the bush''
-         -- Anonymous
-\end{dedication}
+% \begin{dedication}
+%    To my parents, Albert II and Gladys, for their support,
+%    encouragement and the Corvette they're giving me for graduation. \\[3ex]
+%    ``A bird in hand is worth two in the bush''
+%          -- Anonymous
+% \end{dedication}
 
 \begin{acknowledgments}
    \vspace{1.1in}
-   I would like to thank my advisor, Professor Martin Sheen, for his support
-   and some great action movies.  I would also like to thank my dog, Spot,
-   who only ate my homework two or three times.  I have several other people
-   I would like to thank, as well.\footnote{To my brother and sister, who
-   are really cool.}
+   This work was support in part by Sandia National Laboratories under Purchase Order: 1179196 and  NSF grant OISE \#1131305.
 \end{acknowledgments}
 
 \maketitleabstract %(required even though there's no abstract title anymore)
@@ -116,12 +95,6 @@ New Mexico Institute of Mining and Technology, 2009}
 \input{s_conclusion}
 % discuss difficulty with noise
 % how to expand to deal with object deletion
-
-\input{s_acknowledgment}
-\appendix
-
-\section{Data}
-First appendix.
 
 \bibliographystyle{IEEEtran}
 \bibliography{bibliography}

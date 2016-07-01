@@ -1,4 +1,4 @@
-\section{Related Works}	\label{sec:related_works}
+\chapter{Related Works}	\label{chapter:relatedworks}
 
 % Works related to MABDI are generally based on RGB-D sensors. This type of sensor has
 % become very popular since the release of the Kinect from Microsoft, which
@@ -39,7 +39,7 @@ computer game object creation, 3D printing, and more applications. In the follow
 sections we will trace the development of representation generating methods
 in both communities. We will then discuss what is needed in future work.
 
-\subsection{SLAM}
+\section{SLAM}
 
 The problem of SLAM has been a primary focus of the robotics community for
 more than 25 years. A complete solution to the SLAM problem must be able to
@@ -65,7 +65,7 @@ names for these types are surfels and mesh. In the following sections we
 will trace the history of each of the 3 types of representation that is
 seen in the SLAM literature.
 
-\subsubsection{Point Locations}
+\subsection{Point Locations}
 
 One of the most well known and earliest solution to the SLAM problem, which
 uses a point location representation, was proposed by Smith et al. in 1990
@@ -151,7 +151,7 @@ adapted to new information and was not well suited for other applications,
 such as obstacle avoidance. These limitations are inherent in maps that
 consist of lists of points.
 
-\subsubsection{Volumetric}
+\subsection{Volumetric}
 
 Many SLAM solutions generate a 2D volumetric representation of the world
 because they are especially advantageous in dealing with noisy sensors. Two
@@ -197,7 +197,7 @@ scenes. However, due to memory constraints the method can only represent
 environments that are about the size of a 4m cube. Also, it must be ray
 traced in order to be visualized.
 
-\subsubsection{Surface}
+\subsection{Surface}
 
 One of the first major works which created a surface representation of the
 environment in real-time was done by Martin and Thrun in 2002
@@ -306,7 +306,7 @@ or add new elements. The mesh topology was not adaptive to the environment and
 their experiments only showed results of mapping a single flat wall with no
 robot movement. The system needs to be tested for object addition and removal.
 
-\subsection{Surface Reconstruction}
+\section{Surface Reconstruction}
 
 The computer graphics field has spent considerable effort to develop methodologies
 for creating representations from sets of data. Generally, these sets of
@@ -329,7 +329,7 @@ Both types of methods can have mechanisms to adapt the mesh to noisy or new
 information.  In the following section we will trace the progression of the
 methodologies.
 
-\subsubsection{Volume-based}
+\subsection{Volume-based}
 
 Volume-based methods spatially subdivide the volume into smaller parts and
 operations are performed on the mesh to either implicitly imply the surface
@@ -393,7 +393,7 @@ quality representations and work well for single objects and small
 environments. These methods must spatially divide the environmental volume
 and therefore have a high memory requirement.
 
-\subsubsection{Surface-based}
+\subsection{Surface-based}
 
 One of the first interesting and adaptive surface-based methods was
 published by Terzopoulos and Vasilescu in 1991 \cite{Terzopoulos1991a} and
@@ -493,7 +493,7 @@ results of how these mechanisms work. While Surface-based Surface Reconstruction
 techniques have developed impressively, several key issues arise
 when applying these techniques to mapping large environments.
 
-\subsection{Summary}
+\section{Summary}
 
 The fields of Robotics and Computer Vision have developed many exciting
 methodologies to construct representations from a noisy input dataset.

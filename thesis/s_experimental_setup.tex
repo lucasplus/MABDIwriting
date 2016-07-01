@@ -1,4 +1,4 @@
-\section{Experimental Setup}	\label{sec:experimental_setup}
+\chapter{Experimental Setup}	\label{chapter:experimentalsetup}
 
 It was decided to develop and test MABDI in a completely simulated environment
 so that all results could be repeatable and also to facilitate the ability to
@@ -7,7 +7,7 @@ components of the algorithm proved to be complex from an implementation
 perspective. In addition, we can now compare the resultant
 global mesh to ground truth.
 
-\subsection{Simulation Parameters}
+\section{Simulation Parameters} \label{chapter:experimentalsetup:simulationparameters}
 
 The simulation was designed to be highly configurable and is implemented by a
 class named MabdiSimulate. The class is initialized with parameters that control
@@ -58,7 +58,7 @@ already mapped and is thus ``known'' to the global mesh. Also, because the path
 is a helix and not just a circle, the sensor views the environment from a
 slightly different position on each pass.
 
-\subsection{Analysis of Simulated Noise}
+\section{Analysis of Simulated Noise} \label{chapter:experimentalsetup:analysisofsimulatednoise}
 
 In order to realistically simulate the sensor in a real-world environment we add
 noise to the depth image $D$. See Fig. \ref{fig:system}. The magnitude of the
@@ -82,7 +82,7 @@ real-world coordinates as can be seen in Fig. \ref{fig:depth}.
 
 \begin{figure}[h]%[thpb]
 \centering
-  \includegraphics[width=.5\textwidth]{figures/plot_depth.png}
+  \includegraphics[width=.75\textwidth]{figures/plot_depth.png}
   \caption{Viewpoint coordinates to real world coordinates analysis.}
   \label{fig:depth}
 \end{figure}
@@ -97,8 +97,6 @@ real-world error for two values of $D$; they match the error model of
 $$
 D_{noisy}(i,j) = D(i,j) + D(i,j)*\mathcal{N} (\mu\mathsmaller{=}0, \sigma\mathsmaller{=}0.001)
 $$
-
-% Can add equation showing addition of noise if there is space later
 
 % Viewpoint coordinates to real-world coordinates analysis. Viewpoint coordinates
 % are obtained when a mesh is rendered into a render window, and can be

@@ -1,5 +1,6 @@
 
-\section{Introduction} \label{sec:introduction}
+\chapter{Introduction} \label{chapter:introduction}
+\section{Overview} \label{section:introduction:overview}
 
 Many robotic applications, especially those that involve human-robot
 interaction, often require a rich representation of the environment in order to
@@ -27,14 +28,14 @@ Fig. \ref{fig:goal} gives a visualization of the goal.
 
 \begin{figure}[h]%[thpb]
 \centering
-\includegraphics[width=.5\textwidth]{figures/diagram_goal.png}
+\includegraphics[width=.75\textwidth]{figures/diagram_goal.png}
 \caption{Goal is to create a map from depth images}
 \label{fig:goal}
 \end{figure}
 
-There are different types of data structures that can define a map. All types have both
-intrinsic characteristics that impact the algorithms that generate them and
-constraints that must be considered for real-world applications. In
+There are different types of data structures that can define a map. All types
+have both intrinsic characteristics that impact the algorithms that generate
+them and constraints that must be considered for real-world applications. In
 addition, we are concerned with rich representation types, in contrast to sparse
 representation types \cite{Dissanayake2001}, because rich types have the most
 use in applications such as human-robot interaction.
@@ -76,6 +77,8 @@ extensively by the gaming and graphics communities, and so benefits from an
 incredible amount of continued research and advances in hardware such as
 Graphics Processing Units (GPUs).
 
+\section{Contribution} \label{section:introduction:contribution}
+
 Currently, one of the issues with mesh mapping techniques is they are generally
 ``black box'' methods. Meaning the data comes in from the sensor, those
 measurements are turned into a mesh, and then that mesh is appended to a global
@@ -86,7 +89,7 @@ already knows.
 
 \begin{figure}[h]%[thpb]
 \centering
-\includegraphics[width=.5\textwidth]{figures/diagram_general_pipeline.png}
-\caption{Common ``black box'' pipeline in black. The contribution of MABDI in red.}
-\label{fig:pipeline}
+  \includegraphics[width=.75\textwidth]{figures/diagram_general_pipeline.png}
+  \caption{Common ``black box'' pipeline in black. The contribution of MABDI in red.}
+  \label{fig:pipeline}
 \end{figure}
