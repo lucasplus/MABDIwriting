@@ -16,28 +16,27 @@
 % differencing and thresholding imaging methods.
 
 
-A major problem in robotics has been and continues to be: How can we create
-the ``best'' representation of an unknown environment? There are two main
-communities of researchers who been working on developing algorithms
-and methods to answer precisely this question. They are the robotics
-community and the computer graphics community and each community has a
-slightly different motivation for solving this problem. The robotics
-community is concerned with developing a real-time solution of generating
-representations in large environments. These representations are used by
-both fully autonomous and teleoperated systems. The common name which is
-used by the robotics community for this problem is Simultaneous
-Localization and Mapping or SLAM. The name SLAM refers to the problem of
-mapping and locating a robot in an unknown environment. Early methods
-generated very sparse representations of the world, as time and sensor
-technology progressed the representations became denser. A dense
+A major problem in robotics has been and continues to be: How can we create the
+``best'' representation of an unknown environment? There are two main
+communities of researchers who been working on developing algorithms and methods
+to answer precisely this question. They are the robotics community and the
+computer graphics community and each community has a slightly different
+motivation for solving this problem. The robotics community is concerned with
+developing a real-time solution of generating representations in large
+environments. These representations are used by both fully autonomous and
+teleoperated systems. The common name which is used by the robotics community
+for this problem is Simultaneous Localization and Mapping or SLAM. The name SLAM
+refers to the problem of mapping and locating a robot in an unknown environment.
+Early methods generated very sparse representations of the world, as time and
+sensor technology progressed the representations became denser. A dense
 representation is desired for any system which must have good situational
-awareness of its environment. The computer graphics community is concerned
-with generating high quality representations of smaller environments and
-single objects. They generally refer to the problem as surface
-reconstruction. These representations are used by augmented reality,
-computer game object creation, 3D printing, and more applications. In the following
-sections we will trace the development of representation generating methods
-in both communities. We will then discuss what is needed in future work.
+awareness of its environment. The computer graphics community is concerned with
+generating high quality representations of smaller environments and single
+objects. They generally refer to the problem as surface reconstruction. These
+representations are used by augmented reality, computer game object creation, 3D
+printing, and more applications. In the following sections we will trace the
+development of representation generating methods in both communities. We will
+then discuss what is needed in future work.
 
 \section{SLAM}
 
@@ -268,7 +267,7 @@ showed very impressive results but their method was not designed to maintain
 a representation in a global coordinate frame.
 
 The next major advances in methods that generated surface representations of the
-environment, were based on RGB-D sensors.This type of sensor has become very
+environment, were based on RGB-D sensors. This type of sensor has become very
 popular since the release of the Kinect from Microsoft which was the first mass
 produced RGB-D sensor of its kind. RGB-D sensors are inexpensive and produce
 noisy 640x480 depth images at 30Hz. The RGB-D sensor has excited the robotics
@@ -496,18 +495,17 @@ when applying these techniques to mapping large environments.
 \section{Summary}
 
 The fields of Robotics and Computer Vision have developed many exciting
-methodologies to construct representations from a noisy input dataset.
-However there is still work to be done to obtain the ideal reconstruction
-method. A mesh is clearly a desirable type of representation and an
-efficient method should be able to generate and maintain a mesh
-representation. Also, many existing methods do not leverage the inherent
-structural information contained within the depth image. There are imaging
-processing techniques that could be used to answer some of the remaining
-problems in surface reconstruction, such as the need for adaptive topology
-and the need to decide how each measurement should be used to update the
-existing mesh. Henry et al. \cite{Henry2012} has already investigated using
-the difference between the expected and actual measurements to guide the
-decision of how to use each measurement. However, their work was intended
-for surfels and needs to be extended to meshes. A method to generate a
-representation is needed which is computationally and memory efficient and
-can better adapt the representation to new information.
+methodologies to construct representations from a noisy input dataset. However
+there is still work to be done to obtain the ideal reconstruction method. A mesh
+is clearly a desirable type of representation. An ideal method should be able to
+generate and maintain a mesh representation efficiently. Also, many existing
+methods do not leverage the inherent structural information contained within the
+depth image. There are imaging processing techniques that could be used to
+answer some of the remaining problems in surface reconstruction, such as the
+need for adaptive topology and the need to decide how each measurement should be
+used to update the existing mesh. Henry et al. \cite{Henry2012} has already
+investigated using the difference between the expected and actual measurements
+to guide the decision of how to use each measurement. However, their work was
+intended for surfels and needs to be extended to meshes. A method to generate a
+representation is needed which is computationally and memory efficient and can
+better adapt the representation to new information.

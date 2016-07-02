@@ -1,38 +1,44 @@
-\section{Introduction} \label{sec:introduction} 
+\section{Introduction} \label{sec:introduction}
 
-% measurement noise model 
+% measurement noise model
 
 Autonomous robots must be able to operate in the real world, perceiving the
 environment using their sensors and acting accordingly. In order to accomplish
-this, they must deal with the uncertainty that is inherent to real
-environments. As discussed by Thrun et al. in \cite{Thrun:2005:PR:1121596},
-there are several factors that contribute to a robot's uncertainty:
-environments are unpredictable and partially observable; sensors and actuators
-are noisy and faulty; and models of the environment and robot are approximated.
-To cope with various sources of uncertainty, probabilistic methods have been successfully
-used in several robotic applications such as localization, mapping and decision
-making.
+this, they must deal with the uncertainty that is inherent to real environments.
+As discussed by Thrun et al. in \cite{Thrun:2005:PR:1121596}, there are several
+factors that contribute to a robot's uncertainty: environments are unpredictable
+and partially observable; sensors and actuators are noisy and faulty; and models
+of the environment and robot are approximated. To cope with various sources of
+uncertainty, probabilistic methods have been successfully used in several
+robotic applications such as localization, mapping and decision making.
 
-One of the key components of probabilistic methods is a good sensor model. This model represents the process by which the sensor measurements are generated. A good sensor model can adequately explain the noise that is inherent in the observed measurements. Several sensors, and their respective sensor models, have been studied in the literature, ranging from classical odometry sensors \cite{Borenstein95}, cameras \cite{Wu07}\cite{clemente2007mapping}, lasers \cite{newman2009navigating}, to \ac{TOF} cameras \cite{may2009three}. 
+One of the key components of probabilistic methods is a good sensor model. This
+model represents the process by which the sensor measurements are generated. A
+good sensor model can adequately explain the noise that is inherent in the
+observed measurements. Several sensors, and their respective sensor models, have
+been studied in the literature, ranging from classical odometry sensors
+\cite{Borenstein95}, cameras \cite{Wu07}\cite{clemente2007mapping}, lasers
+\cite{newman2009navigating}, to \ac{TOF} cameras \cite{may2009three}.
 
 In the last couple of years a novel sensor gained attention in the robotics
 community. The comercialization of the Kinect\texttrademark ~ by Microsoft
-brought with it an inexpensive depth sensor that uses an active range system
-to generate a depth map of a given environment \cite{Freedman2008}. The Kinect-style
-sensors provide RGB-D images which include both visual
-(RGB) and depth (D) values at 30 frames per second
-and 640$\times$480 resolution. Several works have taken advantage of this
-sensor technology in scenarios such as environmental mapping \cite{henry2012rgb}, 3D
-reconstruction \cite{Newcombe2011}, gesture recognition \cite{Xia2011}, and altitude control of aerial vehicles \cite{Stowers2011}.
+brought with it an inexpensive depth sensor that uses an active range system to
+generate a depth map of a given environment \cite{Freedman2008}. The
+Kinect-style sensors provide RGB-D images which include both visual (RGB) and
+depth (D) values at 30 frames per second and 640$\times$480 resolution. Several
+works have taken advantage of this sensor technology in scenarios such as
+environmental mapping \cite{henry2012rgb}, 3D reconstruction
+\cite{Newcombe2011}, gesture recognition \cite{Xia2011}, and altitude control of
+aerial vehicles \cite{Stowers2011}.
 %\cite{Newcombe2011,Xia2011,Stowers2011,henry2012rgb}.
 
 % In the last couple of years a novel sensor gained attention in the robotics community.  RGB-D sensors, like the Microsoft Kinect, are able to provide both visual (RGB) and depth (D) information in an environment.  The Kinect sensor in particular, uses an active stereo system to generate a depth map of the environment {REF}.  Several works have taken advantage of this pairing of information in scenarios such as environmental mapping, 3D reconstruction , human action detection, and altitude control of aerial vehicles {REF}.
 
-% The objective of this paper is to develop a measurement noise model for the Kinect sensor. From a statistical analysis of a large number of experiments, we are able to provide a function relating the orientation and distance of a point as provided by the Microsoft Kinect to a reliability value. Two main works have created ad hoc models for the Kinect \cite{Newcombe2011,Fallon2012}. The contribution of this work is a measurement noise model which is determined from actual experimentation. 
+% The objective of this paper is to develop a measurement noise model for the Kinect sensor. From a statistical analysis of a large number of experiments, we are able to provide a function relating the orientation and distance of a point as provided by the Microsoft Kinect to a reliability value. Two main works have created ad hoc models for the Kinect \cite{Newcombe2011,Fallon2012}. The contribution of this work is a measurement noise model which is determined from actual experimentation.
 
 The objective of this paper is to develop a measurement noise model for
-Kinect-style sensors. Differently from previous works, which have created ad hoc models for
-these types of sensors \cite{Newcombe2011}\cite{Fallon2012}, we
+Kinect-style sensors. Differently from previous works, which have created ad hoc
+models for these types of sensors \cite{Newcombe2011}\cite{Fallon2012}, we
 performed a statistical analysis on a large data set to provide a value for
 uncertainty as a function of distance and angle of incidence of a measurement.
 
@@ -45,11 +51,11 @@ methods used as well as how they were implemented. Next, Section
 \ref{sec:results} presents the results of our methodology and gives the model
 generated for the sensor. In this section, we also validate our model with a
 second Kinect and an ASUS Xtion PRO. Finally, Section
-\ref{sec:conclusion} summarizes our results and the usefulness of our model.  
+\ref{sec:conclusion} summarizes our results and the usefulness of our model.
 
 
-%The rest of the paper is laid out in the following manner:  
-%Section II presents previous works related to the generation and verification of noise models for depth sensors, specifically those related to the Kinect sensor.  
-%Section III discusses the approach used in generating the model, both the theory behind the methods used as well as how they were implemented.  
-%Next, Section IV gives the results of the proposed methodology as well as at the sensor model that was generated.  This section also presents a validation of the model using a different Kinect as well as the ASUS Xtion PRO sensor.  
+%The rest of the paper is laid out in the following manner:
+%Section II presents previous works related to the generation and verification of noise models for depth sensors, specifically those related to the Kinect sensor.
+%Section III discusses the approach used in generating the model, both the theory behind the methods used as well as how they were implemented.
+%Next, Section IV gives the results of the proposed methodology as well as at the sensor model that was generated.  This section also presents a validation of the model using a different Kinect as well as the ASUS Xtion PRO sensor.
 %Finally, Section V outlines the results of this work as well as the usefulness and implementation of the proposed model.

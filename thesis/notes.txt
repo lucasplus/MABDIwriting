@@ -1,7 +1,2 @@
 Questions:
-* \techrepnum{} - thesis.tex - What number do I put here?
-
-
-gthesis@math.unm.edu - June 16th
-* I do have one question. Basically: What is the difference between "unmeereport.cls" and "eeceTR.cls?" In the documentation I see no reference to "eeceTR.cls." Running diff on "unmeereport.cls" and "eeceTR.cls" I see minor changes.
-* My main concern, which of these style files should I use? If the answer is "eeceTR.cls" perhaps you should update the initial README.txt?
+* Putting my masters degree on the abstract page. Is that right?
