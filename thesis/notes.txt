@@ -1,2 +1,11 @@
 Questions:
+Content
+* Should I haven an appendix with the code of the MABDI components?
+
+Formatting
 * Putting my masters degree on the abstract page. Is that right?
+*
+
+Changes:
+* RGB-D sensors section in the introduction
+* Description of surface reconstruction method in the approach
