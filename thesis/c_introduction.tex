@@ -80,8 +80,8 @@ RGB-D sensors generally provide data at 30 frames per second and 640$\times$480
 resolution. Consequently, methods that use RGB-D data must handle over 9 million
 pixel values per second, if only using the depth information (D), and over 18
 million if using both color (RGB) and depth (D). The magnitude of the amount of
-data output from RGB-D sensors create the need for mapping methods that are
-computationally inexpensive and also influence the type of data structure used
+data output from RGB-D sensors creates the need for mapping methods that are
+computationally inexpensive and also influences the type of data structure used
 to store the map.
 
 \subsection{Maps}
@@ -125,7 +125,7 @@ consider the constraints imposed by each type:
 \end{itemize}
 
 Table \ref{tab:rep} compares the constraints of common map types. We can see, in
-general a mesh type map satisfies real-world constraints. Additionally, It has
+general a mesh type map satisfies real-world constraints. Additionally, meshes have
 been used extensively by the gaming and graphics communities, and so benefits
 from an incredible amount of continued research and advances in hardware such as
 Graphics Processing Units (GPUs).
@@ -136,7 +136,7 @@ The goal of this work is to develop a mapping algorithm that can gracefully
 utilize the amount of data output from an RGB-D sensor. Additionally, the
 algorithm will make use of software tools and hardware that have been developed
 for mesh data structures. The algorithm will be able to make intelligent
-decisions on the data it receives based on the knowledge it has been building
+decisions using the data it receives based on the knowledge it has been building
 about the environment. The decisions will be driven by the leveraging the
 difference between what the algorithm is actually seeing and what it expects to
 see. The decisions will be generated using computationally inexpensive computer

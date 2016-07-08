@@ -6,9 +6,9 @@
 The algorithmic structure of MABDI can be seen in system diagram shown in Fig.
 \ref{fig:system}. Table \ref{tab:var} gives a description of the main variables.
 
-\begin{figure}[h]%[thpb]
+\begin{figure}[h!]%[thpb]
 \centering
-  \includegraphics[width=.75\textwidth]{figures/diagram_system.png}
+  \includegraphics[width=.70\textwidth]{figures/diagram_system.png}
   \caption{MABDI system diagram}
   \label{fig:system}
 \end{figure}
@@ -57,7 +57,7 @@ Classification component consists of two components:
 % Simulated for the Experiments
 The system diagram in Fig. \ref{fig:system} also shows the Input and the Surface
 Reconstruction components. The Input component has been simulated for our
-experiments. More details of this simulation will be covered in Section
+experiments. More details of this simulation will be covered in Chapter
 \ref{chapter:experimental_setup}. The Surface Reconstruction component of the
 MABDI algorithm can be implemented with any viable surface reconstruction
 method. Our implementation utilizes the structural information contained within
@@ -70,7 +70,7 @@ the depth image. We will discuss this in more detail in the next section.
 
 A depth image is not simply a set of unorganized points, but has inherent
 structural information as well. This characteristic of the depth image allows us
-to define a topology on the 2 dimensional depth image that is preserved when
+to define a topology on the two dimensional depth image that is preserved when
 projected to real-world coordinates. Our surface reconstruction method defines a
 topology that is visualized in Fig. \ref{fig:srm}. Here elements of the mesh
 are shown in light blue and novel points $D_n$ are shown as blue dots. The red
@@ -79,35 +79,39 @@ all mesh elements that include such points, as seen in the figure.
 
 \begin{figure}[h]%[thpb]
 \centering
-  \includegraphics[width=.6\textwidth]
+  \includegraphics[width=.70\textwidth]
     {figures/diagram_surface_reconstruction.png}
   \caption{Topology defined on the depth image}
   \label{fig:srm}
 \end{figure}
 
-After initial experimentation with our method, we found erroneous elements could
-be defined that connect points who lie on completely different surfaces. To
-remove these elements, a step was added that uses imaging techniques in the form
-of a convolution filter. A 2 dimensional, backward differencing convolution
-filter is passed over the depth image. This filter has a large response at
-points where the difference between neighboring pixels is large. Remembering
-pixel values signify depth, points with large differences between themselves and
-their neighbor are marked as invalid and all elements that use them are removed.
+In order to remove elements defined by points that lie on completely different
+surfaces, a step was added that uses imaging techniques in the form of a
+convolution filter. A two dimensional, backward differencing convolution filter
+is passed over the depth image. This filter has a magnified response at points
+where the difference between neighboring pixels is large. Remembering pixel
+values signify depth, it is assumed points with large differences between
+themselves and their neighbor lie on different surfaces and so are marked as
+invalid and all elements that use them are removed.
 
 Our surface reconstruction method was chosen for its ability to be implemented
 simply and run quickly. One consequence of our method is that the resulting
-surface $S$ can have a large amount of elements. For example, if all points from
+surface $S$ can have a large number of elements. For example, if all points from
 $D$ are classified as novel (this happens on the first frame), $S$ can contain
-over $600,000$ elements. This assumes $D$ has no invalid points, e.g., out of
-the sensor's range. Many surface reconstruction methods have been developed to
-create a surface more intelligently, as discussed in Section
+over 600,000 elements. This assumes $D$ has no invalid points, e.g., out of the
+sensor's range. Many surface reconstruction methods have been developed to
+create a surface more intelligently, as discussed in Chapter
 \ref{chapter:related_works}. For example, the advancing front method developed
 by Marton et al. \cite{Marton2009} is capable of creating surfaces with fewer
-elements by utilizing robust resampling methods. One great thing about the MABDI
-algorithm is that the method developed by Marton et al. can be used in place of
-our surface reconstruction method. Also, due to our implementation's modular
-software design, the entire code base would not need to be changed in order to
-accomplish this. We will discuss the software design in the next section.
+elements than our method by utilizing a robust resampling method. One great
+thing about the MABDI algorithm is that the method developed by Marton et al.
+can be used in place of our surface reconstruction method. This characteristic
+of MABDI is great because MABDI does not depend on the choice of surface
+reconstruction method and the method can be chosen as the state-of-the-art
+changes or to suit a particular application. Also, due to our implementation's
+modular software design, the entire code base would not need to be changed in
+order to accomplish this. We will discuss the software design in the next
+section.
 
 \subsection{Software Design}
 
@@ -115,13 +119,13 @@ From a software perspective, the major difficulty of implementing the MABDI
 algorithm was found to be creating both the simulated depth image $D$ and the
 expected depth image $E$. In addition, managing the complexity of the data
 pipeline needed to run the algorithm and the simulation of the sensor proved to
-be difficult. Thankfully, Kitware, who is a leading edge developer of
+be difficult. Thankfully, Kitware, which is a leading edge developer of
 open-source software, created the Visualization Toolkit (VTK)
 \cite{schroeder2004visualization, sitevtk}. At the time of this writing the VTK
 Github repository has over 60,000 commits and is contributed to by supporters
 such as Sandia National Labs \cite{sitesandia}.
 
-VTK is aptly designed for the implementation of MABDI for many reasons. Perhaps
+VTK is suitable for the implementation of MABDI for many reasons. Perhaps
 the most important is the concept of a vtkAlgorithm (often called a Filter).
 This allows a programmer to create a custom and modular processing pipeline by
 defining classes that inherit vtkAlgorithm and then defining the connections
@@ -136,7 +140,7 @@ and vtkPolyData are VTK types used to represent an image and mesh respectively.
 The elements shown in blue in Fig. \ref{fig:software} are the core components of
 the MABDI algorithm and are implemented as custom VTK filters. Their source code
 is included in Appendix \ref{appendix:mabdi_code}. Here we will discuss all
-components in more detail:
+components in detail:
 
 \begin{sloppypar}
 \begin{itemize}
@@ -147,9 +151,9 @@ components in more detail:
     window and output the depth buffer from the window as a vtkImageData. The
     output additionally has pose information of the sensor.
     \item \textit{FilterClassifier} - Implements the true innovation of MABDI,
-    takes the difference between the two incoming depth images (vtkImageData)
-    and outputs a new depth image where the data that is not novel is marked to
-    be thrown away.
+    i.e., takes the difference between the two incoming depth images
+    (vtkImageData) and outputs a new depth image where the data that is not
+    novel is marked to be thrown away.
     \item \textit{FilterDepthImageToSurface} - Performs surface reconstruction
     on the novel points. For more detail see Section
     \ref{subsection:surface_reconstruction}. The surface is output as a
@@ -159,7 +163,7 @@ components in more detail:
 \end{itemize}
 \end{sloppypar}
 
-\begin{figure}[h]%[thpb]
+\begin{figure}[b]%[thpb]
 \centering
 \includegraphics[width=.75\textwidth]{figures/diagram_software.png}
 \caption{MABDI software diagram}

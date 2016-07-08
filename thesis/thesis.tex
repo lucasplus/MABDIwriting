@@ -15,7 +15,7 @@
 
 \lstset{ %
   backgroundcolor=\color{white},   % choose the background color; you must add \usepackage{color} or \usepackage{xcolor}
-  basicstyle=\scriptsize,        % the size of the fonts that are used for the code
+  basicstyle=\scriptsize,          % the size of the fonts that are used for the code
   breakatwhitespace=false,         % sets if automatic breaks should only happen at whitespace
   breaklines=true,                 % sets automatic line breaking
   captionpos=t,                    % sets the caption-position to bottom
@@ -48,10 +48,10 @@
 % Uncomment the next command if you see weird paragraph spacing:
 % That is, if you see paragraphs float with lots of white space
 % in between them:
-% \setlength{\parskip}{0.30cm}
+\setlength{\parskip}{0.30cm}
 
 
-\title{Mesh Addition Based on the Depth Image (MABDI)}
+\title{Mesh Addition Based on the Depth Image\\(MABDI)}
 
 \author{Lucas E. Chavez}
 
@@ -77,7 +77,7 @@ New Mexico Institute of Mining and Technology, 2009}
 
 \begin{acknowledgments}
    \vspace{1.1in}
-   This work was support in part by Sandia National Laboratories under Purchase
+   This work was supported in part by Sandia National Laboratories under Purchase
    Order: 1179196 and  NSF grant OISE \#1131305.
 \end{acknowledgments}
 
@@ -87,7 +87,7 @@ New Mexico Institute of Mining and Technology, 2009}
   Many robotic applications, especially those whose goal is to aid or assist
   through human-robot interaction, utilize a rich map of the world for reasoning
   tasks such as collision detection, path planning, or object recognition. Such
-  map, and the method used to produce it, must take into consideration
+  a map, and the method used to produce it, must take into consideration
   real-world constraints. Most mesh-based mapping algorithms resemble a ``black
   box'' and do not provide a mechanism to close the loop and make decisions
   about the incoming information. MABDI leverages the global mesh by finding the
@@ -95,8 +95,8 @@ New Mexico Institute of Mining and Technology, 2009}
   using this to classify the incoming measurements as novel or not. This allows
   the surface reconstruction method to be run only on data that has not yet been
   represented in the global mesh. The result is an algorithm that becomes
-  computationally inexpensive once the environment is known, but can also react
-  to new objects.
+  computationally inexpensive once the environment is known, but still can
+  incorporate new objects into the model.
 \clearpage %(required for 1-page abstract)
 \end{abstract}
 
