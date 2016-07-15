@@ -1,10 +1,11 @@
 \chapter{Approach}	\label{chapter:approach}
 
 \section{Algorithmic Design}
-\label{chapter:approach:algorithmic_design}
+\label{section:algorithmic_design}
 
-The algorithmic structure of MABDI can be seen in system diagram shown in Fig.
-\ref{fig:system}. Table \ref{tab:var} gives a description of the main variables.
+The algorithmic structure of MABDI can be seen in the system diagram shown in
+Fig. \ref{fig:system}. Table \ref{tab:var} gives a description of the main
+variables.
 
 \begin{figure}[h!]%[thpb]
 \centering
@@ -14,28 +15,30 @@ The algorithmic structure of MABDI can be seen in system diagram shown in Fig.
 \end{figure}
 
 \begin{table}[h]
-  \caption{Basic description of the main variables}
+  \caption{Description of the main variables}
   \label{tab:var}
   \begin{center}
-    \begin{tabular}{|c|l|}
-    \hline
-    {\bf Variable Name} & \multicolumn{1}{|c|}{{\bf Description}} \\
-    \hline
-    \rowcolor{LightGray} $D$ & Depth image from RGB-D sensor \\
+    \begin{tabular}{c|l}
+    \cellcolor{white} {\bf Variable Name} & {\bf Description} \\ % adding \cellcolor{} here fixes the vertical line between the columns for some reason
+    \rowcolor{LightGray}
+    $D$ & Depth image from RGB-D sensor \\
     $P$ & Pose of the sensor \\
-    \rowcolor{LightGray} $D_n$ & Parts of $D$ that are \emph{novel} \\
+    \rowcolor{LightGray}
+    $D_n$ & Parts of $D$ that are \emph{novel} \\
     $S$ & Novel surface generated from $D_n$ \\
-    \rowcolor{LightGray} $M$ & Global mesh \\
-    \hline
+    \rowcolor{LightGray}
+    $M$ & Global mesh \\
     \end{tabular}
   \end{center}
 \end{table}
 
-The system diagram is very similar to Fig. \ref{fig:pipeline} with the exception
-of the Classification component, shown in blue. This Classification component is
+The system diagram of Fig. \ref{fig:system} is a more detailed version of the
+diagram seen in Fig. \ref{fig:pipeline_mabdi}. The ``Identify Novel Data''
+component, shown in Fig. \ref{fig:pipeline_mabdi}, corresponds with the
+Classification component, shown in blue. This Classification component is
 MABDI's contribution to the state-of-art in mesh based mapping algorithms, and
 is what gives MABDI the ability to make decisions about the incoming data. The
-Classification component consists of two components:
+Classification component consists of two parts:
 \begin{enumerate}
     \item \textit{Generate Expected Depth Image $E$} - Here we take the global
     mesh $M$, render it using computer graphics, and use the depth buffer of the
@@ -44,14 +47,19 @@ Classification component consists of two components:
     (simulated for our experiments).
     \item \textit{Classify Depth Image $D$} - Here we classify the actual depth
     image $D$ (simulated for our experiments) by first taking the absolute
-    difference between $E$ and $D$ and thresholding. If the differences are
-    small, those points are thrown away and if the differences are large, those
-    points are kept as $D_n$. The idea behind this is, if the difference is
-    large, the measurements are coming from a part of the environment that has
-    not been seen before, i.e. novel. The implication of this assumption is that
-    this version of MABDI cannot handle object removal. It is worth noting
-    that MABDI can be extended to handle object removal by using the sign of the
+    difference between $E$ and $D$ and thresholding, as shown in the equation
+    below. If the differences are small, those points are thrown away and if the
+    differences are large, those points are kept as $D_n$. The idea behind this
+    is, if the difference is large, the measurements are coming from a part of
+    the environment that has not been seen before, i.e. novel. We found
+    $threshold\mathsmaller{=}0.01$ worked well in our simulations. The
+    implication of assuming all large differences signifies novel data is that
+    this version of MABDI cannot handle object removal. It is worth noting that
+    MABDI can be extended to handle object removal by using the sign of the
     difference between $E$ and $D$ instead of the absolute value.
+    $$
+    D_n = \lvert D - E \rvert > threshold
+    $$
 \end{enumerate}
 
 % Simulated for the Experiments
@@ -68,50 +76,106 @@ the depth image. We will discuss this in more detail in the next section.
 \subsection{Surface Reconstruction}
 \label{subsection:surface_reconstruction}
 
-A depth image is not simply a set of unorganized points, but has inherent
-structural information as well. This characteristic of the depth image allows us
-to define a topology on the two dimensional depth image that is preserved when
-projected to real-world coordinates. Our surface reconstruction method defines a
-topology that is visualized in Fig. \ref{fig:srm}. Here elements of the mesh
-are shown in light blue and novel points $D_n$ are shown as blue dots. The red
-dot signifies a point that is not from the set $D_n$. Our implementation removes
-all mesh elements that include such points, as seen in the figure.
+The Surface Reconstruction component, as shown in Fig. \ref{fig:system}, is
+responsible for creating a surface $S$ from the novel points $D_n$. The surface
+$S$ is a mesh data structure that consists of a list of vertices and elements.
+Vertices are points and elements define connections between vertices. Our method
+outputs a triangle mesh, and so elements define the connection between three
+vertices. $D_n$ is a subset of $D$ and is a list of pixel locations. For this
+discussion, it will also be useful to define $D_k$ as the set of pixels in $D$
+that are not pixels of $D_n$, shown in the equation below. $D_{known}$ is
+labeled with ``\emph{known}'' because it represents data from the not novel or
+``known'' parts of the environment.
+
+$$
+D_{known} = D \setminus D_n
+$$
+
+Our surface reconstruction method first defines $S$ using all pixels from $D$.
+We define the topology of the elements on the depth image. We can do this
+because a depth image is not a set of unorganized points, but has inherent
+structural information. This characteristic of the depth image allows us to
+define a topology on the 2D depth image that is preserved when projected to 3D
+coordinates. The topology we define can be visualized in Fig. \ref{fig:sr_t}.
+Elements of the mesh are shown in light blue and pixels from $D$ are shown as
+blue dots. Next we will identify elements to remove from $S$.
 
 \begin{figure}[h]%[thpb]
 \centering
   \includegraphics[width=.70\textwidth]
-    {figures/diagram_surface_reconstruction.png}
-  \caption{Topology defined on the depth image}
-  \label{fig:srm}
+    {figures/diagram_sr_topology.png}
+  \caption{Topology defined on the depth image (not all elements are shown)}
+  \label{fig:sr_t}
 \end{figure}
 
 In order to remove elements defined by points that lie on completely different
-surfaces, a step was added that uses imaging techniques in the form of a
-convolution filter. A two dimensional, backward differencing convolution filter
-is passed over the depth image. This filter has a magnified response at points
-where the difference between neighboring pixels is large. Remembering pixel
-values signify depth, it is assumed points with large differences between
-themselves and their neighbor lie on different surfaces and so are marked as
-invalid and all elements that use them are removed.
+surfaces, we use an imaging technique in the form of a convolution filter. A two
+dimensional, differencing convolution filter is passed over $D$. This filter has
+a magnified response at points where the difference between neighboring pixels
+is large. Remembering pixel values signify depth, it is assumed pixels with
+large differences between themselves and their neighbor lie on different
+surfaces and therefore lie on the ``boundary'' of the real surface. A large
+difference is defined by thresholding on the result of the convolution. We found
+$threshold\mathsmaller{=}0.01$ worked well in our simulations. Pixels identified
+through this thresholding are marked as $D_{boundary}$ and are defined by the
+equation below.
+
+$$
+D_{boundary} = D \ast \begin{bmatrix} 2 & -1 \\ -1 & 0 \end{bmatrix} > threshold
+$$
+
+Elements are removed from the $S$ if they touch pixels from the sets:
+\begin{itemize}
+  \item $D_{known}$ - Pixels from the known parts of the environment.
+  \item $D_{boundary}$ - Pixels that lie on the boundary of the actual surface.
+  \item $D_{invalid}$ -  Pixels that are invalid measurements. The RGB-D sensor
+  naturally has pixels that are invalid, for example, those that are out of
+  range.
+\end{itemize}
+
+Let us combine the sets defined above into one set $D_{throwaway}$:
+$$
+D_{throwaway} = D_{known} \cup D_{boundary} \cup D_{invalid}
+$$
+
+Our method removes elements that contain pixels from the set $D_{throwaway}$.
+This can be seen in Fig. \ref{fig:sr_em}. Red dots signify pixels from
+$D_{throwaway}$ and elements that contain these pixels are removed from $S$. In
+the final step, all pixels are projected into 3D coordinates using the
+transformation matrix of the sensor. These coordinates are the vertices of $S$.
+
+\begin{figure}[h]%[thpb]
+\centering
+  \includegraphics[width=.70\textwidth]
+    {figures/diagram_sr_element_removal.png}
+  \caption{Removal of elements}
+  \label{fig:sr_em}
+\end{figure}
 
 Our surface reconstruction method was chosen for its ability to be implemented
 simply and run quickly. One consequence of our method is that the resulting
-surface $S$ can have a large number of elements. For example, if all points from
-$D$ are classified as novel (this happens on the first frame), $S$ can contain
-over 600,000 elements. This assumes $D$ has no invalid points, e.g., out of the
-sensor's range. Many surface reconstruction methods have been developed to
-create a surface more intelligently, as discussed in Chapter
-\ref{chapter:related_works}. For example, the advancing front method developed
-by Marton et al. \cite{Marton2009} is capable of creating surfaces with fewer
-elements than our method by utilizing a robust resampling method. One great
-thing about the MABDI algorithm is that the method developed by Marton et al.
-can be used in place of our surface reconstruction method. This characteristic
-of MABDI is great because MABDI does not depend on the choice of surface
-reconstruction method and the method can be chosen as the state-of-the-art
-changes or to suit a particular application. Also, due to our implementation's
-modular software design, the entire code base would not need to be changed in
-order to accomplish this. We will discuss the software design in the next
-section.
+surface $S$ can have a large number of elements. For example, if no points are
+contained in the set $D_{throwaway}$ (this can happen on the first frame), $S$
+will contain over 600,000 elements. We can see this by looking at Fig.
+\ref{fig:sr_t}, assuming a depth image of size 640$\times$480, and considering
+the equation below.
+
+$$
+613,120 = (2\times640)\times(480-1)
+$$
+
+Many surface reconstruction methods have been developed to create a surface more
+intelligently, as discussed in Chapter \ref{chapter:related_works}. For example,
+the advancing front method developed by Marton et al. \cite{Marton2009} is
+capable of creating surfaces with fewer elements than our method by utilizing a
+robust resampling method. One great thing about the MABDI algorithm is that the
+method developed by Marton et al. can be used in place of our surface
+reconstruction method. This characteristic of MABDI is great because MABDI does
+not depend on the choice of surface reconstruction method and the method can be
+chosen as the state-of-the-art changes or to suit a particular application.
+Also, due to our implementation's modular software design, the entire code base
+would not need to be changed in order to accomplish this. We will discuss the
+software design in the next section.
 
 \subsection{Software Design}
 

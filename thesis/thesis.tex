@@ -1,12 +1,17 @@
 
 \documentclass[botnum, nobox]{unmeethesis}
 
+\usepackage{amsmath}               % to show matrices \begin{bmatrix}
+
 \usepackage{blindtext}             % Sometimes I get the black boxes seen here http://tex.stackexchange.com/a/111956
 \usepackage{multirow}              % for the table
 \usepackage{color, colortbl}
 \definecolor{LightGray}{gray}{.9}  % for table rows
 \usepackage{relsize}
 \usepackage{graphicx}
+\usepackage{caption}     % for multi figure figures
+\usepackage{subcaption}  % for multi figure figures
+
 \usepackage{listings}              % for appendix of python code
 
 \definecolor{mygreen}{rgb}{0,0.6,0}
@@ -40,6 +45,8 @@
   tabsize=2,	                     % sets default tabsize to 2 spaces
   title=\lstname                   % show the filename of files included with \lstinputlisting; also try caption instead of title
 }
+
+\captionsetup[table]{skip=0pt} % reduce caption space between tables and caption
 
 \begin{document} % _____________________________________________ Begin Document
 

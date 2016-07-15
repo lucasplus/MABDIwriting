@@ -68,13 +68,13 @@ generate a rich amount of data.
 The popularity of RGB-D sensors began with the release and commercialization of
 the Kinect\texttrademark ~ by Microsoft. The arrival of the Kinect brought with
 it an inexpensive depth sensor that uses an active range system to generate a
-depth map of a given environment \cite{freedman2012depth}. The Kinect and similar
-sensors, have come to be called RGB-D sensors. This class of sensors provide
-images which include both visual (RGB) and depth (D) values.
-Several works have taken advantage of this sensor technology in scenarios such
-as environmental mapping \cite{henry2012rgb}, 3D reconstruction
-\cite{Newcombe2011a}, gesture recognition \cite{Xia2011}, and altitude control of
-aerial vehicles \cite{Stowers2011}.
+depth map of a given environment \cite{freedman2012depth}. The Kinect and
+similar sensors, have come to be called RGB-D sensors. This class of sensors
+provide images which include both visual (RGB) and depth (D) values. Several
+works have taken advantage of this sensor technology in scenarios such as
+environmental mapping \cite{henry2012rgb}, 3D reconstruction
+\cite{Newcombe2011a}, gesture recognition \cite{Xia2011}, and altitude control
+of aerial vehicles \cite{Stowers2011}.
 
 RGB-D sensors generally provide data at 30 frames per second and 640$\times$480
 resolution. Consequently, methods that use RGB-D data must handle over 9 million
@@ -125,10 +125,10 @@ consider the constraints imposed by each type:
 \end{itemize}
 
 Table \ref{tab:rep} compares the constraints of common map types. We can see, in
-general a mesh type map satisfies real-world constraints. Additionally, meshes have
-been used extensively by the gaming and graphics communities, and so benefits
-from an incredible amount of continued research and advances in hardware such as
-Graphics Processing Units (GPUs).
+general a mesh type map satisfies real-world constraints. Additionally, meshes
+have been used extensively by the gaming and graphics communities, and so
+benefits from an incredible amount of continued research and advances in
+hardware such as Graphics Processing Units (GPUs).
 
 \section{Goal}
 
@@ -144,17 +144,43 @@ vision methods.
 
 \section{Contribution}
 
-Currently, one of the issues with mesh mapping techniques is they are generally
-``black box'' methods. Meaning the data comes in from the sensor, those
-measurements are turned into a mesh, and then that mesh is appended to a global
-mesh. Fig. \ref{fig:pipeline} visualizes this common pipeline in black. The goal
-of this work is to design an algorithm to close the loop (as visualized in red)
-and allow the system to make decisions about the incoming data based on what it
-already knows.
+MABDI's contribution to the state-of-the-art in mesh based environmental mapping
+methods is to close the loop of the algorithmic structure used by current
+methods. Current mesh mapping techniques can be described as ``black box''
+methods. The general algorithmic structure of these ``black box'' methods
+follows the same pattern, which can be thought of as a pipeline. Data comes in
+from the sensor, those measurements are used to create a mesh, and then that
+mesh is appended to a global mesh. Fig. \ref{fig:pipeline_blackbox} shows this
+pipeline. We can then compare that pipeline to the pipeline used in MABDI, which
+is shown in Fig. \ref{fig:pipeline_mabdi}. In both figures we can see the
+``Create Mesh from Input'' component. The input to this component is different
+for ``black box'' methods and MABDI. ``Black box'' methods input all data from
+the sensor into the mesh creating component whereas MABDI only inputs data
+identified to be from the unknown parts of the environment. This reduces the
+computational cost of the mesh creating component and results in a global mesh
+that does not have redundant mesh elements. Redundant mesh elements are an
+inherent problem of ``black box'' methods and are typically removed using
+computationally expensive post processing of the global mesh. MABDI simply does
+not create redundant elements to begin with. Reduced computational cost and a
+global mesh that is inherently free of redundant elements is MABDI's
+contribution.
+
 
 \begin{figure}[h]%[thpb]
 \centering
-  \includegraphics[width=.75\textwidth]{figures/diagram_general_pipeline.png}
-  \caption{Common ``black box'' pipeline in black. The contribution of MABDI in red.}
-  \label{fig:pipeline}
+\begin{subfigure}[t]{\textwidth}
+  \includegraphics[width=.9\textwidth]
+    {figures/diagram_general_pipeline_blackbox.png}
+  \caption{``Black box'' methods}
+  \label{fig:pipeline_blackbox}
+\end{subfigure}
+\begin{subfigure}[b]{\textwidth}
+  \includegraphics[width=.9\textwidth]
+    {figures/diagram_general_pipeline_mabdi.png}
+  \caption{MABDI}
+  \label{fig:pipeline_mabdi}
+\end{subfigure}
+\caption{Algorithmic structure of ``black box'' methods (a) compared to MABDI
+(b). Contribution of MABDI to the state-of-the-art shown in red}
+\label{fig:pipeline}
 \end{figure}
