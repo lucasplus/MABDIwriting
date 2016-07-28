@@ -112,8 +112,8 @@ Emery in 2001 \cite{Liu2001}, and H\"{a}hnel et al. in 2003. In these works the
 2D landmark locations and robot position were estimated using techniques from
 Thrun's past work \cite{Thrun1998}. Once this had been done the 3D laser scan
 data was simply appended to each estimated robot location. Then, a mesh was
-created by post processing the 3D point cloud. Their works utilized the fact that the
-laser collected the data in an incremental manner and simply connected
+created by post processing the 3D point cloud. Their works utilized the fact
+that the laser collected the data in an incremental manner and simply connected
 neighboring 3D points. Finally, the mesh was simplified by looking for large
 planar sections and merging the corresponding mesh elements. One of the first
 SLAM solutions which used a single camera to generate a list of 3D points was
@@ -123,13 +123,13 @@ environments. Future advances allowed representations of larger environments. In
 2003 Thrun et al. \cite{Thrun2003} created a SLAM procedure which did not rely
 on having a structured environment and was applied to mapping large mines. In
 2004 Howard et al. \cite{Howard2004} created a SLAM system based on a Segway
-platform equipped with a 3D laser which could map areas of roughly 0.5 km
-on each side. One of the results showed a map with approximately 8 million
-points. In 2006 Cole and Newman \cite{Cole2006} continued work in large-scale
-SLAM by increasing robustness and also generated maps with many 3D points using
-a laser sensor. In 2007 Clemente et al. created a large-scale SLAM system that
-used a single camera. The system had an advanced loop closing procedure based on
-visual features and created large maps of 3D points. In 2001 Klein and Murray
+platform equipped with a 3D laser which could map areas of roughly 0.5 km on
+each side. One of the results showed a map with approximately 8 million points.
+In 2006 Cole and Newman \cite{Cole2006} continued work in large-scale SLAM by
+increasing robustness and also generated maps with many 3D points using a laser
+sensor. In 2007 Clemente et al. created a large-scale SLAM system that used a
+single camera. The system had an advanced loop closing procedure based on visual
+features and created large maps of 3D points. In 2001 Klein and Murray
 \cite{Klein2007} developed a SLAM solution which used a single camera. The
 uniqueness of their method was the algorithmic structure. Their SLAM solution
 consisted of two separate processes: a tracking process and a map building
@@ -138,16 +138,16 @@ solutions because of the advances in pose estimation technology. Klein and
 Murray were able to get very good results for a small environment and showed
 Augmented Reality (AR) applications. Many of the future advances of SLAM
 solutions, which generated 3D point sets, dealt with camera systems
-\cite{Paz2008,Konolige2008,Strasdat2010} and improved speed and robustness.
-Many of the most current methods that produce a list of points are systems who
-use a relatively new type of sensor named a RGB-D sensor. One good example is a
-work that was produced in 2011 by Engelhard et al. \cite{Engelhard2011}. In this
-work they used an algorithm named the Iterative Closest Point (ICP)
-\cite{Rusinkiewicz} to align point clouds coming from the RGB-D sensor into
-a large colored point cloud. The resulting maps were visually impressive.
-However, the map could not be adapted to new information and was not well suited
-for other applications, such as obstacle avoidance. These limitations are
-inherent in maps that consist of lists of points.
+\cite{Paz2008,Konolige2008,Strasdat2010} and improved speed and robustness. Most
+current methods that produce a list of points use a relatively new type of
+sensor named a RGB-D sensor. One good example is a work that was produced in
+2011 by Engelhard et al. \cite{Engelhard2011}. In this work they used an
+algorithm named the Iterative Closest Point (ICP) \cite{Rusinkiewicz} to align
+point clouds coming from the RGB-D sensor into a large colored point cloud. The
+resulting maps were visually impressive. However, the map could not be adapted
+to new information and was not well suited for other applications, such as
+obstacle avoidance. These limitations are inherent in maps that consist of lists
+of points.
 
 \subsection{Volumetric}
 
@@ -211,36 +211,37 @@ their method was based on a 3D Delaunay triangulation algorithm. Giesen surveyed
 Delaunay triangulation methods in \cite{Giesen2004}. Viejo and Cazorla were not
 able to obtain real-time results and, in fact, it has been seen that it is
 extremely difficult to run a 3D Delaunay triangulation in real time because of
-the numerous distance calculations required. One of the next major advances
-came from Weingarten and Siegwart in 2006 \cite{Weingarten2006}. Their work also
+the numerous distance calculations required. One of the next major advances came
+from Weingarten and Siegwart in 2006 \cite{Weingarten2006}. Their work also
 created a mesh that was only capable of capturing large planar surfaces.
 However, they showed increased robustness. In 2007 Pollefeys et al.
 \cite{Akbarzadeh2006,Pollefeys2007} developed a large urban mapping system
 consisting of a vehicle and eight camera systems. The processing was carried out
 by multiple CPUs and optimized for speed with Graphics Processing Unit (GPU)
-calculations. In their work they used the camera systems to generate a set of
-depth maps. This set was then reduced using their depth map fusion method. The
-method combined multiple depth maps to reject erroneous depth estimates and
-remove redundancy from the data, resulting in a more accurate and reduced set of
-depth maps. The reduced set was then used by a triangulation procedure to create
-a mesh of the environment. The mesh generation procedure was based on a work
-from 2002 by Pajarola et al. \cite{Pajarola2002}. This method defines a mesh in
-the depth image. It starts from a very coarse mesh and continues to refine in
-areas of the depth image based on a confidence criteria. In the work of
-Weingarten and Siegwart, these meshes that are defined for each fused depth
-image are then checked for overlaps and duplicates are removed to make a single
-large mesh. One of the major drawbacks of this approach is that the output mesh
-can not be adapted by measurements that come from revisited parts of the scene.
-Another major advancement came in 2008 from Poppinga et al. \cite{Poppinga2008}.
-In this work they used a Time of Flight (ToF) camera to generate a mesh
-representation of the large planar structures in the environment. Here they also
-develop a procedure to determine a mesh in a depth image. They leverage the
-structure of the depth image to make the method computationally inexpensive. In
-their work they simply append the meshes that are created from each depth image
-into a global coordinate system. They obtain very good results from a simple
-method. However, the method is not adaptive to new information. Also, a mesh is
-created for each depth image instead of updating and maintaining a global mesh.
-A major advancement came from work done by Newcombe and Davison in 2010
+calculations. In their work they used the camera systems to generate an initial
+set of depth maps. This set was then reduced using their depth map fusion
+method. The method combined multiple depth maps to reject erroneous depth
+estimates and remove redundancy from the data, resulting in a reduced set of
+depth maps that was more accurate than the initial set of depth maps. The
+reduced set was then used by a triangulation procedure to create a mesh of the
+environment. The mesh generation procedure was based on a work from 2002 by
+Pajarola et al. \cite{Pajarola2002}. This method defines a mesh in the depth
+image. It starts from a very coarse mesh and continues to refine in areas of the
+depth image based on a confidence criteria. In the work of Weingarten and
+Siegwart, these meshes that are defined for each fused depth image are then
+checked for overlaps and duplicates are removed to make a single large mesh. One
+of the major drawbacks of this approach is that the output mesh can not be
+adapted by measurements that come from revisited parts of the scene. Another
+major advancement came in 2008 from Poppinga et al. \cite{Poppinga2008}. In this
+work they used a Time of Flight (ToF) camera to generate a mesh representation
+of the large planar structures in the environment. Here they also develop a
+procedure to determine a mesh in a depth image. They leverage the structure of
+the depth image to make the method computationally inexpensive. In their work
+they simply append the meshes that are created from each depth image into a
+global coordinate system. They obtain very good results from a simple method.
+However, the method is not adaptive to new information. Also, a mesh is created
+for each depth image instead of updating and maintaining a global mesh. A major
+advancement came from work done by Newcombe and Davison in 2010
 \cite{Newcombe2010}. In this work they designed a method to create a mesh
 reconstruction from a single video camera. Their method used Structure From
 Motion (SFM) to obtain a sparse point cloud of the scene. Then an implicit
@@ -397,7 +398,7 @@ representation and fidelity to the data. They successfully used their method for
 both surface reconstruction and mesh simplification. One of the next advances
 in physical based adaptation of meshes came in 1993 from Huang and Goldof
 \cite{Huang1993}. In this work they were able to adjust the size of the mesh
-elements to obtain a denser resolution in areas of high frequency information
+elements to obtain a dense resolution in areas of high frequency information
 using a physical based model. In addition, it was one of the first works to
 represent an object undergoing deformation. Their method was able to perform
 tracking on simple simulation examples. Another advancement came in 1994

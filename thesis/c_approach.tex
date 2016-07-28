@@ -57,9 +57,9 @@ Classification component consists of two parts:
     this version of MABDI cannot handle object removal. It is worth noting that
     MABDI can be extended to handle object removal by using the sign of the
     difference between $E$ and $D$ instead of the absolute value.
-    $$
+    \begin{equation}
     D_n = \lvert D - E \rvert > threshold
-    $$
+    \end{equation}
 \end{enumerate}
 
 % Simulated for the Experiments
@@ -85,11 +85,12 @@ vertices. $D_n$ is a subset of $D$ and is a list of pixel locations. For this
 discussion, it will also be useful to define $D_k$ as the set of pixels in $D$
 that are not pixels of $D_n$, shown in the equation below. $D_{known}$ is
 labeled with ``\emph{known}'' because it represents data from the not novel or
-``known'' parts of the environment.
+``known'' parts of the environment. In the equation below ``$\setminus$'' is the
+set difference operator.
 
-$$
+\begin{equation}
 D_{known} = D \setminus D_n
-$$
+\end{equation}
 
 Our surface reconstruction method first defines $S$ using all pixels from $D$.
 We define the topology of the elements on the depth image. We can do this
@@ -115,13 +116,17 @@ is large. Remembering pixel values signify depth, it is assumed pixels with
 large differences between themselves and their neighbor lie on different
 surfaces and therefore lie on the ``boundary'' of the real surface. A large
 difference is defined by thresholding on the result of the convolution. We found
-$threshold\mathsmaller{=}0.01$ worked well in our simulations. Pixels identified
+$threshold\mathsmaller{=}0.01$ worked well in our simulations. (The threshold
+value is unitless because the depth image is defined by the z-component of the
+viewpoint coordinates, which is normalized between 0 and 1.) Pixels identified
 through this thresholding are marked as $D_{boundary}$ and are defined by the
-equation below.
+equation below where $K$ signifies the kernel of the differencing convolution
+filter.
 
-$$
-D_{boundary} = D \ast \begin{bmatrix} 2 & -1 \\ -1 & 0 \end{bmatrix} > threshold
-$$
+\begin{gather}
+  K = \begin{bmatrix} 2 & -1 \\ -1 & 0 \end{bmatrix} \\
+  D_{boundary} = (D \ast K) > threshold
+\end{gather}
 
 Elements are removed from the $S$ if they touch pixels from the sets:
 \begin{itemize}
@@ -133,9 +138,9 @@ Elements are removed from the $S$ if they touch pixels from the sets:
 \end{itemize}
 
 Let us combine the sets defined above into one set $D_{throwaway}$:
-$$
+\begin{equation}
 D_{throwaway} = D_{known} \cup D_{boundary} \cup D_{invalid}
-$$
+\end{equation}
 
 Our method removes elements that contain pixels from the set $D_{throwaway}$.
 This can be seen in Fig. \ref{fig:sr_em}. Red dots signify pixels from
@@ -158,22 +163,23 @@ will contain over 600,000 elements. We can see this by looking at Fig.
 \ref{fig:sr_t}, assuming a depth image of size 640$\times$480, and considering
 the equation below.
 
-$$
-613,120 = (2\times640)\times(480-1)
-$$
+\begin{equation}
+  612,162 = ((640-1)\times2)\times(480-1)
+\end{equation}
 
 Many surface reconstruction methods have been developed to create a surface more
-intelligently, as discussed in Chapter \ref{chapter:related_works}. For example,
-the advancing front method developed by Marton et al. \cite{Marton2009} is
-capable of creating surfaces with fewer elements than our method by utilizing a
-robust resampling method. One great thing about the MABDI algorithm is that the
-method developed by Marton et al. can be used in place of our surface
-reconstruction method. This characteristic of MABDI is great because MABDI does
-not depend on the choice of surface reconstruction method and the method can be
-chosen as the state-of-the-art changes or to suit a particular application.
-Also, due to our implementation's modular software design, the entire code base
-would not need to be changed in order to accomplish this. We will discuss the
-software design in the next section.
+intelligently than our surface reconstruction method, as discussed in Chapter
+\ref{chapter:related_works}. For example, the advancing front method developed
+by Marton et al. \cite{Marton2009} is capable of creating surfaces with fewer
+elements than our method by utilizing a robust resampling method. A capability
+of the MABDI algorithm is that the method developed by Marton et al. can be used
+in place of our surface reconstruction method. This characteristic of MABDI is
+advantageous because MABDI does not depend on the choice of surface
+reconstruction method and the method can be chosen as the state-of-the-art
+changes or to suit a particular application. Also, due to our implementation's
+modular software design, the entire code base would not need to be changed in
+order to accomplish this. We will discuss the software design in the next
+section.
 
 \subsection{Software Design}
 
