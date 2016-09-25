@@ -1,11 +1,9 @@
 \chapter{Experimental Setup}	\label{chapter:experimental_setup}
 
-It was decided to develop and test MABDI in a completely simulated environment
+MABDI was developed and tested in a completely simulated environment
 so that all results could be repeatable and also to facilitate the ability to
-debug during the development process. This ability was truly invaluable as some
-components of the algorithm proved to be complex from an implementation
-perspective. In addition, we can now compare the resultant
-global mesh to ground truth.
+debug during the development process. In addition, by performing the analysis in
+simulation the global mesh can be visually compared to ground truth.
 
 \section{Simulation Parameters}
 
@@ -15,7 +13,7 @@ all aspects of the simulation. Parameters of a particular importance are
 discussed in more detail here:
 
 \begin{itemize}
-    \item  Environment - This parameter specifies the environment used to generate
+    \item Environment - This parameter specifies the environment used to generate
     the simulated depth images. \textit{Table} is an environment consisting of a
     table and two cups placed on the table. The table is 1 meter tall.
     \textit{Bunnies} is an environment consisting of three bunnies who are
@@ -58,48 +56,71 @@ already mapped and is thus ``known'' to the global mesh. Also, because the path
 is a helix and not just a circle, the sensor views the environment from a
 slightly different position on each pass.
 
-\section{Analysis of Simulated Noise}
+\section{Simulating an RGB-D Sensor}
 
-In order to realistically simulate the sensor in a real-world environment we add
-noise to the depth image $D$. See Fig. \ref{fig:system}. The magnitude of the
-noise added is based on the accuracy of real-world sensors. As new RGB-D sensors
-have been developed, such as the Asus Xtion and the Kinect for Xbox One, the
-accuracy of the sensors has continued to improve \cite{lachat2015first}. For
-this work, we take a conservative approach and utilize the well known error
-modeling work of Khoshelham \cite{Khoshelham2012} that is based on the original
-Kinect.
+For the experiments, we simulate a sensor moving in a fixed environment along a
+path. The coordinate system fixed to the environment is called the global
+coordinate system. The sensor also has a coordinate system attached the origin
+of its viewing frustum. The scene is rendered from the sensor's point of view,
+and part of the information generated during the rendering process is used as
+the output of the simulated sensor. During the rendering process mesh vertices
+and elements are transformed from the sensor's coordinate system into view
+coordinates using the pinhole camera model. The use of this model has been
+validated in the localization work of Fallon \cite{Fallon2012}. The intrinsic
+camera parameters of the pinhole hole model were chosen to replicate the Kinect
+sensor \cite{sitekinectspecs}. This pinhole camera model transformation takes
+everything that is viewable by the sensor and transforms it to a cube placed in
+front of the sensor. Each side of this cube has a length of 2 and varies from -1
+to 1 along the x, y, and z axis. The x and y values are eventually transformed
+into display coordinates, which determine the final pixel locations in the
+image. The z values of the cube are normalized from 0 to 1 and define the depth
+image.
 
-The depth image used by the MABDI algorithm $E$ and the depth image that comes
-from simulating the environment $D$ both use a pinhole camera model. This method
-has been validated in the localization work of Fallon \cite{Fallon2012}. The
-intrinsic camera parameters of the pinhole hole model were chosen to emulate the
-Kinect sensor \cite{sitekinectspecs}. The pinhole model defines a transformation
-matrix used to transform between viewpoint coordinates and real-world
-coordinates. The z component of the viewpoint coordinates constitutes the depth
-image and are defined to vary between 0 and 1. Due to how the transformation
-works, differences in the depth image do not linearly correspond to changes in
-real-world coordinates as can be seen in Fig. \ref{fig:depth}.
+To simulate a RGB-D sensor, noise is added to the depth image $D$ by
+sampling a normal distribution and adding the value to each pixel. as defined in
+the equation below.
+
+\begin{equation}
+D_{noisy}(i,j) = D(i,j) + \mathcal{N} (\mu\mathsmaller{=}0, \sigma\mathsmaller{=}0.002)
+\label{eqn:depth_noise}
+\end{equation}
+
+The pinhole camera transformation creates a non-linear relationship between
+values in the depth image and their corresponding location in the sensor's
+coordinate system. This relationship is visualized in Fig.
+\ref{fig:depth_view_to_sensor}. As a consequence, constant noise added to the
+depth image grows in magnitude as distance from the sensor increases. Luckily,
+this non-linear relation corresponds with RGB-D error models from the
+literature. Researchers have created error models to describe the standard
+deviation of measurement error found in various RGB-D sensors. For this work, we
+seek to match the well-known error model of Khoshelham \cite{Khoshelham2012}
+that is based on the original Kinect.
 
 \begin{figure}[h]%[thpb]
 \centering
-  \includegraphics[width=.75\textwidth]{figures/plot_depth.png}
-  \caption{Viewpoint coordinates to real world coordinates analysis.}
-  \label{fig:depth}
+  \includegraphics[width=.70\textwidth]{figures/depth_view_to_sensor.png}
+  \caption{View coordinates to the sensor's coordinates.}
+  \label{fig:depth_view_to_sensor}
 \end{figure}
 
-The noise added to $D$ is defined by the equation below. The standard deviation
-$\sigma\mathsmaller{=}0.001$ was chosen so that the resultant errors in the
-real-world coordinates would correlate to the error model in
-\cite{Khoshelham2012}. The text boxes in Fig. \ref{fig:depth} show the resultant
-real-world error for two values of $D$; they match the error model of
-\cite{Khoshelham2012}.
+The mean of the normal distribution in Equation \ref{eqn:depth_noise},
+$\sigma\mathsmaller{=}0.002$, was experimentally found to provide a conservative
+approximation of Khoshelham's error model, which is defined by the equations
+below. A visual comparison of the standard deviation of error used in MABDI's
+simulation of a RGB-D sensor and Khoshelham's error model can be seen in Fig.
+\ref{fig:depth_noise_error}. From the graph, we can see that the error used in
+the simulation is larger than that of the error model and thus have confidence
+of MABDI's ability to work in the real world.
 
-$$
-D_{noisy}(i,j) = D(i,j) + D(i,j)*\mathcal{N} (\mu\mathsmaller{=}0, \sigma\mathsmaller{=}0.001)
-$$
+\begin{gather}
+  \sigma_z = \sigma_d \times \frac{m}{fb} \times Z^2 \\
+  \sigma_d = 0.5 \\
+  \frac{m}{fb} = 2.85\mathrm{e}{-5}
+\end{gather}
 
-% Viewpoint coordinates to real-world coordinates analysis. Viewpoint coordinates
-% are obtained when a mesh is rendered into a render window, and can be
-% transformed to real-world coordinates using the transformation matrix of the
-% camera. Noise is added in simulation to the viewpoint coordinates. This graph
-% shows the effect of that noise in real-world coordinates.
+\begin{figure}[h]%[thpb]
+\centering
+  \includegraphics[width=.70\textwidth]{figures/depth_noise_error.png}
+  \caption{Comparison of standard deviation of the error used in the MABDI simulation and the error model from Khoshelham.}
+  \label{fig:depth_noise_error}
+\end{figure}
