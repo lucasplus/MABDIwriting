@@ -1,11 +1,12 @@
-Questions:
-Content
 
+Chapter 4
 
-Formatting
-* Putting my masters degree on the abstract page. Is that right?
-*
+* pg 33. I think you need to add a diagram that explains the software setup.
 
-Changes:
-* RGB-D sensors section in the introduction
-* Description of surface reconstruction method in the approach
+* pg 34. Contradicts. (referencing equation 4.1)
+
+* pg 34. Why? You choose all the parameters in the simulation.
+
+* pg 34. I unitless. What does a 1.5m bunny mean in units? The simulation?
+
+* pg 36. I am not sure what this shows.
