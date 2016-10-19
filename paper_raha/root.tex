@@ -2,9 +2,10 @@
 %2345678901234567890123456789012345678901234567890123456789012345678901234567890
 %        1         2         3         4         5         6         7         8
 
-% \newcommand{\CLASSINPUTtoptextmargin}{72pt}
+% \newcommand{\CLASSINPUTtoptextmargin}{82pt}
 % \newcommand{\CLASSINPUTbottomtextmargin}{2cm}
 \documentclass[letterpaper, 10pt, conference, final]{ieeeconf}  % Comment this line out if you need a4paper
+
 
 %\documentclass[a4paper, 10pt, conference]{ieeeconf}      % Use this line for a4 paper
 
@@ -14,7 +15,7 @@
 % See the \addtolength command later in the file to balance the column lengths
 % on the last page of the document
 
-% \usepackage{microtype} - to make a little more room
+\usepackage{microtype} % to make a little more room
 \usepackage{graphicx} % needed to include png files
 \usepackage{multirow} % for the table
 \usepackage{stfloats}
@@ -41,10 +42,14 @@ Mesh Addition Based on the Depth Image (MABDI)
 
 \begin{document}
 
+\setlength{\textheight}{9.0in} % margin hack
+
 \maketitle
 \thispagestyle{empty}
 \pagestyle{empty}
 
+\setlength{\topmargin}{0.0in}  % margin hack
+\setlength{\textheight}{9.2in} % margin hack
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{abstract}
@@ -72,6 +77,8 @@ inexpensive once the environment is known, but can also react to new objects.
 \input{s_introduction}
 % set up what environmental mapping is, what a mesh is
 % design goals of the system
+
+\vspace{-5pt}
 
 \input{s_related_works}
 % show many mesh based algorithms are black box
@@ -104,7 +111,8 @@ inexpensive once the environment is known, but can also react to new objects.
 
 \begin{figure}[hp]%[thpb]
 \centering
-\includegraphics[width=\textwidth]{figures/run123.png}
+%\includegraphics[height=6.5in]{figures/run123.png}
+\includegraphics[width=6.48in]{figures/run123.png}
 \caption{Results of all experimental runs. See Results Section for discussion.}
 \label{fig:run123}
 \end{figure}
