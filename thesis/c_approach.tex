@@ -58,7 +58,8 @@ Classification component consists of two parts:
     MABDI can be extended to handle object removal by using the sign of the
     difference between $E$ and $D$ instead of the absolute value.
     \begin{equation}
-    D_n = \lvert D - E \rvert > threshold
+      D_n = \lvert D - E \rvert > threshold
+      \label{eqn:d_e_diff}
     \end{equation}
 \end{enumerate}
 
@@ -139,7 +140,8 @@ Elements are removed from the $S$ if they touch pixels from the sets:
 
 Let us combine the sets defined above into one set $D_{throwaway}$:
 \begin{equation}
-D_{throwaway} = D_{known} \cup D_{boundary} \cup D_{invalid}
+  D_{throwaway} = D_{known} \cup D_{boundary} \cup D_{invalid}
+  \label{eqn:throwaway}
 \end{equation}
 
 Our method removes elements that contain pixels from the set $D_{throwaway}$.

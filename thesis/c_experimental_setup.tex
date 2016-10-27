@@ -35,13 +35,6 @@ the x, y, and z axis respectively.
 
 \section{Simulating a RGB-D Sensor}
 
-% * Figure - Render pipeline
-
-% * Figure - View coordinates to the sensor's coordinates.
-% * Equation - Noise added to depth image.
-% * Equation - Error model from the literature.
-% * Figure - Comparison of MABDI error to error model.
-
 \subsection{Rendering Pipeline}
 
 In order to simulate the depth output of a RGB-D sensor, the environment is
@@ -126,15 +119,23 @@ the error found in real world RBG-D sensors.
   \label{fig:depth_noise_error}
 \end{figure}
 
-% As a consequence, when constant noise is added to a point in the
-% depth image, it creates noise whose magnitude increases with distance from the sensor for the same point in the sensor's coordinate system.
-%
-% grows in magnitude as distance from the sensor increases. Luckily,
-% this non-linear relation corresponds with RGB-D error models from the
-% literature. Researchers have created error models to describe the standard
-% deviation of measurement error found in various RGB-D sensors. For this work, we
-% seek to match the well-known error model of Khoshelham \cite{Khoshelham2012}
-% that is based on the original Kinect.
+\section{Sensor Path}
+
+All experimental runs define a helical path for the sensor to follow during the
+simulation. The path is shown in Figure \ref{fig:sensor_path}. The blue line
+indicates the path and the pink points indicate where the sensor stops along the
+path. The path circles the objects in the environment twice. A helical path was
+chosen because it returns to a part of the environment that has already been
+mapped and is thus ``known'' to the algorithm. Also, because the path is a
+helix and not just a circle, the sensor views the environment from a slightly
+different position on each pass.
+
+\begin{figure}[h]%[thpb]
+\centering
+  \includegraphics[width=.70\textwidth]{figures/diagram_path.png}
+  \caption{View of the sensor path. The blue line indicates the sensor path and the pink points indicate where the sensor stops along the path.}
+  \label{fig:sensor_path}
+\end{figure}
 
 \section{Simulation Parameters}
 
@@ -155,8 +156,7 @@ discussed in more detail here:
     \item Noise - If true, adds noise to the depth image of the simulated sensor.
     \item Dynamic - If true, adds an object during the simulation. In the case
     of this analysis, a third bunny is added half-way through the simulation.
-    \item Iterations - The number of iterations the simulation will have. This
-    parameter affects the distance the sensor travels from frame to frame.
+    \item Iterations - The number of times MABDI will run. This number is equal to the number of stops the sensor makes along the path because every time the sensor stops MABDI is run to update the global mesh. Figure \ref{fig:sensor_path} shows sensor stops along the sensor path.
 \end{itemize}
 
 We will be exploring three experimental runs to demonstrate the
@@ -180,10 +180,3 @@ such as handling object addition in the environment.
   \end{center}
   \end{footnotesize}
 \end{table}
-
-All experimental runs define a helical path for the sensor to follow during the
-simulation. The path circles the objects in the environment twice. A helical
-path was chosen because it returns to a part of the environment that has already
-been mapped and is thus ``known'' to the global mesh. Also, because the path is
-a helix and not just a circle, the sensor views the environment from a slightly
-different position on each pass.
