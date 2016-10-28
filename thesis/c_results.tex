@@ -8,9 +8,9 @@
 For each experimental run, a dashboard view was created that can be shown for
 each iteration of the simulation. The dashboard view combines several different
 views of information useful for understanding the inner workings of the MABDI
-algorithm. As an example, Figure \ref{fig:run1} of the next section shows the
-dashboard view for the first experimental run. For these experiments, all
-dashboard views follow the same pattern as described below:
+algorithm. As an example, Figure \ref{fig:run1} shows the dashboard view for the
+first experimental run. For these experiments, all dashboard views follow the
+same pattern as described below:
 
 \begin{itemize}
   \item (a) - Shows the global mesh $M$ from a third-person point of view and in
@@ -33,10 +33,13 @@ dashboard views follow the same pattern as described below:
 \end{itemize}
 
 The dashboard views are an excellent way to visualize important aspects of
-MABDI. In the next section we will utilize key dashboard views to look at the
-behavior and performance of MABDI during each experimental run.
+MABDI. In the next section, Section \ref{section:results1}, we will utilize key
+dashboard views to look at the behavior and performance of MABDI \emph{during}
+each experimental run. In section \ref{section:results2} we will analyze the
+quality and progression of the resultant global mesh from each experiment. 
 
 \section{MABDI Performance During Experiments}
+\label{section:results1}
 
 \subsection{Experiment 1}
 
@@ -96,7 +99,7 @@ the environment that have not been seen before. In this example the global mesh
 $M$ has a partial representation of the objects in the environment and when the
 sensor is moved to the next pose $P$, the new perspective reveals a portion of
 the object that has not been seen before. This \emph{novel portion} of the
-environment, which we will be referring to, is shown by the red circle in Figure
+environment, which we will be referring to, is shown by the red ellipse in Figure
 \ref{fig:run2_novel_portion}.
 
 \begin{figure}[h]%[thpb]
@@ -165,18 +168,111 @@ MABDI to this new object:
 \end{figure}
 
 \section{Global Mesh Results}
+\label{section:results2}
 
-% global mesh
-% elaborate
-Fig \ref{fig:gm} shows the resultant global mesh $M$ from all of the experiments along with
-a plot of the number of elements in the mesh over iterations. These plots show
-the main contribution of MABDI because they level-off as the environment becomes
-more known as opposed to traditional reconstruction methods where the number of
-elements increases linearly over time.
+\subsection{Mesh Quality}
+
+% quality of the mesh
+Figure \ref{fig:gm_3_full} shows the resultant global mesh from experiment 3. In
+this section we will use this figure to make observations about the quality of
+the global mesh for all three experiments.
+
+There are gaps in the mesh that occur typically along the boundaries
+of where the novel surface $S$ is appended to the global mesh $M$. This behavior
+is common for Surface Reconstruction methods as those discussed in Section
+\ref{section:surface_reconstruction}. Algorithms exist for merging these gaps as
+a post processing step such as Turk's Zippered Polygon Meshes \cite{Turk1994}.
+The aforementioned methods are typical for single object reconstruction.
+Traditional mesh-based environmental mapping algorithms simply append
+overlapping layers of mesh resulting in no gaps but a heavily redundant
+representation with a high memory cost.
+
+The mesh is noisy. This noisiness is due to the simplicity of our
+implementation's surface reconstruction method as discussed in Section
+\ref{subsection:surface_reconstruction}. Our method simply connects neighboring
+points in the point cloud without additional steps such as Laplacian smoothing
+\cite{Nealen2006}. Our reconstruction method was sufficient for
+demonstrating the usefulness of the MABDI algorithm, but results in a mesh with
+the same magnitude of noise as the sensor's simulated noise.
 
 \begin{figure}[h]%[thpb]
 \centering
-  \includegraphics[width=\textwidth]{figures/diagram_run123_gm.png}
-  \caption{Global mesh results. Top: Run1. Middle: Run2. Bottom: Run3}
-  \label{fig:gm}
+  \includegraphics[width=\textwidth]{figures/run3_global_mesh.png}
+  \caption{Global mesh at the end of experiment 3.}
+  \label{fig:gm_3_full}
 \end{figure}
+
+\subsection{Mesh Progression}
+
+% shape of the graphs
+To appreciate the true benefit of the MABDI algorithm it is helpful to look at
+how the number of elements in the global mesh $M$ progress over time. In this
+section we will analyze plots showing how the number of elements in $M$ change
+during the experiments. Note, the dashboard views also showed this plot. For
+example, the plot of Figure \ref{fig:gm_1} is the same as Figure
+\ref{fig:run1}(c), but Figure \ref{fig:gm_1} shows the plot at the completion of
+the experiment.
+
+Figure \ref{fig:gm_1} shows the resultant mesh and mesh progression for the
+first experiment. The plot highlights the major difference between MABDI
+and traditional mesh-based environmental mapping methods. Traditional methods
+would have a plot similar to that indicated by the red arrow on the graph
+because these methods have no ability to identify or remove redundant mesh
+elements. Due to MABDI's algorithmic design, MABDI has the intrinsic ability to
+identify points in the depth image corresponding to parts of the environment
+that are already known by the global mesh $M$. MABDI then simply does not use
+those points for surface reconstruction and consequently does not create
+redundant mesh elements. For this reason, the number of elements in $M$ levels
+off as the environment becomes more known.
+
+\begin{figure}[h]%[thpb]
+\centering
+  \includegraphics[width=\textwidth]{figures/diagram_run1_gm.pdf}
+  \caption{Experiment 1 global mesh results.}
+  \label{fig:gm_1}
+\end{figure}
+
+Figure \ref{fig:gm_2} shows us the resultant mesh after the second experiment.
+Here we can see that MABDI is reactive to the environment. In the preceding
+experiment, the environment was symmetrical. In this experiment, the environment
+is not symmetrical and we can see the effects by looking at the progression of
+the global mesh $M$. First let us note that the sensor circles the objects twice
+during the experiment and in total travels $720^{\circ}$ during the 50
+iterations. We notice when the sensor gets to $90^{\circ}$ (around the iteration
+7) the number of elements begins to level off and then increases again as the
+sensor travel to $270^{\circ}$ (around iteration 19). This behavior occurs
+because the information rich perspectives of the environment occur at
+$0^{\circ}$ and $180^{\circ}$. There is less for the sensor to look at when
+viewing the environment from the sides. In this way, MABDI is reactive as the
+sensor moves to parts of the environment that are rich in information.
+Consequently, the mesh grows rapidly based on the needs of the environment.
+
+\begin{figure}[h]%[thpb]
+\centering
+  \includegraphics[width=\textwidth]{figures/diagram_run2_gm.pdf}
+  \caption{Experiment 2 global mesh results.}
+  \label{fig:gm_2}
+\end{figure}
+
+Figure \ref{fig:gm_3} shows us the resultant mesh after the third experiment. In
+this experiment the middle bunny was added during the twenty-sixth iteration.
+This object addition had two effects on the global mesh. First, it created a
+sudden jump in the plot as highlighted by the red circle. Second, the middle
+bunny is colored blue in the resultant mesh, signifying that it was added to $M$
+during a different iteration than the bunnies on the left and the right. Both of
+these effects indicate that MABDI was able to successfully identify the new
+bunny as novel and incorporate the bunny in to the global mesh within one
+iteration.
+
+\begin{figure}[h]%[thpb]
+\centering
+  \includegraphics[width=\textwidth]{figures/diagram_run3_gm.pdf}
+  \caption{Experiment 3 global mesh results.}
+  \label{fig:gm_3}
+\end{figure}
+
+% Figure \ref{fig:gm} shows the resultant global mesh $M$ for each of the experiments
+% along with a plot of the number of elements in the mesh over iterations. These
+% plots show the main contribution of MABDI because they level-off as the
+% environment becomes more known as opposed to traditional reconstruction methods
+% where the number of elements increases linearly over time.
