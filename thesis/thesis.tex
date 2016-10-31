@@ -92,20 +92,26 @@ New Mexico Institute of Mining and Technology, 2009}
 
 \maketitleabstract %(required even though there's no abstract title anymore)
 
+
 \begin{abstract}
-  Many robotic applications, especially those whose goal is to aid or assist
-  through human-robot interaction, utilize a rich map of the world for reasoning
-  tasks such as collision detection, path planning, or object recognition. Such
-  a map, and the method used to produce it, must take into consideration
-  real-world constraints. Most mesh-based mapping algorithms resemble a ``black
-  box'' and do not provide a mechanism to close the loop and make decisions
-  about the incoming information. MABDI leverages the global mesh by finding the
-  difference between what we expect to see and what we are actually seeing, and
-  using this to classify the incoming measurements as novel or not. This allows
-  the surface reconstruction method to be run only on data that has not yet been
-  represented in the global mesh. The result is an algorithm that becomes
-  computationally inexpensive once the environment is known, but still can
-  incorporate new objects into the model.
+  \vspace{-10pt}
+  Many robotic applications utilize a detailed map of the world and the
+  algorithm used to produce such a map must take into consideration real-world
+  constraints such as computational and memory costs. Traditional mesh-based
+  environmental mapping algorithms receive data from the sensor, create a mesh
+  surface from the data, and then append the surface to a growing global mesh.
+  These algorithms do not provide a computationally efficient mechanism for
+  reducing redundancies in the global mesh. MABDI is able to leverage the
+  knowledge contained in the global mesh to find the difference between what we
+  expect our sensor to see and what the sensor is actually seeing. This
+  difference between expected and actual allows MABDI to classify the data from
+  the sensor as either data from a novel part of the environment or data from a
+  part of the environment we have already seen before. Using only the novel
+  data, a surface is created and appended to the global mesh. MABDI's
+  algorithmic design identifies redundant information and removes it
+  \emph{before} it is added to the global mesh. This reduces the amount of
+  memory needed to represent the mesh and also lessens the computational needs
+  to generate mesh elements from the data.
 \clearpage %(required for 1-page abstract)
 \end{abstract}
 
