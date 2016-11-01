@@ -1,22 +1,22 @@
-%% 
-%% This is file `unmeethesis.cls', generated 
+%%
+%% This is file `unmeethesis.cls', generated
 %% on <1995/10/31> with the jwhhacks utility (v3.2zzz).
-%% 
+%%
 %% The original source files were:
-%% 
-%% unmeethesis.dtx 
-%% 
-%% 
-%% This is a generated file. 
-%% 
-%% Copyright 1995 by James W. Howse IV. All rights reserved. 
-%% Modified with permission by Neall E. Doren, January 27, 2000. 
+%%
+%% unmeethesis.dtx
+%%
+%%
+%% This is a generated file.
+%%
+%% Copyright 1995 by James W. Howse IV. All rights reserved.
+%% Modified with permission by Neall E. Doren, January 27, 2000.
 %% Further mods as per D. Bader, EECE, by N. Doren, March 07, 2000.
-%% 
-%% This file is distributed in the hope that it will be useful, 
-%% but WITHOUT ANY WARRANTY; without even the implied warranty of 
-%% MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
-%% 
+%%
+%% This file is distributed in the hope that it will be useful,
+%% but WITHOUT ANY WARRANTY; without even the implied warranty of
+%% MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+%%
 %% This file is a modified form of the standard book format book.cls.  It is
 %% based on book.cls version 1.3g dated 1995/06/26.
 %% Modification history:
@@ -26,9 +26,9 @@
 %%             Removed Abstract title page.
 %%             Removed 'final' mode (ignored if used)
 %%             Minor margin changes.                    N. Doren
-%% The names of the source files used are shown above. 
-%% 
-%% 
+%% The names of the source files used are shown above.
+%%
+%%
 %% \CharacterTable
 %%  {Upper-case    \A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z
 %%   Lower-case    \a\b\c\d\e\f\g\h\i\j\k\l\m\n\o\p\q\r\s\t\u\v\w\x\y\z
@@ -46,7 +46,7 @@
 %%   Right brace   \}     Tilde         \~}
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesClass{unmeethesis}
-              [1995/10/31 
+              [1995/10/31
  UNM EECE dissertation class-mod 03/27/02]
 \newcommand\@ptsize{}
 \newif\if@restonecol
@@ -54,7 +54,7 @@
 \newif\if@openbib
 \newif\if@draft
 %::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-%  Added an 'if' to check whether the 'draft' or 'final' option is 
+%  Added an 'if' to check whether the 'draft' or 'final' option is
 %  selected
 %::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 \newif\if@draft
@@ -122,7 +122,7 @@
   \RequirePackage{color}
 \fi
 %::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-%  Changed the input file from {bk1\@ptsize.clo} since the bk??.clo 
+%  Changed the input file from {bk1\@ptsize.clo} since the bk??.clo
 %  files only support two-sided formatting
 %::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 \input{unm1\@ptsize.clo}
@@ -157,9 +157,9 @@
 %  2)  Removed the \MakeUppercase command from the 'tableofcontents',
 %      'listoffigures', and 'listoftables' commands and from the
 %      'thebibliography', and 'theindex' environments.
-%  3)  Due to Graduate Studies requirements the frontmatter and the 
+%  3)  Due to Graduate Studies requirements the frontmatter and the
 %      mainmatter have different headings.  Specifically, the frontmatter
-%      has the page numbers at the bottom center of the page, and the 
+%      has the page numbers at the bottom center of the page, and the
 %      mainmatter has the page numbers at the top right corner of the page.
 %::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 \if@twoside
@@ -317,7 +317,7 @@
 % \fb@outputpage
 % This is a modification of the version of \@outputpage copied from the file
 % latex.ltx, stored in /usr/local/texmf/lib/tex/latex/misc.
-        
+
 \def\fb@outputpage{%
   \let \protect \noexpand
   \shipout \vbox{%
@@ -422,11 +422,11 @@
   \degreesubject{Ph.D., Electrical Engineering}
 \def\documenttype#1{\gdef\@documenttype{#1}}
   \documenttype{Dissertation}
-\def\schoolname#1{\gdef\@schoolname{#1}} 
+\def\schoolname#1{\gdef\@schoolname{#1}}
   \schoolname{University of New Mexico}
-\def\schooladdress#1{\gdef\@schooladdress{#1}} 
+\def\schooladdress#1{\gdef\@schooladdress{#1}}
   \schooladdress{Albuquerque, New Mexico}
-\def\degreetext#1{\gdef\@degreetext{#1}} 
+\def\degreetext#1{\gdef\@degreetext{#1}}
   \degreetext{Submitted in Partial Fulfillment of the \\
     Requirements for the Degree of}
 
@@ -477,7 +477,7 @@
   \else
       \setlength{\topmargin}{-4pt}
   \fi
- 
+
   \setlength{\headheight}{21pt}
   \setlength{\headsep}{9pt}
   \if@botnum
@@ -524,7 +524,7 @@
 %  \if@twoside\begin{titlepage} \setcounter{page}{0}\mbox{} \end{titlepage}\fi
 \let\maketitle\relax}%
 
-%\newcount\@Signatures 
+%\newcount\@Signatures
 %\def\Signatures#1{\global\@Signatures=#1\relax}
 %  \Signatures{3} % number of signature lines
 \renewcommand\baselinestretch{1.45}
@@ -575,13 +575,13 @@
         \vspace{.82in} %change this if "Dedication" is too high/low
      \else
         \vspace{-.12in} %change this if "Dedication" is too high/low
-     \fi 
+     \fi
      \Huge \bfseries Dedication
   \end{flushleft}
   \itshape
   \null\vfil%
   \begin{flushright}}%
-{\end{flushright}\par\vfil\vfil\null% 
+{\end{flushright}\par\vfil\vfil\null%
    \if@twoside%
      \clearpage%
      \thispagestyle{plain}%
@@ -610,7 +610,7 @@
   \else
      \setlength{\topmargin}{-6pt}
   \fi
-  \clearpage
+  %\clearpage
   \thispagestyle{plain}
   \singlespace
   \null\vfil%
@@ -619,7 +619,7 @@
     \Huge \bfseries \acknowledgname
     \@endparpenalty\@M
   \end{flushleft}}%
-{\endsinglespace\vfil\vfil\null  
+{\endsinglespace\vfil\vfil\null
    \if@twoside%
      \clearpage%
      \thispagestyle{plain}%
@@ -776,7 +776,7 @@
               \fi}
 \newcommand\chapter{\if@openright\cleardoublepage\else\clearpage\fi
 %::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-%  Modified from \thispagestyle{plain} in order to conform to 
+%  Modified from \thispagestyle{plain} in order to conform to
 %  specifications in the dissertation submission guidelines.
 %::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
                     \thispagestyle{plain}%
@@ -806,7 +806,7 @@
 %::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 %\setlength{\textheight}{-11pt}
 %\begin{flushright}
-%  \raisebox{0in}{\thepage} 
+%  \raisebox{0in}{\thepage}
 %\end{flushright}
   \vspace*{46\p@}%
   {\parindent \z@ \raggedright \normalfont
@@ -1154,5 +1154,5 @@
 \pagenumbering{arabic}
 \onecolumn
 \endinput
-%% 
+%%
 %% End of file `unmeethesis.cls'.
