@@ -1,0 +1,103 @@
+%\documentclass[notes]{beamer}       % print frame + notes
+%\documentclass[notes=only]{beamer}  % only notes
+\documentclass{beamer}              % only frames
+
+\mode<presentation>
+{
+  \usetheme{Frankfurt}
+  \usecolortheme{beaver}
+  \setbeamercovered{transparent}
+  \useoutertheme{split}
+  \setbeamertemplate{footline}[page number]{}
+  \setbeamertemplate{navigation symbols}{}
+}
+
+\usepackage{multirow}
+
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{times}
+\usepackage[T1]{fontenc}
+
+\usepackage{color, colortbl}
+\definecolor{LightGray}{gray}{.9} % for table rows
+
+\usepackage{graphics}
+
+\usepackage[absolute,overlay]{textpos}   % to add reference notes
+\newenvironment{reference}[2]{%
+  \begin{textblock*}{\textwidth}(#1,#2)
+      \tiny\it\bgroup\color{red!50!black}}{\egroup\end{textblock*}}
+
+
+
+\title{Mesh Addition Based on the Depth Image (MABDI)}
+
+\author{
+{Lucas Chavez} \\ ~\\
+{\small{Dr. Lumia\inst{1} \and Dr. Fierro\inst{1} \\ \and Dr. Anderson\inst{2}}}
+}
+
+\titlegraphic{
+   \includegraphics[height=1cm]{logo_unm.jpg} \hspace{.3in}
+   \includegraphics[height=1cm]{logo_verlab.pdf} \hspace{.3in}
+   \includegraphics[height=1cm]{logo_sandia.pdf}
+}
+
+\institute
+{
+  \inst{1}%
+  University of New Mexico  \and
+  \inst{2}%
+  Sandia National Laboratories
+}
+
+\date{November 2016}
+
+
+
+% Delete this, if you do not want the table of contents to pop up at
+% the beginning of each subsection:
+\AtBeginSection[]
+{
+  \begin{frame}<beamer>{Outline}
+    \tableofcontents[currentsection,currentsubsection]
+  \end{frame}
+}
+
+% If you wish to uncover everything in a step-wise fashion, uncomment
+% the following command:
+%\beamerdefaultoverlayspecification{<+->}
+
+
+
+\begin{document}
+
+\begin{frame}[plain]
+  \begin{reference}{10mm}{85mm}
+    \begin{center}
+    This work was supported in part by: \\ Sandia National Laboratories under
+    Purchase Order: 1179196 and NSF grant OISE \#1131305.
+    \end{center}
+  \end{reference}
+  \titlepage
+\end{frame}
+
+\begin{frame}{Outline}
+  \tableofcontents
+  % You might wish to add the option [pausesections]
+\end{frame}
+
+\input{p_introduction}
+
+% \input{p_related_works}
+%
+% \input{p_approach}
+%
+% \input{p_experimental_setup}
+%
+% \input{p_results}
+%
+% \input{p_conclusion}
+
+\end{document}
