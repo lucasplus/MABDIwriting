@@ -28,7 +28,7 @@ the x, y, and z axis respectively.
 
 \begin{figure}[h]%[thpb]
 \centering
-  \includegraphics[width=\textwidth]{figures/diagram_simulation_overview.png}
+  \includegraphics[width=\textwidth]{figures/expsetup_simulation_overview.pdf}
   \caption{Overview of the simulation. Left: Top view. Right: Third person view. }
   \label{fig:simulation_overview}
 \end{figure}
@@ -53,19 +53,20 @@ to replicate the Kinect sensor \cite{sitekinectspecs}.
 
 \begin{figure}[h]%[thpb]
 \centering
-  \includegraphics[width=\textwidth]{figures/diagram_render_pipeline.png}
+  \includegraphics[width=\textwidth]{figures/expsetup_render_pipeline.pdf}
   \caption{Render pipeline: projects 3D global coordinates to 2D pixel coordinates. }
   \label{fig:render_pipeline}
 \end{figure}
 
-The pinhole camera transformation, $T_{pcm}$, creates a non-linear relationship between
-values in the depth image and their corresponding location in the sensor's
-coordinate system. This relationship is visualized in Fig.
+The pinhole camera transformation, $T_{pcm}$, creates a non-linear relationship
+between values in the depth image and their corresponding location in the
+sensor's coordinate system. This relationship is visualized in Fig.
 \ref{fig:depth_view_to_sensor}.
 
 \begin{figure}[h]%[thpb]
 \centering
-  \includegraphics[width=.70\textwidth]{figures/depth_view_to_sensor.png}
+  \includegraphics[width=.70\textwidth]
+    {figures/expsetup_depth_view_to_sensor.pdf}
   \caption{View coordinates to the sensor's coordinates.}
   \label{fig:depth_view_to_sensor}
 \end{figure}
@@ -114,7 +115,7 @@ the error found in real world RBG-D sensors.
 
 \begin{figure}[h]%[thpb]
 \centering
-  \includegraphics[width=.70\textwidth]{figures/depth_noise_error.png}
+  \includegraphics[width=.70\textwidth]{figures/expsetup_noise_error.pdf}
   \caption{Comparison of standard deviation of the error used in the MABDI simulation and the error model from Khoshelham.}
   \label{fig:depth_noise_error}
 \end{figure}
@@ -132,7 +133,7 @@ different position on each pass.
 
 \begin{figure}[h]%[thpb]
 \centering
-  \includegraphics[width=.70\textwidth]{figures/diagram_path.png}
+  \includegraphics[width=.70\textwidth]{figures/expsetup_path.png}
   \caption{View of the sensor path. The blue line indicates the sensor path and the pink points indicate where the sensor stops along the path.}
   \label{fig:sensor_path}
 \end{figure}

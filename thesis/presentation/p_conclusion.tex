@@ -1,0 +1,23 @@
+\section{Conclusion}
+
+\begin{frame}{Motivation} % ____________________________________________________
+  The goal of MABDI is to identify data from the sensor that has not yet been
+  represented in the map and use this data to add to the map. MABDI does this by
+  leveraging the difference between what we are actually seeing and what we expect
+  to see. MABDI can work in conjunction with any current mesh-based surface
+  reconstruction algorithms, and can be thought of as a general means to provide
+  introspection to those types of reconstruction methods.
+
+  The MABDI implementation was able to successfully perform in a realistic
+  simulation environment. The results show how novel sensor data was
+  successfully classified and used to add to the global mesh. Also, the MABDI
+  algorithm runs at around 2Hz on a consumer grade laptop with an Intel i7
+  processor. This performance means that it is capable of real-world
+  applications.
+
+  Currently MABDI is only designed to handle object addition, but the idea can be
+  extended to handle both object addition and removal as discussed in Section
+  \ref{section:algorithmic_design}. This would give the system the
+  capability to handle highly dynamic environments such as a door opening and
+  closing.
+\end{frame}

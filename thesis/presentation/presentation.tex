@@ -1,6 +1,10 @@
-%\documentclass[notes]{beamer}       % print frame + notes
-%\documentclass[notes=only]{beamer}  % only notes
-\documentclass{beamer}              % only frames
+\documentclass[notes]{beamer}       % print frame + notes
+% \documentclass[notes=only]{beamer}  % only notes
+% \documentclass{beamer}              % only frames
+
+\usepackage{pgfpages}
+\setbeameroption{show notes}
+\setbeameroption{show notes on second screen=right}
 
 \mode<presentation>
 {
@@ -12,7 +16,9 @@
   \setbeamertemplate{navigation symbols}{}
 }
 
-\usepackage{multirow}
+\usepackage{multirow}              % for the table
+\usepackage{color, colortbl}
+\definecolor{LightGray}{gray}{.9}  % for table rows
 
 \usepackage[english]{babel}
 \usepackage[utf8]{inputenc}
@@ -29,7 +35,7 @@
   \begin{textblock*}{\textwidth}(#1,#2)
       \tiny\it\bgroup\color{red!50!black}}{\egroup\end{textblock*}}
 
-
+\usepackage{amsmath}
 
 \title{Mesh Addition Based on the Depth Image (MABDI)}
 
@@ -92,12 +98,12 @@
 
 % \input{p_related_works}
 %
-% \input{p_approach}
-%
-% \input{p_experimental_setup}
-%
-% \input{p_results}
-%
-% \input{p_conclusion}
+\input{p_approach}
+
+\input{p_experimental_setup}
+
+\input{p_results}
+
+\input{p_conclusion}
 
 \end{document}
