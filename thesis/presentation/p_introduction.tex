@@ -10,14 +10,15 @@
 
 \begin{frame}{Overview} % ____________________________________________________
   \only<1>{
-  Motivation is to provide situation awareness
+  Motivation for this work: provide a map of the environment \\ \medskip
+  Examples applications:
   \begin{itemize}
-    \item Autonomous agents
-    \item Teleoperation
+    \item Autonomous agents (robots)
+    \item Teleoperation (human)
   \end{itemize}
   }
   \only<2>{
-  In the literature referred to as the SLAM problem
+  In the literature this is referred to as the SLAM problem
   \begin{itemize}
     \item Simultaneous Localization and Mapping
     \item Environmental Mapping
@@ -50,7 +51,8 @@
   \end{itemize}}
   \note<3>{\begin{itemize}
     \item For this work
-    \item Goal is to transform depth images into a mesh representation
+    \item Goal was to transform depth images into a mesh representation
+    \item * I will explain these two components
     \item Depth images
     \item - each pixel represents distance from sensor instead of color
     \item Mesh representation
@@ -77,7 +79,7 @@
     \item high resolution spatial information
     \item[]
     \item High rate of data
-    \item Algorithms must take this as a design consideration
+    \item Algorithms must have this as a design consideration
   \end{itemize}}
 \end{frame}
 
@@ -101,13 +103,12 @@
   \end{itemize}}
   \note<2>{\begin{itemize}
     \item Supported
-    \item - Is there software, tools, research, algorithms, etc., for
-    this type of map?
+    \item - available software, tools, research, algorithms, etc., for
+    this type of map
     \item Computationally Inexpensive
-    \item - Can the algorithms run quickly on low cost computers (rather than
-    specialized hardware)?
+    \item - GPUs make this computationally efficient
     \item Low Memory Requirement
-    \item - Can the algorithms run on hardware with a standard amount of RAM?
+    \item - Can it run on a laptop with a standard amount of RAM?
   \end{itemize}}
 \end{frame}
 
