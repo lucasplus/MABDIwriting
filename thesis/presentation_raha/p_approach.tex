@@ -124,22 +124,10 @@
     }
     \only<2>{
       \includegraphics[height=0.65\textheight]
-        {../figures/presentation/approach_sr_pts_0.pdf}
-    }
-    \only<3>{
-      \includegraphics[height=0.65\textheight]
-        {../figures/presentation/approach_sr_pts_1.pdf}
+        {../figures/presentation/approach_sr_pts_2.pdf}
       \begin{gather*}
         D_n = \lvert D - E \rvert > threshold \\
         D_{known} = D \setminus D_n
-      \end{gather*}
-    }
-    \only<4>{
-      \includegraphics[height=0.65\textheight]
-        {../figures/presentation/approach_sr_pts_2.pdf}
-      \begin{gather*}
-        K = \begin{bmatrix} 2 & -1 \\ -1 & 0 \end{bmatrix} \\
-        D_{boundary} = (D \ast K) > threshold
       \end{gather*}
     }
 \end{center}
@@ -151,15 +139,9 @@
 
   \note<2>{\begin{itemize}
     \item Inside the circle represents every point from $D$
-  \end{itemize}}
-
-  \note<3>{\begin{itemize}
     \item $D_n$ (novel) is the set of points that the categorization process said is novel
     \item Categorization process is defined by this equation
     \item[] absolute difference between what the sensor saw and what we expect to see
-  \end{itemize}}
-
-  \note<4>{\begin{itemize}
     \item I define two additional set of points to be thrown away.
     \item $D_{boundary}$
     \item - remove elements defined by points that lie on completely different surfaces

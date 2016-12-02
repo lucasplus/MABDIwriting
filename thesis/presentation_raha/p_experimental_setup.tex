@@ -32,36 +32,6 @@
   \end{itemize}}
 \end{frame}
 
-\begin{frame}{Rendering Pipeline} % ____________________________________________
-  \hspace*{-12.5mm}
-  \includegraphics[width=1.2\textwidth]
-    {../figures/expsetup_render_pipeline.pdf}
-  \note{\begin{itemize}
-    \item Pinhole camera model
-    \item transforms geometry in the sensor's coordinate system to homogenous
-    coordinates
-    \item z-component of the homogenous coordinates is what defines the depth
-    image
-  \end{itemize}}
-\end{frame}
-
-\begin{frame}{$T_{pcm}$} % _____________________________________________________
-  \vspace{-0.15in}
-  \begin{center}
-  \includegraphics[height=0.90\textheight]
-    {../figures/expsetup_depth_view_to_sensor.pdf}
-  \end{center}
-  \note{\begin{itemize}
-    \item The pinhole camera transformation, $T_{pcm}$,
-    \item Creates a non-linear relationship between
-    \item - values in the depth image
-    \item - and their corresponding location in the sensor's coordinate system
-    \item Graph was created by:
-    \item - Taking center pixel in depth image
-    \item - Varying value 0-1 and projecting to camera's coordinate system
-  \end{itemize}}
-\end{frame}
-
 \begin{frame}{Adding Noise} % __________________________________________________
   \only<1>{\vspace{-0.15in}\begin{center}
   \includegraphics[height=0.90\textheight]
@@ -72,14 +42,7 @@
     $D_{noisy}(i,j) = D(i,j) + \mathcal{N} (\mu\mathsmaller{=}0, \sigma\mathsmaller{=}0.002)$
   \end{center}}
 
-  \only<3>{
-  K. Khoshelham and S. O. Elberink, "Accuracy and resolution of Kinect depth
-  data for indoor mapping applications." \emph{Sensors (Basel, Switzerland)}
-  \medskip
-  \begin{center} $\sigma_z = 1.425\mathrm{e}{-5} \times Z^2$ \end{center}
-  }
-
-  \only<4>{\vspace{-0.15in}\begin{center}
+  \only<3>{\vspace{-0.15in}\begin{center}
   \includegraphics[height=0.90\textheight]
     {../figures/expsetup_noise_error.pdf}
   \end{center}}
@@ -94,14 +57,6 @@
     \item I sample a normal distribution and add the value to each pixel
   \end{itemize}}
   \note<3>{\begin{itemize}
-    \item Researchers have created error models to describe the standard
-    deviation of measurement error found in various RGB-D sensors
-    \item Point in camera's coordinate system
-    \item Point has some z value $Z$
-    \item $\sigma_z$ - standard deviation of error
-    \item as a function of $Z$
-  \end{itemize}}
-  \note<4>{\begin{itemize}
     \item Each line shows how the measurement's standard deviation of error
     changes as the point moves along the z axis in the sensor's coordinate
     system.
